@@ -16,6 +16,4 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, L
 	@Query("select s from Product s where s.imageCollectionFlag = TRUE and s.invalidFlag != TRUE order by s.priority desc, s.id desc")
 	List<Product> getImageCollectionProductList();
 	
-	@Query("select s from Product s where s.classFlag = TRUE and s.invalidFlag != TRUE order by s.priority desc, s.id desc")
-	List<Product> getClassProductList();
 }

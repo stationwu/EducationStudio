@@ -1,5 +1,6 @@
 package com.edu.domain;
 
+import java.math.BigDecimal;
 import java.util.Map;
 import javax.persistence.*;
 
@@ -18,7 +19,7 @@ public class Order {
     
     private Status status;
 
-    private double totalAmount;
+    private BigDecimal totalAmount;
 
     public static String[] ALL_STATUS = {
     		"等待付款", "付款中", "已付款", "已取消", "已发货", "退款申请中", "已退款"
@@ -56,10 +57,10 @@ public class Order {
 
 	@JsonIgnore
 	@ElementCollection
-    @CollectionTable(name="ORDER_CLASSPRODUCT", joinColumns=@JoinColumn(name="ORDER_ID", referencedColumnName="ID"))
-	@MapKeyJoinColumn(name="CLASSPRODUCT_ID", referencedColumnName="ID")
+    @CollectionTable(name="ORDER_COURSEPRODUCT", joinColumns=@JoinColumn(name="ORDER_ID", referencedColumnName="ID"))
+	@MapKeyJoinColumn(name="COURSEPRODUCT_ID", referencedColumnName="ID")
 	@Column(name="COPIES_IN_ORDER")
-	private Map<ClassProduct, Integer> classProductsMap;
+	private Map<CourseProduct, Integer> courseProductsMap;
 	
 	public String getDate() {
 		return date;
@@ -69,11 +70,11 @@ public class Order {
 		this.date = date;
 	}
 
-	public double getTotalAmount() {
+	public BigDecimal getTotalAmount() {
 		return totalAmount;
 	}
 
-	public void setTotalAmount(double totalAmount) {
+	public void setTotalAmount(BigDecimal totalAmount) {
 		this.totalAmount = totalAmount;
 	}
 
@@ -153,12 +154,12 @@ public class Order {
         REFUND       // equals to wechat REFUND
 	}
 
-	public Map<ClassProduct, Integer> getClassProductsMap() {
-		return classProductsMap;
+	public Map<CourseProduct, Integer> getCourseProductsMap() {
+		return courseProductsMap;
 	}
 
-	public void setClassProductsMap(Map<ClassProduct, Integer> classProductsMap) {
-		this.classProductsMap = classProductsMap;
+	public void setCourseProductsMap(Map<CourseProduct, Integer> courseProductsMap) {
+		this.courseProductsMap = courseProductsMap;
 	}
 
 	public Payment getPayment() {

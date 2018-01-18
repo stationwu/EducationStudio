@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.math.BigDecimal;
 import java.util.Set;
 
 @Entity
@@ -19,7 +20,7 @@ public class Product {
 	@JoinColumn(name = "CATEGORY_ID")
 	private ProductCategory productCategory;
 
-	private double productPrice = 0.0d;
+	private BigDecimal productPrice = new BigDecimal(0);
 
 	private String productDescription;
 	
@@ -33,11 +34,7 @@ public class Product {
 	
 	private boolean imageCollectionFlag;
 	
-	private boolean classFlag;
-	
 	private boolean invalidFlag;
-	
-	private int classPeriod;
 	
 	private int numberOfPic;
 	
@@ -47,16 +44,14 @@ public class Product {
 
 	}
 
-	public Product(String productName, ProductCategory productCategory, double productPrice, String productDescription,
-			boolean derivedProductFlag, boolean imageCollectionFlag, boolean classFlag, int classPeriod) {
+	public Product(String productName, ProductCategory productCategory, BigDecimal productPrice, String productDescription,
+			boolean derivedProductFlag, boolean imageCollectionFlag) {
 		this.productName = productName;
 		this.productCategory = productCategory;
 		this.productPrice = productPrice;
 		this.productDescription = productDescription;
 		this.derivedProductFlag = derivedProductFlag;
 		this.imageCollectionFlag = imageCollectionFlag;
-		this.classFlag = classFlag;
-		this.classPeriod = classPeriod;
 	}
 
 	public boolean getDerivedProductFlag() {
@@ -83,11 +78,11 @@ public class Product {
 		this.productCategory = productCategory;
 	}
 
-	public double getProductPrice() {
+	public BigDecimal getProductPrice() {
 		return productPrice;
 	}
 
-	public void setProductPrice(double productPrice) {
+	public void setProductPrice(BigDecimal productPrice) {
 		this.productPrice = productPrice;
 	}
 
@@ -137,22 +132,6 @@ public class Product {
 
 	public void setImageCollectionFlag(boolean imageCollectionFlag) {
 		this.imageCollectionFlag = imageCollectionFlag;
-	}
-
-	public boolean isClassFlag() {
-		return classFlag;
-	}
-
-	public void setClassFlag(boolean classFlag) {
-		this.classFlag = classFlag;
-	}
-
-	public int getClassPeriod() {
-		return classPeriod;
-	}
-
-	public void setClassPeriod(int classPeriod) {
-		this.classPeriod = classPeriod;
 	}
 
 	public int getNumberOfPic() {

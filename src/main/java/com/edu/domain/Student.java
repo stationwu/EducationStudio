@@ -1,5 +1,8 @@
 package com.edu.domain;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -21,12 +24,6 @@ public class Student {
     protected String id;
 
     private String studentName;
-
-    private int classPeriod;
-
-    private int leftPeriods;
-
-    private int donePeriods;
 
     @Column(updatable = false)
     private String birthday;
@@ -69,6 +66,16 @@ public class Student {
             inverseJoinColumns = @JoinColumn(name = "NO_SIGN_COURSE_ID",
                     referencedColumnName = "ID"))
     private Set<Course> courseNotSignSet;
+    
+    @OneToMany(cascade = { CascadeType.ALL }, mappedBy = "student")
+    @JsonIgnore
+    private Set<CourseProduct> courseProducts = new HashSet<>();
+    
+    @ElementCollection
+    @CollectionTable(name="STUDENT_COURSECATEGORY", joinColumns=@JoinColumn(name="STUDENT_ID", referencedColumnName="ID"))
+	@MapKeyJoinColumn(name="COURSECATEGORY_ID", referencedColumnName="ID")
+	@Column(name="COUNT_IN_COURSECATEGORY")
+    private Map<CourseCategory, Integer> courseCount = new HashMap<>();
 
     private boolean isChild;
 
@@ -79,18 +86,12 @@ public class Student {
                    int leftPeriods, int donePeriods, boolean isChild) {
         this.studentName = studentName;
         this.birthday = birthday;
-        this.classPeriod = classPeriod;
-        this.donePeriods = donePeriods;
-        this.leftPeriods = leftPeriods;
         this.isChild = isChild;
     }
 
     public Student(String studentName, String birthday) {
         this.studentName = studentName;
         this.birthday = birthday;
-        this.classPeriod = 0;
-        this.donePeriods = 0;
-        this.leftPeriods = 0;
         this.isChild = true;
     }
 
@@ -128,14 +129,6 @@ public class Student {
 
     public void addCourse(Course course) {
         this.coursesSet.add(course);
-    }
-
-    public int getClassPeriod() {
-        return classPeriod;
-    }
-
-    public void setClassPeriod(int classPeriod) {
-        this.classPeriod = classPeriod;
     }
 
     public Set<Image> getImagesSet() {
@@ -199,27 +192,26 @@ public class Student {
         this.birthday = birthday;
     }
 
-    public int getLeftPeriods() {
-        return leftPeriods;
-    }
+    public Set<CourseProduct> getCourseProducts() {
+		return courseProducts;
+	}
 
-    public void setLeftPeriods(int leftPeriods) {
-        this.leftPeriods = leftPeriods;
-    }
+	public void setCourseProducts(Set<CourseProduct> courseProducts) {
+		this.courseProducts = courseProducts;
+	}
 
-    public int getDonePeriods() {
-        return donePeriods;
-    }
+	public Map<CourseCategory, Integer> getCourseCount() {
+		return courseCount;
+	}
 
-    public void setDonePeriods(int donePeriods) {
-        this.donePeriods = donePeriods;
-    }
+	public void setCourseCount(Map<CourseCategory, Integer> courseCount) {
+		this.courseCount = courseCount;
+	}
 
-    @Override
+	@Override
     public String toString() {
         return "Student [id=" + id + ", studentName=" + studentName
-                + ", classPeriod=" + classPeriod + ", leftPeriods="
-                + leftPeriods + ", donePeriods=" + donePeriods + ", birthday="
+                + ", birthday="
                 + birthday + ", customer=" + customer + ", imagesSet="
                 + imagesSet + ", coursesSet=" + coursesSet
                 + ", reservedCoursesSet=" + reservedCoursesSet

@@ -12,7 +12,8 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    private String courseName;
+    @ManyToOne
+	private CourseCategory courseCategory;
 
 	private String date;
 
@@ -46,14 +47,6 @@ public class Course {
 		      inverseJoinColumns= @JoinColumn(name="STUDENT_ID", referencedColumnName="ID"))
 	private Set<Student> studentNotSignSet;
 	
-	public String getCourseName() {
-		return courseName;
-	}
-
-	public void setCourseName(String courseName) {
-		this.courseName = courseName;
-	}
-
 	public String getDate() {
 		return date;
 	}
@@ -106,8 +99,8 @@ public class Course {
 
 	}
 	
-	public Course(String courseName, String date, String timeFrom, String timeTo, int maxSeat) {
-		this.courseName = courseName;
+	public Course(CourseCategory courseCategory, String date, String timeFrom, String timeTo, int maxSeat) {
+		this.courseCategory = courseCategory;
 		this.date = date;
 		this.timeFrom = timeFrom;
 		this.timeTo = timeTo;
@@ -129,5 +122,13 @@ public class Course {
 	public void setMaxSeat(int maxSeat) {
 		this.maxSeat = maxSeat;
 	}
-    
+
+	public CourseCategory getCourseCategory() {
+		return courseCategory;
+	}
+
+	public void setCourseCategory(CourseCategory courseCategory) {
+		this.courseCategory = courseCategory;
+	}
+	
 }

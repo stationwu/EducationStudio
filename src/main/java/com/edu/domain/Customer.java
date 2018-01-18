@@ -38,10 +38,6 @@ public class Customer {
     @JsonIgnore
     private Set<Student> students = new HashSet<>();
 
-    @OneToOne(cascade = { CascadeType.ALL })
-    @JsonIgnore
-    private ProductCart cart;
-
     @OneToMany(cascade = { CascadeType.ALL }, mappedBy = "customer")
     @JsonIgnore
     private Set<Order> orders;
@@ -55,8 +51,7 @@ public class Customer {
     }
 
     public Customer() {
-        this.cart = new ProductCart();
-        cart.setCustomer(this);
+
     }
 
     public Customer(String openCode, String name, String mobilePhone, String address) {
@@ -65,8 +60,6 @@ public class Customer {
         this.mobilePhone = mobilePhone;
         this.isActivated = false;
         this.address = address;
-        this.cart = new ProductCart();
-        this.cart.setCustomer(this);
     }
 
     public long getId() {
@@ -91,14 +84,6 @@ public class Customer {
 
     public void setMobilePhone(String mobilePhone) {
         this.mobilePhone = mobilePhone;
-    }
-
-    public ProductCart getCart() {
-        return cart;
-    }
-
-    public void setCart(ProductCart cart) {
-        this.cart = cart;
     }
 
     public Set<Order> getOrders() {

@@ -169,7 +169,7 @@ public class Payment {
     }
 
     public void setIsSubsribe(String isSubsribe) {
-        isSubsribe = isSubsribe;
+        this.isSubsribe = isSubsribe;
     }
 
     public String getTradeType() {
