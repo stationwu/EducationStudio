@@ -1,40 +1,35 @@
 #DB Configuration:
 # this configuration is for mysql
-#spring.datasource.url = jdbc:mysql://<your-db-host>:3306/club?useUnicode=true&characterEncoding=utf-8
-#spring.datasource.username = <your-db-user>
-#spring.datasource.password = <your-db-password>
+spring.datasource.url = jdbc:mysql://localhost:3306/club?useUnicode=true&characterEncoding=utf-8
+spring.datasource.username =
+spring.datasource.password =
 spring.datasource.driverClassName = com.mysql.jdbc.Driver
 spring.datasource.testOnBorrow=true
 spring.datasource.validationQuery=SELECT 1
 # Specify the DBMS
 spring.jpa.database = MYSQL
 # Hibernate ddl auto (create, create-drop, update)
-spring.jpa.hibernate.ddl-auto = create
+spring.jpa.hibernate.ddl-auto = create-drop
 # Naming strategy
 spring.jpa.hibernate.naming-strategy = org.hibernate.cfg.ImprovedNamingStrategy
-
 # stripped before adding them to the entity manager)
 spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.MySQL57InnoDBDialect
 spring.jpa.properties.hibernate.connection.characterEncoding=utf-8
 spring.jpa.properties.hibernate.connection.CharSet=utf-8
 spring.jpa.properties.hibernate.connection.useUnicode=true
-
 spring.jpa.show-sql=true
-
 spring.http.multipart.max-file-size=100MB
 spring.http.multipart.max-request-size=100MB
-
 server.port=8080
-#app.host.address=<your-app-host-address>
-
-#wechat.mp.appId=
-#wechat.mp.secret=
-#wechat.mp.token=
-#wechat.mp.aesKey=
-
-logging.level.org.org.springframework.web=DEBUG
+wechat.mp.appId =
+wechat.mp.secret =
+wechat.mp.token =
+wechat.pay.appId =
+wechat.pay.mchId =
+wechat.pay.mchKey =
+wechat.pay.keyPath =
+# file.storage.rootDirectory =
+logging.level.org.springframework.web=DEBUG
 logging.level.com.edu=DEBUG
+logging.level.com.github.binarywang.wxpay=DEBUG
 
-# Make sure you have full access to the directory
-# Please never move the already uploaded files to other location
-#file.storage.rootDirectory=/path/to/dashuxia/upload/images
