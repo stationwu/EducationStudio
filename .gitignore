@@ -24,7 +24,7 @@ nbdist/
 .nb-gradle/
 
 ### Spring ###
-application.properties
+src/main/resources/application.properties
 
 ### Application ###
 image/
