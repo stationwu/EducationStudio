@@ -25,3 +25,7 @@ nbdist/
 
 ### Spring ###
 application.properties
+
+### Application ###
+image/
+upload-dir/
