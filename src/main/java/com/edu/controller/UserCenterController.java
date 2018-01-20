@@ -3,6 +3,8 @@ package com.edu.controller;
 import com.edu.dao.CustomerRepository;
 import com.edu.domain.Customer;
 import com.edu.domain.Student;
+import com.edu.utils.Constant;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,27 +39,11 @@ public class UserCenterController {
 	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
-	@GetMapping("user/list")
-	public String listCustomer(HttpSession session, Model model) {
-	    String openId = (String)session.getAttribute(SESSION_OPENID_KEY);
-        
-        if (openId == null) {
-            return "error_500";
-        }
-
-        return "user_info";
-
-	}
-	
 	@GetMapping(USER_CENTER_PATH)
 	private String gotoUserHomeOrSignUp(HttpSession session, Model model) {
 		
 		String openId = (String)session.getAttribute(SESSION_OPENID_KEY);
 		
-	    if (openId == null) {
-	        return "error_500";
-        }
-
         logger.debug(">>> Your OPENID is: " + openId);
 
 	    String view = null;
@@ -111,9 +97,6 @@ public class UserCenterController {
         }
 
         Object openIdInSession = session.getAttribute(SESSION_OPENID_KEY);
-        if (openIdInSession == null) {
-            return "error_500"; // It's a must to have the openId in session!
-        }
 
         String openId = (String) openIdInSession;
         customer.setOpenCode(openId);
@@ -135,4 +118,13 @@ public class UserCenterController {
 
         return "user_info";
     }
+    
+	@GetMapping("user/session")
+	@ResponseBody
+	public String createSession(HttpSession session) {
+		String openId = "123456";
+        session.setAttribute(Constant.SESSION_OPENID_KEY, openId);
+		
+		return "true";
+	}
 }

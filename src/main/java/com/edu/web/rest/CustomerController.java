@@ -9,9 +9,6 @@ import com.edu.domain.VerifyCode;
 import com.edu.domain.dto.ChildContainer;
 import com.edu.domain.dto.CustomerContainer;
 import com.edu.utils.Constant;
-import org.apache.http.HttpException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,17 +34,11 @@ public class CustomerController {
 
     public static final String SIGNUP_PATH = PATH + "/SignUp";
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @GetMapping(path = PATH + "/{id}")
     public ResponseEntity<Customer> show(@PathVariable("id") Long id) {
         Customer entity = repository.findOne(id);
         return new ResponseEntity<>(entity, HttpStatus.OK);
-    }
-
-    @PostMapping(path = PATH)
-    public Customer create(@RequestBody @Valid Customer customer) throws HttpException {
-        return repository.save(customer);
     }
 
     @PostMapping(path = SIGNUP_PATH)
@@ -116,18 +107,4 @@ public class CustomerController {
         return customer;
     }
 
-    @PutMapping(path = PATH + "/{id}")
-    public String activateCustomer(@PathVariable(value = "id") Long id) throws HttpException {
-        Customer customerObject = repository.findOne(id);
-        customerObject.setActivated(true);
-        repository.save(customerObject);
-        return "客户激活成功!";
-    }
-
-//    private Resource<Customer> buildResource(Customer customer) {
-//        Resource<Customer> resource = new Resource<>(customer);
-//        // Links
-//        resource.add(linkTo(methodOn(CustomerController.class).show(customer.getId())).withSelfRel());
-//        return resource;
-//    }
 }

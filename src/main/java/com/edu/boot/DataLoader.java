@@ -240,14 +240,14 @@ public class DataLoader implements CommandLineRunner {
             Customer customer = new Customer("123456", "Arthur", "13512345678", "中国上海");
             customer = customerRepository.save(customer);
 
-            Student student = new Student("Arthur", "1987-03-02",24, 24, 0, false);
+            Student student = new Student("Arthur", "1987-03-02",false);
             Set<Image> imagesList = new HashSet<>();
             imagesList.add(images.get(1));
             student.setImagesSet(imagesList);
             student.setCustomer(customer);
             student = studentRepository.save(student);
 
-            Student secondChild = new Student("Saber", "1990-05-02",24, 24, 0, false);
+            Student secondChild = new Student("Saber", "1990-05-02",false);
             Set<Image> imagesList2 = new HashSet<>();
             imagesList2.add(images.get(0));
             secondChild.setImagesSet(imagesList2);
