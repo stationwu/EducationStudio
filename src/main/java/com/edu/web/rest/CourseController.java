@@ -38,7 +38,7 @@ public class CourseController {
 	public static final String BOOK_PATH = PATH+"/book";
 
 	@PostMapping(path = PATH)
-	public ResponseEntity<List<CourseCategory>> getCoursesByCourseCategory(@RequestParam(value = "courseCategoryId") Long courseCategoryId,
+	public ResponseEntity<List<CourseContainer>> getCoursesByCourseCategory(@RequestParam(value = "courseCategoryId") Long courseCategoryId,
 			HttpSession session) {
 		CourseCategory courseCategory = courseCategoryRepository.findOne(courseCategoryId);
 		String localDate = LocalDate.now().toString();
