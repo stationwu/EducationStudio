@@ -1,7 +1,7 @@
 package com.edu.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
+
 @ConfigurationProperties(prefix = "image")
 public class ImageProperties {
     private int thumbnailMaxWidth = 200;

@@ -29,6 +29,8 @@ public class ImageContainer {
     private String createdBy;
 
     private String material;
+    
+    private int priority;
 
     public ImageContainer(long id, String imageName, String date, Course course,
             String imageUrl, String thumbnailUrl) {
@@ -50,6 +52,7 @@ public class ImageContainer {
         this.material = image.getMaterial();
         this.imageUrl = "/Images/" + image.getId();
         this.thumbnailUrl = "/Images/" + image.getId() + "/thumbnail";
+        this.priority = image.getPriority();
     }
 
     public ImageContainer(Image x, Student student) {

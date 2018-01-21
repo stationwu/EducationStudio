@@ -78,19 +78,21 @@ public class Student {
     private Map<CourseCategory, Integer> courseCount = new HashMap<>();
 
     private boolean isChild;
+    
+    private Gender gender;
 
+    public static enum Gender {
+    	MALE,
+    	FEMALE
+	}
+    
     public Student() {
     }
 
-    public Student(String studentName, String birthday, boolean isChild) {
+    public Student(String studentName, String birthday, Gender gender) {
         this.studentName = studentName;
         this.birthday = birthday;
-        this.isChild = isChild;
-    }
-
-    public Student(String studentName, String birthday) {
-        this.studentName = studentName;
-        this.birthday = birthday;
+        this.gender = gender;
         this.isChild = true;
     }
 
@@ -203,19 +205,29 @@ public class Student {
 		return courseCount;
 	}
 
-	public void setCourseCount(Map<CourseCategory, Integer> courseCount) {
-		this.courseCount = courseCount;
+	public void addCourseCount(CourseCategory courseCategory) {
+		Integer count = this.courseCount.get(courseCategory);
+		if(count == null){
+			this.courseCount.put(courseCategory, courseCategory.getPeriod());
+		}else{
+			this.courseCount.put(courseCategory, count+courseCategory.getPeriod());
+		}
+	}
+
+	public Gender getGender() {
+		return gender;
+	}
+
+	public void setGender(Gender gender) {
+		this.gender = gender;
 	}
 
 	@Override
-    public String toString() {
-        return "Student [id=" + id + ", studentName=" + studentName
-                + ", birthday="
-                + birthday + ", customer=" + customer + ", imagesSet="
-                + imagesSet + ", coursesSet=" + coursesSet
-                + ", reservedCoursesSet=" + reservedCoursesSet
-                + ", courseNotSignSet=" + courseNotSignSet + ", isChild="
-                + isChild + "]";
-    }
-
+	public String toString() {
+		return "Student [id=" + id + ", studentName=" + studentName + ", birthday=" + birthday + ", customer="
+				+ customer + ", imagesSet=" + imagesSet + ", coursesSet=" + coursesSet + ", reservedCoursesSet="
+				+ reservedCoursesSet + ", courseNotSignSet=" + courseNotSignSet + ", courseProducts=" + courseProducts
+				+ ", courseCount=" + courseCount + ", isChild=" + isChild + ", gender=" + gender + "]";
+	}
+	
 }

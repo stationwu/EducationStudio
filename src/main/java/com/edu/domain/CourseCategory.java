@@ -27,7 +27,9 @@ public class CourseCategory {
     
     @OneToMany(fetch = FetchType.LAZY)
 	@JsonIgnore
-	private Set<Image> productImages;
+	private Set<Image> images;
+    
+    private int priority;
 
     CourseCategory(){
     	
@@ -57,13 +59,6 @@ public class CourseCategory {
 		this.period = period;
 	}
 
-	public Set<Image> getProductImages() {
-		return productImages;
-	}
-
-	public void setProductImages(Set<Image> productImages) {
-		this.productImages = productImages;
-	}
 
 	public BigDecimal getPrice() {
 		return price;
@@ -73,12 +68,37 @@ public class CourseCategory {
 		this.price = price;
 	}
 
+	public Set<CourseProduct> getCourseProducts() {
+		return courseProducts;
+	}
+
+	public void setCourseProducts(Set<CourseProduct> courseProducts) {
+		this.courseProducts = courseProducts;
+	}
+
+	public int getPriority() {
+		return priority;
+	}
+
+	public void setPriority(int priority) {
+		this.priority = priority;
+	}
+
+	public Set<Image> getImages() {
+		return images;
+	}
+
+	public void setImages(Set<Image> images) {
+		this.images = images;
+	}
+
 	public CourseCategory(String courseName, int period, BigDecimal price,
-			Set<Image> productImages) {
+			Set<Image> productImages, int priority) {
 		super();
 		this.courseName = courseName;
 		this.period = period;
 		this.price = price;
-		this.productImages = productImages;
+		this.images = productImages;
+		this.priority = priority;
 	}
 }

@@ -35,7 +35,6 @@ public class Customer {
     private boolean isActivated;
 
     @OneToMany(cascade = { CascadeType.ALL }, mappedBy = "customer")
-    @JsonIgnore
     private Set<Student> students = new HashSet<>();
 
     @OneToMany(cascade = { CascadeType.ALL }, mappedBy = "customer")

@@ -38,6 +38,8 @@ public class Image {
     
     private String material;
     
+    private int priority;
+    
     @ManyToOne
     @JoinColumn(name="COURESE_ID")
     private Course course;
@@ -130,6 +132,14 @@ public class Image {
 
 	public void setMaterial(String material) {
 		this.material = material;
+	}
+
+	public int getPriority() {
+		return priority;
+	}
+
+	public void setPriority(int priority) {
+		this.priority = priority;
 	}
     
 }
