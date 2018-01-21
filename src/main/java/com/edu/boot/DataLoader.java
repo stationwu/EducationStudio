@@ -107,10 +107,10 @@ public class DataLoader implements CommandLineRunner {
 		ArrayList<CourseCategory> courseCategories = new ArrayList<>();
 		if (0 == courseCategoryRepository.count()) {
 			CourseCategory courseCategory1 = new CourseCategory("绘本课", 24, new BigDecimal(2400),
-					images.stream().map(x -> x).collect(Collectors.toCollection(HashSet::new)), 100);
+					images.stream().map(x -> x).collect(Collectors.toCollection(HashSet::new)), 100, false);
 			courseCategories.add(courseCategoryRepository.save(courseCategory1));
-			CourseCategory courseCategory2 = new CourseCategory("素描课体验课", 24, new BigDecimal(2400),
-					new HashSet<>(), 5);
+			CourseCategory courseCategory2 = new CourseCategory("素描课体验课", 24, new BigDecimal(100),
+					new HashSet<>(), 5, true);
 			courseCategories.add(courseCategoryRepository.save(courseCategory2));
 		}
 		ArrayList<Course> courses = new ArrayList<>();

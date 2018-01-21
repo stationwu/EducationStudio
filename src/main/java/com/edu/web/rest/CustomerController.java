@@ -32,11 +32,15 @@ public class CustomerController {
 	private VerifyCodeRepository verifyCodeRepository;
 
 	public static final String PATH = "/api/v1/Customer";
+	
+	public static final String DETAIL_PATH = PATH + "/Detail";
 
 	public static final String SIGNUP_PATH = PATH + "/SignUp";
+	
+	public static final String ADD_CHILD_PATH = PATH + "/AddChild";
 
-	@GetMapping(path = PATH + "/Detail")
-	public ResponseEntity<CustomerContainer> show(HttpSession session) {
+	@GetMapping(path = DETAIL_PATH)
+	public ResponseEntity<CustomerContainer> getCustomer(HttpSession session) {
 		String openId = (String) session.getAttribute(Constant.SESSION_OPENID_KEY);
 		Customer customer = repository.findOneByOpenCode(openId);
 		return new ResponseEntity<>(new CustomerContainer(customer), HttpStatus.OK);
@@ -83,7 +87,7 @@ public class CustomerController {
 		return new ResponseEntity<Customer>(customer, HttpStatus.OK);
 	}
 
-	@PostMapping(path = PATH + "/AddChild")
+	@PostMapping(path = ADD_CHILD_PATH)
 	public Customer addChild(@RequestBody @Valid List<ChildContainer> children, HttpSession session) {
 		Customer customer = null;
 
