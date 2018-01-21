@@ -1,17 +1,23 @@
 package com.edu.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Map;
-import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "productorder")
 public class Order {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+	@Id
+	@GenericGenerator(name = "order-id-sequence",
+			strategy = "com.edu.domain.generator.OrderIdentifierGenerator",
+			parameters = {@Parameter(name = "max_digits", value = "8")})
+	@GeneratedValue(generator = "order-id-sequence",
+			strategy = GenerationType.TABLE)
+	protected String id;
 
     private String name;
 
@@ -102,11 +108,11 @@ public class Order {
 		this.imageCollectionMap = imageCollectionMap;
 	}
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
