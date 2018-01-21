@@ -20,7 +20,7 @@ public class CourseCategoryContainer {
 
 	private int priority;
 
-	CourseCategoryContainer(CourseCategory courseCategory, Integer count) {
+	public CourseCategoryContainer(CourseCategory courseCategory, Integer count) {
 		this.id = courseCategory.getId();
 		this.courseName = courseCategory.getCourseName();
 		this.period = count;

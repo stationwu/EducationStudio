@@ -25,6 +25,10 @@ import com.edu.domain.Image;
 @ExposesResourceFor(Image.class)
 public class ImageController {
 	public static final String PATH = "/Images";
+	
+	public static final String IMAGE_PATH = PATH + "/{id}";
+	
+	public static final String THUMBNAIL_PATH = PATH + "/{id}/thumbnail";
 	private final ImageRepository imageRepository;
 	private final FileStorageService storageService;
 	private final CustomerRepository customerRepository;
@@ -38,7 +42,7 @@ public class ImageController {
 		this.customerRepository = customerRepository;
 	}
 
-	@RequestMapping(path = PATH + "/{id}", method = RequestMethod.GET)
+	@RequestMapping(path = IMAGE_PATH, method = RequestMethod.GET)
 	public void getImage(@PathVariable Long id, HttpServletResponse resp, HttpSession session) throws IOException {
 		Image img = imageRepository.findOne(id);
 
@@ -64,7 +68,7 @@ public class ImageController {
 		resp.getOutputStream().write(content);
 	}
 
-	@RequestMapping(path = PATH + "/{id}/thumbnail", method = RequestMethod.GET)
+	@RequestMapping(path = THUMBNAIL_PATH, method = RequestMethod.GET)
 	public void getThumbnail(@PathVariable Long id, HttpServletResponse resp) throws IOException {
 		Image img = imageRepository.findOne(id);
 

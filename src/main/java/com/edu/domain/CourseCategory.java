@@ -10,31 +10,37 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name = "coursecategory")
 public class CourseCategory {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private long id;
 
-    private String courseName;
-    
-    @OneToMany(cascade = { CascadeType.ALL }, mappedBy = "courseCategory")
-    @JsonIgnore
-    private Set<CourseProduct> courseProducts = new HashSet<>();
+	private String courseName;
 
-    private int period;
-    
-    @Column(nullable= false, precision=10, scale=2)
-    private BigDecimal price;
-    
-    @OneToMany(fetch = FetchType.LAZY)
+	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "courseCategory")
+	@JsonIgnore
+	private Set<CourseProduct> courseProducts = new HashSet<>();
+
+	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "courseCategory")
+	@JsonIgnore
+	private Set<Course> courses = new HashSet<>();
+
+	private int period;
+
+	@Column(nullable = false, precision = 10, scale = 2)
+	private BigDecimal price;
+
+	@OneToMany(fetch = FetchType.LAZY)
 	@JsonIgnore
 	private Set<Image> images;
-    
-    private int priority;
 
-    CourseCategory(){
-    	
-    }
-    
+	private int priority;
+
+	private boolean isDemoCourse;
+
+	CourseCategory() {
+
+	}
+
 	public long getId() {
 		return id;
 	}
@@ -58,7 +64,6 @@ public class CourseCategory {
 	public void setPeriod(int period) {
 		this.period = period;
 	}
-
 
 	public BigDecimal getPrice() {
 		return price;
@@ -92,13 +97,30 @@ public class CourseCategory {
 		this.images = images;
 	}
 
-	public CourseCategory(String courseName, int period, BigDecimal price,
-			Set<Image> productImages, int priority) {
+	public boolean isDemoCourse() {
+		return isDemoCourse;
+	}
+
+	public void setDemoCourse(boolean isDemoCourse) {
+		this.isDemoCourse = isDemoCourse;
+	}
+
+	public Set<Course> getCourses() {
+		return courses;
+	}
+
+	public void setCourses(Set<Course> courses) {
+		this.courses = courses;
+	}
+
+	public CourseCategory(String courseName, int period, BigDecimal price, Set<Image> productImages, int priority,
+			boolean isDemoCourse) {
 		super();
 		this.courseName = courseName;
 		this.period = period;
 		this.price = price;
 		this.images = productImages;
 		this.priority = priority;
+		this.isDemoCourse = isDemoCourse;
 	}
 }
