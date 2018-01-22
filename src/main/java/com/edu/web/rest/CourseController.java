@@ -44,14 +44,7 @@ public class CourseController {
         String localDate = LocalDate.now().toString();
         List<CourseContainer> list = courseCategory.getCourses().stream()
                 .filter(x -> localDate.compareTo(x.getDate()) >= 0)
-                .sorted((a, b) -> {
-                    int rc = a.getTimeFrom().compareTo(b.getTimeFrom());
-                    if (rc == 0) {
-                        return a.getDate().compareTo(b.getDate());
-                    } else {
-                        return rc;
-                    }
-                } )
+                .sorted(Comparator.comparing(Course::getTimeFrom).thenComparing(Course::getDate))
                 .map(x -> new CourseContainer(x)).collect(Collectors.toCollection(ArrayList::new));
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
