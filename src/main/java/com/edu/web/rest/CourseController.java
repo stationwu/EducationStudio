@@ -24,39 +24,40 @@ import java.util.stream.Collectors;
 
 @RestController
 public class CourseController {
-	@Autowired
-	private CourseCategoryRepository courseCategoryRepository;
+    @Autowired
+    private CourseCategoryRepository courseCategoryRepository;
 
-	@Autowired
-	private StudentRepository studentRepository;
+    @Autowired
+    private StudentRepository studentRepository;
 
-	@Autowired
-	private CourseRepository courseRepository;
+    @Autowired
+    private CourseRepository courseRepository;
 
-	public static final String PATH = "/api/v1/Course";
+    public static final String PATH = "/api/v1/Course";
 
-	public static final String BOOK_PATH = PATH + "/book";
+    public static final String BOOK_PATH = PATH + "/book";
 
-//	@PostMapping(path = PATH)
-//	public ResponseEntity<List<CourseContainer>> getCoursesByCourseCategory(
-//			@RequestParam(value = "courseCategoryId") Long courseCategoryId, HttpSession session) {
-//		CourseCategory courseCategory = courseCategoryRepository.findOne(courseCategoryId);
-//		String localDate = LocalDate.now().toString();
-//		return new ResponseEntity<>(
-//				courseCategory.getCourses().stream().filter(x -> localDate.compareTo(x.getDate()) >= 0)
-//						.sorted(Comparator.comparing(Course::getTimeFrom)).sorted(Comparator.comparing(Course::getDate))
-//						.map(x -> new CourseContainer(x)).collect(Collectors.toCollection(ArrayList::new)),
-//				HttpStatus.OK);
-//	}
-//
-//	@PostMapping(path = BOOK_PATH)
-//	public ResponseEntity<ChildContainer> bookCourse(@RequestParam(value = "studentId") String studentId,
-//			@RequestParam(value = "courseId") Long courseId, HttpSession session) {
-//		Course course = courseRepository.findOne(courseId);
-//		Student student = studentRepository.findOne(studentId);
-//		student.addReservedCourse(course);
-//		ChildContainer childContainer = new ChildContainer(studentRepository.save(student));
-//		return new ResponseEntity<>(childContainer, HttpStatus.OK);
-//	}
+    @PostMapping(path = PATH)
+    public ResponseEntity<List<CourseContainer>> getCoursesByCourseCategory(
+            @RequestParam(value = "courseCategoryId") Long courseCategoryId, HttpSession session) {
+        CourseCategory courseCategory = courseCategoryRepository.findOne(courseCategoryId);
+        String localDate = LocalDate.now().toString();
+        List<CourseContainer> list = courseCategory.getCourses().stream()
+                .filter(x -> localDate.compareTo(x.getDate()) >= 0)
+                .sorted(Comparator.comparing(Course::getTimeFrom))
+                .sorted(Comparator.comparing(Course::getDate))
+                .map(x -> new CourseContainer(x)).collect(Collectors.toCollection(ArrayList::new));
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    @PostMapping(path = BOOK_PATH)
+    public ResponseEntity<ChildContainer> bookCourse(@RequestParam(value = "studentId") String studentId,
+                                                     @RequestParam(value = "courseId") Long courseId, HttpSession session) {
+        Course course = courseRepository.findOne(courseId);
+        Student student = studentRepository.findOne(studentId);
+        student.addReservedCourse(course);
+        ChildContainer childContainer = new ChildContainer(studentRepository.save(student));
+        return new ResponseEntity<>(childContainer, HttpStatus.OK);
+    }
 
 }
