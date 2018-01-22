@@ -3,10 +3,12 @@ package com.edu.domain.dto;
 import javax.validation.constraints.NotNull;
 
 import com.edu.domain.Customer;
+import com.edu.domain.Student;
 
 import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,7 +37,7 @@ public class CustomerContainer {
 		this.name = customer.getName();
 		this.mobilePhone = customer.getMobilePhone();
 		this.address = customer.getAddress();
-		this.children = customer.getStudents().stream().map(x -> new ChildContainer(x))
-				.collect(Collectors.toCollection(ArrayList::new));
+		this.children = customer.getStudents().stream().sorted(Comparator.comparing(Student::getId))
+				.map(x -> new ChildContainer(x)).collect(Collectors.toCollection(ArrayList::new));
 	}
 }

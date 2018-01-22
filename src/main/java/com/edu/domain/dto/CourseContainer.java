@@ -8,7 +8,9 @@ import lombok.Data;
 public class CourseContainer {
 	private long id;
 	
-	private CourseCategoryContainer courseCategoryContainer;
+	private long courseCategoryId;
+	
+	private String courseName;
 
 	private String date;
 
@@ -22,12 +24,13 @@ public class CourseContainer {
 
 	public CourseContainer(Course course) {
 		this.id= course.getId();
-		this.courseCategoryContainer = new CourseCategoryContainer(course.getCourseCategory(), 0);
 		this.timeFrom = course.getTimeFrom();
 		this.timeTo = course.getTimeTo();
 		this.date = course.getDate();
 		this.bookedSeat = course.getReservedStudentsSet().size();
 		this.maxSeat = course.getMaxSeat();
+		this.courseCategoryId = course.getCourseCategory().getId();
+		this.courseName = course.getCourseCategory().getCourseName();
 	}
 
 }

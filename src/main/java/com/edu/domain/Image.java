@@ -38,6 +38,8 @@ public class Image {
     
     private String material;
     
+    private String teacher;
+    
     private int priority;
     
     @ManyToOne
@@ -141,5 +143,13 @@ public class Image {
 	public void setPriority(int priority) {
 		this.priority = priority;
 	}
-    
+
+	public String getTeacher() {
+		return teacher;
+	}
+
+	public void setTeacher(String teacher) {
+		this.teacher = teacher;
+	}
+
 }
