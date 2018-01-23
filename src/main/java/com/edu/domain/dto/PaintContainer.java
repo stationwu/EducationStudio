@@ -7,7 +7,7 @@ import com.edu.domain.Student;
 import lombok.Data;
 
 @Data
-public class ImageContainer {
+public class PaintContainer {
 	private long id;
 
     private String imageName;
@@ -18,9 +18,13 @@ public class ImageContainer {
 
     private String thumbnailUrl;
 
-    private int priority;
+    private String createdBy;
 
-    public ImageContainer(long id, String imageName, String date, Course course,
+    private String material;
+    
+    private String teacher;
+    
+    public PaintContainer(long id, String imageName, String date, Course course,
             String imageUrl, String thumbnailUrl) {
         super();
         this.id = id;
@@ -30,17 +34,19 @@ public class ImageContainer {
         this.thumbnailUrl = thumbnailUrl;
     }
 
-    public ImageContainer(Image image) {
+    public PaintContainer(Image image) {
         super();
         this.id = image.getId();
         this.imageName = image.getImageName();
         this.date = image.getDate();
+        this.material = image.getMaterial();
         this.imageUrl = "/Images/" + image.getId();
         this.thumbnailUrl = "/Images/" + image.getId() + "/thumbnail";
-        this.priority = image.getPriority();
+        this.teacher = image.getTeacher();
     }
 
-    public ImageContainer(Image x, Student student) {
+    public PaintContainer(Image x, Student student) {
         this(x);
+        this.createdBy = student.getStudentName();
     }
 }

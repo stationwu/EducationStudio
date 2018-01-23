@@ -3,11 +3,11 @@ package com.edu.domain.dto;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import com.edu.domain.Course;
+import com.edu.domain.CourseProduct;
 import com.edu.domain.Image;
 import com.edu.domain.Student;
 
@@ -19,25 +19,30 @@ public class ChildContainer {
 	private String childName;
 	private String birthday;
 	private Student.Gender gender;
-	private List<CourseCategoryContainer> courseCategoryContainers;
+	private List<CourseCategoryContainer> courseCategories;
 	private List<CourseContainer> reversedCourses;
 	private List<CourseContainer> usedCourses;
-	private List<ImageContainer> imageContainers;
+	private List<PaintContainer> paints;
 
 	public ChildContainer(Student student) {
 		this.childName = student.getStudentName();
 		this.birthday = student.getBirthday();
 		this.gender = student.getGender();
 		this.id = student.getId();
-		this.courseCategoryContainers = student.getCourseCount().entrySet().stream()
-				.map(x -> new CourseCategoryContainer(x.getKey(), x.getValue()))
+		Set<CourseProduct> courseProducts = student.getCourseProducts();
+		Map<Long, Long> totalCourseCount = courseProducts.stream()
+				.collect(Collectors.groupingBy(x -> x.getId(), Collectors.counting()));
+		this.courseCategories = student.getCourseCount().entrySet().stream()
+				.map(x -> new CourseCategoryContainer(x.getKey(), x.getValue(),
+						totalCourseCount.get(x.getKey().getId()) == null ? x.getValue()
+								: totalCourseCount.get(x.getKey().getId()).intValue()))
 				.collect(Collectors.toCollection(ArrayList::new));
 		this.reversedCourses = student.getReservedCoursesSet().stream()
 				.sorted((x, y) -> Long.compare(y.getId(), x.getId())).map(x -> new CourseContainer(x))
 				.collect(Collectors.toCollection(ArrayList::new));
 		this.usedCourses = student.getCoursesSet().stream().sorted((x, y) -> Long.compare(y.getId(), x.getId()))
 				.map(x -> new CourseContainer(x)).collect(Collectors.toCollection(ArrayList::new));
-		this.imageContainers = student.getImagesSet().stream().sorted(Comparator.comparing(Image::getId).reversed())
-				.map(x -> new ImageContainer(x)).collect(Collectors.toCollection(ArrayList::new));
+		this.paints = student.getImagesSet().stream().sorted(Comparator.comparing(Image::getId).reversed())
+				.map(x -> new PaintContainer(x)).collect(Collectors.toCollection(ArrayList::new));
 	}
 }

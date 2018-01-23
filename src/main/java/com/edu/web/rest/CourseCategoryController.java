@@ -34,8 +34,11 @@ public class CourseCategoryController {
 		List<CourseCategory> courseCategories = courseCategoryRepository.getAllCourseCategoryList();
 		Student student = studentRepository.findOne(studentId);
 		Map<CourseCategory, Integer> courseMap = student.getCourseCount();
+		Map<Long, Integer> courseCategoryIdWithCount = courseMap.entrySet().stream()
+				.collect(Collectors.toMap(e -> e.getKey().getId(), e -> e.getValue()));
 		List<BookedCourseCategoryContainer> bookedCourseCategoryContainers = courseCategories.stream()
-				.map(x -> courseMap.get(x) != null ? new BookedCourseCategoryContainer(x, courseMap.get(x))
+				.map(x -> courseCategoryIdWithCount.get(x.getId()) != null
+						? new BookedCourseCategoryContainer(x, courseCategoryIdWithCount.get(x.getId()))
 						: new BookedCourseCategoryContainer(x, 0))
 				.collect(Collectors.toCollection(ArrayList::new));
 
