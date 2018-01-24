@@ -21,6 +21,10 @@ public class CourseContainer {
 	private int bookedSeat;
 	
 	private int maxSeat;
+	
+	public CourseContainer(){
+		
+	}
 
 	public CourseContainer(Course course) {
 		this.id= course.getId();

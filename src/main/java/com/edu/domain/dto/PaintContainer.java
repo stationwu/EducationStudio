@@ -24,6 +24,10 @@ public class PaintContainer {
     
     private String teacher;
     
+    public PaintContainer(){
+    	
+    }
+    
     public PaintContainer(long id, String imageName, String date, Course course,
             String imageUrl, String thumbnailUrl) {
         super();

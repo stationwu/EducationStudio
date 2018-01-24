@@ -23,6 +23,10 @@ public class BookedCourseCategoryContainer {
 	private boolean isDemoCourse;
 	
 	private boolean isValid;
+	
+	public BookedCourseCategoryContainer(){
+		
+	}
 
 	public BookedCourseCategoryContainer(CourseCategory courseCategory, Integer count) {
 		this.id = courseCategory.getId();

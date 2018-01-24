@@ -21,6 +21,10 @@ public class CourseCategoryContainer {
 	private List<ImageContainer> images;
 
 	private int priority;
+	
+	public CourseCategoryContainer(){
+		
+	}
 
 	public CourseCategoryContainer(CourseCategory courseCategory, Integer leftPeriod, Integer totalPeriod) {
 		this.id = courseCategory.getId();

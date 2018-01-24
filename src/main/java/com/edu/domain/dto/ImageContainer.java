@@ -19,6 +19,10 @@ public class ImageContainer {
     private String thumbnailUrl;
 
     private int priority;
+    
+    public ImageContainer(){
+    	
+    }
 
     public ImageContainer(long id, String imageName, String date, Course course,
             String imageUrl, String thumbnailUrl) {

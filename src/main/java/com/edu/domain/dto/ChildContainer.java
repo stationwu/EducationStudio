@@ -23,6 +23,10 @@ public class ChildContainer {
 	private List<CourseContainer> reversedCourses;
 	private List<CourseContainer> usedCourses;
 	private List<PaintContainer> paints;
+	
+	public ChildContainer(){
+		
+	}
 
 	public ChildContainer(Student student) {
 		this.childName = student.getStudentName();
