@@ -47,10 +47,13 @@ public class CustomerController {
 	}
 
 	@PostMapping(path = SIGNUP_PATH)
-	public ResponseEntity<Customer> create(@RequestBody @Valid CustomerContainer customerDTO) {
-		Customer customer;
-		if (repository.isCustomerAlreadyRegistered(customerDTO.getOpenCode())) {
-			customer = repository.findOneByOpenCode(customerDTO.getOpenCode());
+	public ResponseEntity<Customer> create(@RequestBody @Valid CustomerContainer customerDTO,
+										   HttpSession session) {
+		String openCode = (String)session.getAttribute(Constant.SESSION_OPENID_KEY);
+		Customer customer = null;
+
+		if (repository.isCustomerAlreadyRegistered(openCode)) {
+			customer = repository.findOneByOpenCode(openCode);
 		} else {
 			/**
 			 * 没有填写验证码
@@ -73,16 +76,8 @@ public class CustomerController {
 				return new ResponseEntity<Customer>(HttpStatus.BAD_REQUEST);
 			}
 
-			customer = new Customer(customerDTO.getOpenCode(), customerDTO.getName(), customerDTO.getMobilePhone(),
-					customerDTO.getAddress());
+			customer = new Customer(openCode, customerDTO.getName(), customerDTO.getMobilePhone(), customerDTO.getAddress());
 			customer = repository.save(customer);
-
-			for (ChildContainer childDTO : customerDTO.getChildren()) {
-				Student student = new Student(childDTO.getChildName(), childDTO.getBirthday(), childDTO.getGender());
-				student.setCustomer(customer);
-				student = studentRepository.save(student);
-				customer.addStudent(student);
-			}
 		}
 		return new ResponseEntity<Customer>(customer, HttpStatus.OK);
 	}
