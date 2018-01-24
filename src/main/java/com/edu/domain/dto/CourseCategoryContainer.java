@@ -14,16 +14,19 @@ public class CourseCategoryContainer {
 
 	private String courseName;
 
-	private int period;
+	private int leftPeriod;
+	
+	private int totalPeriod;
 
 	private List<ImageContainer> images;
 
 	private int priority;
 
-	public CourseCategoryContainer(CourseCategory courseCategory, Integer count) {
+	public CourseCategoryContainer(CourseCategory courseCategory, Integer leftPeriod, Integer totalPeriod) {
 		this.id = courseCategory.getId();
 		this.courseName = courseCategory.getCourseName();
-		this.period = count;
+		this.leftPeriod = leftPeriod;
+		this.totalPeriod = totalPeriod;
 		this.images = courseCategory.getImages().stream().map(x -> new ImageContainer(x))
 				.collect(Collectors.toCollection(ArrayList::new));
 		this.priority = courseCategory.getPriority();
