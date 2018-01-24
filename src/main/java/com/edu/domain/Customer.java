@@ -20,16 +20,13 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @NotNull
     private String openCode;
 
-    @NotNull
     private String name;
 
     @NotNull
     private String mobilePhone;
 
-    @NotNull
     private String address;
     
     private boolean isActivated;
