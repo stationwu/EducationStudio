@@ -109,7 +109,8 @@ $(function(){
         // alert(mobileNumber+"==="+captcha);
 
 
-        var openCode = $("#wxOpenCode").val();
+        // var openCode = $("#wxOpenCode").val();
+        var openCode = 1234;
         var verifyCodeId = $("#wxVerifyCode").val();
         var verifyCode = $("#captcha").val();
         var customer = {
