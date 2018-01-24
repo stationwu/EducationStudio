@@ -14,16 +14,13 @@ import java.util.stream.Collectors;
 
 @Data
 public class CustomerContainer {
-	@NotNull
 	private String openCode;
 
-	@NotNull
 	private String name;
 
 	@NotNull
 	private String mobilePhone;
 
-	@NotNull
 	private String address;
 
 	private Long verifyCodeId;
@@ -31,6 +28,10 @@ public class CustomerContainer {
 	private String verifyCode;
 
 	private List<ChildContainer> children = new ArrayList<>();
+	
+	public CustomerContainer(){
+		
+	}
 
 	public CustomerContainer(Customer customer) {
 		this.openCode = customer.getOpenCode();
