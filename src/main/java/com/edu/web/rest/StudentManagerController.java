@@ -9,14 +9,12 @@ import com.edu.domain.Student;
 import com.edu.domain.dto.ChildContainer;
 import com.edu.utils.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,21 +49,18 @@ public class StudentManagerController {
 	}
 
 	@RequestMapping(path = STUDENT_PATH, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ChildContainer> show(@PathVariable("studentId") String studentId) {
+	public ResponseEntity<ChildContainer> showStudent(@PathVariable("studentId") String studentId) {
 		Student entity = studentRepository.findOne(studentId);
 		return new ResponseEntity<>(new ChildContainer(entity), HttpStatus.OK);
 	}
 
 	@PostMapping(path = STUDENT_PATH)
-	public HttpEntity<ChildContainer> signAndUploadImage(@PathVariable("id") String studentId,
-			@RequestParam(value = "imageName") String imageName, @RequestParam(value = "date") String date,
-			@RequestParam(value = "hour") String hour, @RequestParam(value = "material") String material,
-			@RequestParam(value = "teacher") String teacher, @RequestParam("file") MultipartFile files[])
-			throws Exception {
+	public HttpEntity<ChildContainer> signAndUploadImage(@PathVariable("studentId") String studentId,
+			@RequestParam(value = "imageName") String imageName, @RequestParam(value = "material") String material,
+			@RequestParam(value = "teacher") String teacher, @RequestParam(value = "courseId") Long courseId,
+			@RequestParam("file") MultipartFile files[]) throws Exception {
 		Student student = studentRepository.findOne(studentId);
-		@SuppressWarnings("unchecked")
-		List<Course> courses = (List<Course>) courseRepository.search(date, hour, new PageRequest(0, 1));
-		Course course = courses.get(0);
+		Course course = courseRepository.findOne(courseId);
 		for (Course cou : student.getCoursesSet()) {
 			if (course.getId() == cou.getId()) {
 				throw new Exception("已签到过此次课程！");

@@ -1,5 +1,6 @@
 package com.edu.domain.dto;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -19,13 +20,14 @@ public class ChildContainer {
 	private String childName;
 	private String birthday;
 	private Student.Gender gender;
+	private int age;
 	private List<CourseCategoryContainer> courseCategories;
 	private List<CourseContainer> reversedCourses;
 	private List<CourseContainer> usedCourses;
 	private List<PaintContainer> paints;
-	
-	public ChildContainer(){
-		
+
+	public ChildContainer() {
+
 	}
 
 	public ChildContainer(Student student) {
@@ -33,6 +35,9 @@ public class ChildContainer {
 		this.birthday = student.getBirthday();
 		this.gender = student.getGender();
 		this.id = student.getId();
+		LocalDate localDate = LocalDate.now();
+		this.age = Integer.parseInt(localDate.toString().substring(0, 4))
+				- Integer.parseInt(this.birthday.substring(0, 4));
 		Set<CourseProduct> courseProducts = student.getCourseProducts();
 		Map<Long, Long> totalCourseCount = courseProducts.stream()
 				.collect(Collectors.groupingBy(x -> x.getId(), Collectors.counting()));

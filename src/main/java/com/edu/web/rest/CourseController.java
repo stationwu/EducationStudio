@@ -33,17 +33,29 @@ public class CourseController {
     @Autowired
     private CourseRepository courseRepository;
 
-    public static final String PATH = "/api/v1/Course";
+    public static final String AVAILABLE_PATH = "/api/v1/AvailableCourse";
+    
+    public static final String ALL_PATH = "/api/v1/AllCourse";
+    
+    public static final String BOOK_PATH = AVAILABLE_PATH + "/book";
 
-    public static final String BOOK_PATH = PATH + "/book";
-
-    @PostMapping(path = PATH)
+    @PostMapping(path = AVAILABLE_PATH)
     public ResponseEntity<List<CourseContainer>> getCoursesByCourseCategory(
             @RequestParam(value = "courseCategoryId") Long courseCategoryId, HttpSession session) {
         CourseCategory courseCategory = courseCategoryRepository.findOne(courseCategoryId);
         String localDate = LocalDate.now().toString();
         List<CourseContainer> list = courseCategory.getCourses().stream()
                 .filter(x -> localDate.compareTo(x.getDate()) >= 0)
+                .sorted(Comparator.comparing(Course::getDate).thenComparing(Course::getTimeFrom))
+                .map(x -> new CourseContainer(x)).collect(Collectors.toCollection(ArrayList::new));
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+    
+    @PostMapping(path = ALL_PATH)
+    public ResponseEntity<List<CourseContainer>> getAllCoursesByCourseCategory(
+            @RequestParam(value = "courseCategoryId") Long courseCategoryId, HttpSession session) {
+        CourseCategory courseCategory = courseCategoryRepository.findOne(courseCategoryId);
+        List<CourseContainer> list = courseCategory.getCourses().stream()
                 .sorted(Comparator.comparing(Course::getDate).thenComparing(Course::getTimeFrom))
                 .map(x -> new CourseContainer(x)).collect(Collectors.toCollection(ArrayList::new));
         return new ResponseEntity<>(list, HttpStatus.OK);
