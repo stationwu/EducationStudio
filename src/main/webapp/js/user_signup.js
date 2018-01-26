@@ -37,13 +37,12 @@ $(function(){
         var mobileNumber = $("#mobileNumber").val();
         var flag = validate(mobileNumber, "mobile");
         if(!flag){
-            layer.open({
-                // type: 1,
-                // style: 'border:none; background-color:#ffcd0d; color:#000;',
-                content:"请您填写正确的手机号",
-                btn: ["确定"],
-                className: "popup" //这样你就可以在css里面控制该弹层的风格了
-            });
+            // layer.open({
+            //     content:"请您填写正确的手机号",
+            //     btn: ["确定"],
+            //     className: "popup" //这样你就可以在css里面控制该弹层的风格了
+            // });
+            msg_alert("confirm_one_btn", "请您填写正确的手机号");
         }else{
             //调用发送验证码接口
             var oSMSObject = {
@@ -51,45 +50,47 @@ $(function(){
                 type: "R"
             };
 
-            $.ajax({
-                url: '/verify',
-                contentType: 'application/json',
-                type: 'POST',
-                data: JSON.stringify(oSMSObject),
-            }).done(function (response) {
-                layer.open({
-                    content: "发送成功",
-                    skin: "msg",
-                    time: 2
-                });
-                $(this).removeClass("active");
-                timer($('#verifyCodeBtn'));
-                $('#wxVerifyCode').val(response);
-            });
-
             // $.ajax({
-            //     type: "POST",
-            //     url: "/verify",
-            //     contentType: 'application/json',
-            //     data: JSON.stringify(oSMSObject),
-            //     success: function(data){
-            //         layer.open({
-            //             content: "发送成功",
-            //             skin: "msg",
-            //             time: 2
-            //         });
-            //         $(this).removeClass("active");
-            //         timer($('#verifyCodeBtn'));
-            //         $('#wxVerifyCode').val(data);
-            //     },
-            //     error: function(){
-            //         layer.open({
-            //             content: "错误，请稍后重试！",
-            //             skin: "msg",
-            //             time: 2
-            //         });
-            //     }
+                // url: '/verify',
+                // contentType: 'application/json',
+                // type: 'POST',
+                // data: JSON.stringify(oSMSObject),
+            // }).done(function (response) {
+                // layer.open({
+                //     content: "发送成功",
+                //     skin: "msg",
+                //     time: 2
+                // });
+                // $(this).removeClass("active");
+                // timer($('#verifyCodeBtn'));
+                // $('#wxVerifyCode').val(response);
             // });
+
+            $.ajax({
+                type: "POST",
+                url: "/verify",
+                contentType: "application/json",
+                data: JSON.stringify(oSMSObject),
+                success: function(data){
+                    // layer.open({
+                    //     content: "发送成功",
+                    //     skin: "msg",
+                    //     time: 2
+                    // });
+                    msg_alert("alert", "发送成功");
+                    $(this).removeClass("active");
+                    timer($('#verifyCodeBtn'));
+                    $('#wxVerifyCode').val(data);
+                },
+                error: function(){
+                    // layer.open({
+                    //     content: "错误，请稍后重试",
+                    //     skin: "msg",
+                    //     time: 2
+                    // });
+                    msg_alert("alert", "错误，请稍后重试");
+                }
+            });
 
         }
         return false;
@@ -99,17 +100,18 @@ $(function(){
         var mobileNumber = $("#mobileNumber").val();
         var flag = validate(mobileNumber, "mobile");
         if(!flag){
-            layer.open({
-                content:"请您填写正确的手机号",
-                btn: ["确定"],
-                className: "popup"
-            })
+            // layer.open({
+            //     content:"请您填写正确的手机号",
+            //     btn: ["确定"],
+            //     className: "popup"
+            // });
+            msg_alert("confirm_one_btn", "请您填写正确的手机号");
         }
         var captcha = $("#captcha").val();
-        // alert(mobileNumber+"==="+captcha);
 
 
-        var openCode = $("#wxOpenCode").val();
+        // var openCode = $("#wxOpenCode").val();
+        var openCode = 1234;
         var verifyCodeId = $("#wxVerifyCode").val();
         var verifyCode = $("#captcha").val();
         var customer = {
@@ -120,13 +122,31 @@ $(function(){
             "children": []
         };
 
+        // $.ajax({
+            // url: '/api/v1/Customer/SignUp',
+            // contentType: 'application/json',
+            // type: 'POST',
+            // data: JSON.stringify(customer),
+        // }).done(function (response) {
+        //     window.location.href = "/user/center";
+        // });
+
         $.ajax({
-            url: '/api/v1/Customer/SignUp',
-            contentType: 'application/json',
-            type: 'POST',
+            type: "POST",
+            url: "/api/v1/Customer/SignUp",
+            contentType: "application/json",
             data: JSON.stringify(customer),
-        }).done(function (response) {
-            window.location.href = "/user/center";
+            success: function(data){
+                window.location.href = "/user/center";
+            },
+            error: function(){
+                // layer.open({
+                //     content: "错误，请稍后重试",
+                //     skin: "msg",
+                //     time: 2
+                // });
+                msg_alert("alert", "错误，请稍后重试");
+            }
         });
 
         return false;

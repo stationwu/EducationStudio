@@ -4,13 +4,13 @@ body, html {
     margin: 0px;
 }
 input, button{
-    outline:none
+    outline:none;
+    border: none;
 }
 .popup .layui-m-layerbtn{
     background-color: #ffcd0d;
     height: 1.33333rem;
     color: #2d2d2d;
-    border: none;
     font-size: 16px;
     [data-dpr="2"] & {
         font-size: 16px * 2;
@@ -57,13 +57,12 @@ input, button{
     margin: 0 auto;
     height: 1.33333rem;
     line-height: 1.33333rem;
-    border: none;
     border-bottom: solid 1px #ededed;
     display: block;
 }
 #mobileNumberIcon{
     display: inline-block;
-    width: 0.33333rem;
+    width: 0.38333rem;
     height: 0.4rem;
     background: url("../images/sprite.png") no-repeat;
     background-size: 6.4rem auto;
@@ -107,13 +106,15 @@ input, button{
     border: solid 1px #ffcd0d;
     color: #ffcd0d;
 }
-#signup-form input[type='submit']{
+.bottom-btn{
+    text-align: center;
+    text-decoration: none;
     width: 100%;
     background-color: #ffcd0d;
     height: 1.33333rem;
+    line-height: 1.33333rem;
     color: #2d2d2d;
-    border: none;
-    position: absolute;
+    position: fixed;
     left: 0rem;
     bottom: 0rem;
     font-size: 16px;
@@ -123,6 +124,223 @@ input, button{
     [data-dpr="3"] & {
         font-size: 16px * 3;
     }
+}
+
+
+#add-student{
+    color: #ababab;
+    padding: 0.66667rem 0 2rem 0;
+    text-align: center;
+    font-size: 11px;
+    [data-dpr="2"] & {
+        font-size: 11px * 2;
+    }
+    [data-dpr="3"] & {
+        font-size: 11px * 3;
+    }
+}
+#add-student p i{
+    color: #ffcd0d;
+    font-style: normal;
+}
+/*#add-student-form{*/
+    /*width: 8.16rem;*/
+    /*margin: 0.8rem auto 0 auto;*/
+    /*background-color: #fff;*/
+    /*border-radius: 0.13333rem;*/
+    /*padding-top: 0.66667rem;*/
+    /*box-shadow: 0 0 3px #ddd;*/
+/*}*/
+#add-student-form .form-cell{
+    width: 8.16rem;
+    margin: 0rem auto 0.13333rem auto;
+    background-color: #fff;
+    border-radius: 0.26666rem;
+    padding-top: 0.66667rem;
+    box-shadow: 0 0 3px #ddd;
+}
+#add-student-form .form-cell#add-student-form-btn{
+    margin: 0.26667rem auto 0 auto;
+    padding: 0rem;
+    height: 1.33333rem;
+    line-height: 1.33333rem;
+    font-size: 15px;
+    [data-dpr="2"] & {
+        font-size: 15px * 2;
+    }
+    [data-dpr="3"] & {
+        font-size: 15px * 3;
+    }
+}
+#add-student-form .form-cell#add-student-form-btn i{
+    display: inline-block;
+    width: 0.4rem;
+    height: 0.4rem;
+    background: url("../images/sprite.png") no-repeat;
+    background-size: 6.4rem auto;
+    background-position: -1.2rem -0.16rem;
+    position: relative;
+    top: 0.04333rem;
+    margin-right: 0.12rem;
+}
+#add-student-form .or{
+    color: #999;
+    margin: 0rem 0.64rem;
+    position: relative;
+    top: -1.12rem;
+}
+#add-student-form .thumbnail{
+    height: 1.65333rem;
+    width: 1.65333rem;
+    display: inline-block;
+    color: #dedede;
+    font-size: 15px;
+    [data-dpr="2"] & {
+        font-size: 15px * 2;
+    }
+    [data-dpr="3"] & {
+        font-size: 15px * 3;
+    }
+}
+#add-student-form .thumbnail span{
+    position: relative;
+    top: -0.12rem;
+    display: inline-block;
+}
+#add-student-form .thumbnail.active{
+    color: #000;
+}
+#add-student-form .thumbnail.boy{
+    margin: 0 ;
+    background: url("../images/thumbnail-boy.png") no-repeat;
+    background-size: 1.65333rem;
+}
+#add-student-form .thumbnail.girl{
+    background: url("../images/thumbnail-girl.png") no-repeat;
+    background-size: 1.65333rem;
+}
+#add-student-form .thumbnail i{
+    display: inline-block;
+    height: 1.68rem;
+    width: 1.68rem;
+    background: url("../images/thumbnail-border-unselect.png") no-repeat;
+    background-size: 1.68rem;
+    position: relative;
+    left: -0.02667rem;
+}
+#add-student-form .thumbnail.active i{
+    background: url("../images/thumbnail-border-select.png") no-repeat;
+    background-size: 1.68rem;
+}
+#add-student-form input{
+    text-align: center;
+    color: #999;
+    height: 1.04rem;
+    line-height: 1.04rem;
+    font-size: 14px;
+    [data-dpr="2"] & {
+        font-size: 14px * 2;
+    }
+    [data-dpr="3"] & {
+        font-size: 14px * 3;
+    }
+}
+#add-student-form input[name='name']{
+    border-bottom: solid 1px #ededed;
+    width: 5.33333rem;
+    margin-top: 0.44rem;
+}
+#add-student-form input[name='birth']{
+    margin-bottom: 0.33333rem;
+}
+
+/*student_list.html*/
+#student-list{
+    padding: 0.2rem 0 2rem 0;
+}
+#student-list .student-info{
+    margin: 0.4rem 0 0 0.8rem;
+    height: 4.6rem;
+    width: 9.2rem;
+    background: url("../images/student-bg.png") no-repeat left bottom;
+    background-size: 8.58667rem;
+}
+#student-list .student-info .content{
+    width: 8.29333rem;
+    text-align: center;
+}
+#student-list .thumbnail{
+    width: 2.34667rem;
+    height: 2.34667rem;
+    margin: 0 auto;
+}
+#student-list .thumbnail.boy{
+    background: url("../images/thumbnail-boy-border.png") no-repeat;
+    background-size: 2.34667rem;
+}
+#student-list .thumbnail.girl{
+    background: url("../images/thumbnail-girl-border.png") no-repeat;
+    background-size: 2.34667rem;
+}
+#student-list .student-info .name{
+    height: 0.64rem;
+    line-height: 0.64rem;
+    font-size: 24px;
+    [data-dpr="2"] & {
+        font-size: 24px * 2;
+    }
+    [data-dpr="3"] & {
+        font-size: 24px * 3;
+    }
+}
+#student-list .student-info .birth{
+    font-size: 11px;
+    margin-top: 0.13333rem;
+    margin-bottom: 0.4rem;
+    [data-dpr="2"] & {
+        font-size: 11px * 2;
+    }
+    [data-dpr="3"] & {
+        font-size: 11px * 3;
+    }
+}
+#student-list .student-info .birth i{
+    display: inline-block;
+    width: 0.33334rem;
+    height: 0.3rem;
+    background: url("../images/sprite.png") no-repeat;
+    background-size: 6.4rem auto;
+    background-position: -1.73333rem -0.23rem;
+    margin-right: 0.26667rem;
+}
+#student-list .student-info .add-class-btn{
+    width: 3.14667rem;
+    height: 0.88rem;
+    line-height: 0.88rem;
+    border-radius: 0.44rem;
+    background-color: #ffcd0d;
+    margin: 0 auto;
+    font-size: 14px;
+    [data-dpr="2"] & {
+        font-size: 14px * 2;
+    }
+    [data-dpr="3"] & {
+        font-size: 14px * 3;
+    }
+}
+#student-list #add-student-btn{
+    text-align: center;
+}
+#student-list #add-student-btn i{
+    display: inline-block;
+    width: 0.4rem;
+    height: 0.4rem;
+    background: url("../images/sprite.png") no-repeat;
+    background-size: 6.4rem auto;
+    background-position: -2.26667rem -0.16rem;
+    position: relative;
+    top: 0.04333rem;
+    margin-right: 0.12rem;
 }
 /*.dsx-title {
     text-align: center;
