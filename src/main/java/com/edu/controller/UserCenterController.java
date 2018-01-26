@@ -35,6 +35,8 @@ public class UserCenterController {
 	
 	public final static String USER_SIGNIN_PATH = "/user/signin";
 
+    public final static String STUDENT_NEW_PATH = "/user/student/new";
+
 	public final static String SESSION_OPENID_KEY = "openCode";
 	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -127,4 +129,9 @@ public class UserCenterController {
 		
 		return "true";
 	}
+
+    @GetMapping(STUDENT_NEW_PATH)
+    public String createStudent() {
+        return "student_register"; // serve the page
+    }
 }
