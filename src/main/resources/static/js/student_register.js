@@ -21,7 +21,7 @@ $(function(){
         $("#add-student-form .student-info").each(function (i) {
             var name = $(this).children("input[name='name']").val();
             var birth = $(this).children("input[name='birth']").val();
-            var sex = $(this).children(".thumbnail.active").hasClass("boy")?"boy":"girl";
+            var sex = $(this).children(".thumbnail.active").hasClass("boy")?"BOY":"GIRL";
 
             var flag = validate(name, "name");
             if(!flag){
