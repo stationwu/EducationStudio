@@ -116,8 +116,7 @@ public class UserCenterController {
 
         logger.debug(">>> Signed up. Id: " + customer.getId());
 
-        // Temporarily because we will later serve the user_info page
-        return "student_register";
+        return "user_info";
     }
     
 	@GetMapping("user/session")

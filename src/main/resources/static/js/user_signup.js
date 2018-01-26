@@ -137,7 +137,7 @@ $(function(){
             contentType: "application/json",
             data: JSON.stringify(customer),
             success: function(data){
-                window.location.href = "/user/center";
+                window.location.href = "/user/student/new";
             },
             error: function(){
                 // layer.open({
