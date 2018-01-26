@@ -29,14 +29,6 @@
 				<input class="weui-input" id="mobilePhone" type="tel" th:placeholder="${customer.mobilePhone}"/>
 			</div>
 		</div>
-		<div class="weui-cell">
-			<div class="weui-cell__hd">
-				<label class="weui-label" for=""> 地址 </label>
-			</div>
-			<div class="weui-cell__bd">
-				<input class="weui-input" id="address" type="text" th:placeholder="${customer.address}"/>
-			</div>
-		</div>
 	</div>
 	<div class="button_sp_area">
 		<a href="javascript:void(0);" class="weui-btn weui-btn_primary" v-on:click="saveBasic()">更新基本信息</a>
@@ -54,36 +46,7 @@
 	      <label class="weui-form-preview__label">生日</label>
 	      <span class="weui-form-preview__value" th:text="${{student.birthday}}"></span>
 	    </div>
-	    <div class="weui-form-preview__item">
-	      <label class="weui-form-preview__label">剩余课时</label>
-	      <span class="weui-form-preview__value" th:text="${{student.leftPeriods}}"></span>
-	    </div>
 	  </div>
-		<div class="weui-panel__bd" v-for="(child, index) in children">
-			<div class="weui-cells">
-				<div class="weui-cell">
-					<div class="weui-cell__hd">
-						<label class="weui-label"> 学员姓名 </label>
-					</div>
-					<div class="weui-cell__bd">
-						<input class="weui-input" placeholder="请输入姓名" type="text"
-							v-model="child.name" />
-					</div>
-					<div class="weui-cell__ft">
-						<i class="weui-icon-cancel" v-if="removable"
-							v-on:click="removeChild(index, $event)"></i>
-					</div>
-				</div>
-				<div class="weui-cell">
-					<div class="weui-cell__hd">
-						<label class="weui-label" for=""> 生日 </label>
-					</div>
-					<div class="weui-cell__bd">
-						<input class="weui-input" type="date" v-model="child.birthday" />
-					</div>
-				</div>
-			</div>
-		</div>
 		<div class="button_sp_area">
 	        <a href="javascript:void(0);" class="weui-btn weui-btn_mini weui-btn_default" v-on:click="addChild">＋添加学员信息</a>
 	        <a href="javascript:void(0);" class="weui-btn weui-btn_mini weui-btn_primary" v-on:click="onAddStudents">确认添加学员</a>

@@ -82,8 +82,8 @@ public class Student {
     private Gender gender;
 
     public static enum Gender {
-    	MALE,
-    	FEMALE
+    	BOY,
+    	GIRL
 	}
     
     public Student() {
