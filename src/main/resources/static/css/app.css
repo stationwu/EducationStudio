@@ -3,9 +3,15 @@ body, html {
     -webkit-tap-highlight-color: transparent;
     margin: 0px;
 }
+input[type="submit"], input[type="date"], input[type="button"], button{
+    -webkit-appearance: none;
+}
 input, button{
     outline:none;
     border: none;
+}
+.layui-m-layermain .layui-m-layerchild.popup{
+    width: 7.6rem;
 }
 .popup .layui-m-layerbtn{
     background-color: #ffcd0d;
@@ -342,6 +348,10 @@ input, button{
     top: 0.04333rem;
     margin-right: 0.12rem;
 }
+
+
+/**course-subscribe部分**/
+
 /*.dsx-title {
     text-align: center;
     font-size: 24px;

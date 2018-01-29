@@ -1,1 +1,1289 @@
-{"swagger":"2.0","info":{"description":"简单优雅的restfun风格，http://blog.csdn.net/forezp","version":"1.0","title":"springboot利用swagger构建api文档","termsOfService":"http://blog.csdn.net/forezp"},"host":"www.dashuxia.xin","basePath":"/","tags":[{"name":"course-controller","description":"Course Controller"},{"name":"student-manager-controller","description":"Student Manager Controller"},{"name":"verify-controller","description":"Verify Controller"},{"name":"wx-js-sdk-signature-controller","description":"Wx Js Sdk Signature Controller"},{"name":"image-controller","description":"Image Controller"},{"name":"customer-controller","description":"Customer Controller"},{"name":"course-category-controller","description":"Course Category Controller"},{"name":"student-controller","description":"Student Controller"},{"name":"verify-code-controller","description":"Verify Code Controller"}],"paths":{"/Images/{id}":{"get":{"tags":["image-controller"],"summary":"getImage","operationId":"getImageUsingGET","consumes":["application/json"],"produces":["*/*"],"parameters":[{"name":"id","in":"path","description":"id","required":true,"type":"integer","format":"int64"}],"responses":{"200":{"description":"OK"},"401":{"description":"Unauthorized"},"403":{"description":"Forbidden"},"404":{"description":"Not Found"}}}},"/Images/{id}/thumbnail":{"get":{"tags":["image-controller"],"summary":"getThumbnail","operationId":"getThumbnailUsingGET","consumes":["application/json"],"produces":["*/*"],"parameters":[{"name":"id","in":"path","description":"id","required":true,"type":"integer","format":"int64"}],"responses":{"200":{"description":"OK"},"401":{"description":"Unauthorized"},"403":{"description":"Forbidden"},"404":{"description":"Not Found"}}}},"/MP_verify_HHA3VDSY1Q3Zn9r1.txt":{"get":{"tags":["verify-controller"],"summary":"read","operationId":"readUsingGET","consumes":["application/json"],"produces":["*/*"],"responses":{"200":{"description":"OK","schema":{"type":"string"}},"401":{"description":"Unauthorized"},"403":{"description":"Forbidden"},"404":{"description":"Not Found"}}}},"/MP_verify_T7ILea1OMIoUi2kI.txt":{"get":{"tags":["verify-controller"],"summary":"verify","operationId":"verifyUsingGET","consumes":["application/json"],"produces":["*/*"],"responses":{"200":{"description":"OK","schema":{"type":"string"}},"401":{"description":"Unauthorized"},"403":{"description":"Forbidden"},"404":{"description":"Not Found"}}}},"/api/v1/AllCourse":{"post":{"tags":["course-controller"],"summary":"getAllCoursesByCourseCategory","operationId":"getAllCoursesByCourseCategoryUsingPOST","consumes":["application/json"],"produces":["*/*"],"parameters":[{"name":"courseCategoryId","in":"query","description":"courseCategoryId","required":true,"type":"integer","format":"int64"}],"responses":{"200":{"description":"OK","schema":{"type":"array","items":{"$ref":"#/definitions/CourseContainer"}}},"201":{"description":"Created"},"401":{"description":"Unauthorized"},"403":{"description":"Forbidden"},"404":{"description":"Not Found"}}}},"/api/v1/AvailableCourse":{"post":{"tags":["course-controller"],"summary":"getCoursesByCourseCategory","operationId":"getCoursesByCourseCategoryUsingPOST","consumes":["application/json"],"produces":["*/*"],"parameters":[{"name":"courseCategoryId","in":"query","description":"courseCategoryId","required":true,"type":"integer","format":"int64"}],"responses":{"200":{"description":"OK","schema":{"type":"array","items":{"$ref":"#/definitions/CourseContainer"}}},"201":{"description":"Created"},"401":{"description":"Unauthorized"},"403":{"description":"Forbidden"},"404":{"description":"Not Found"}}}},"/api/v1/AvailableCourse/book":{"post":{"tags":["course-controller"],"summary":"bookCourse","operationId":"bookCourseUsingPOST","consumes":["application/json"],"produces":["*/*"],"parameters":[{"name":"studentId","in":"query","description":"studentId","required":true,"type":"string"},{"name":"courseId","in":"query","description":"courseId","required":true,"type":"integer","format":"int64"}],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/ChildContainer"}},"201":{"description":"Created"},"401":{"description":"Unauthorized"},"403":{"description":"Forbidden"},"404":{"description":"Not Found"}}}},"/api/v1/CourseCategory":{"get":{"tags":["course-category-controller"],"summary":"getCourseCategories","operationId":"getCourseCategoriesUsingGET","consumes":["application/json"],"produces":["*/*"],"parameters":[{"name":"studentId","in":"query","description":"studentId","required":true,"type":"string"}],"responses":{"200":{"description":"OK","schema":{"type":"array","items":{"$ref":"#/definitions/BookedCourseCategoryContainer"}}},"401":{"description":"Unauthorized"},"403":{"description":"Forbidden"},"404":{"description":"Not Found"}}}},"/api/v1/Customer/AddChild":{"post":{"tags":["customer-controller"],"summary":"addChild","operationId":"addChildUsingPOST","consumes":["application/json"],"produces":["*/*"],"parameters":[{"in":"body","name":"children","description":"children","required":true,"schema":{"type":"array","items":{"$ref":"#/definitions/ChildContainer"}}}],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/Customer"}},"201":{"description":"Created"},"401":{"description":"Unauthorized"},"403":{"description":"Forbidden"},"404":{"description":"Not Found"}}}},"/api/v1/Customer/Detail":{"get":{"tags":["customer-controller"],"summary":"getCustomer","operationId":"getCustomerUsingGET","consumes":["application/json"],"produces":["*/*"],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/CustomerContainer"}},"401":{"description":"Unauthorized"},"403":{"description":"Forbidden"},"404":{"description":"Not Found"}}}},"/api/v1/Customer/SignUp":{"post":{"tags":["customer-controller"],"summary":"create","operationId":"createUsingPOST","consumes":["application/json"],"produces":["*/*"],"parameters":[{"in":"body","name":"customerDTO","description":"customerDTO","required":true,"schema":{"$ref":"#/definitions/CustomerContainer"}}],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/Customer"}},"201":{"description":"Created"},"401":{"description":"Unauthorized"},"403":{"description":"Forbidden"},"404":{"description":"Not Found"}}}},"/api/v1/JsApiSignature":{"post":{"tags":["wx-js-sdk-signature-controller"],"summary":"createSignature","operationId":"createSignatureUsingPOST","consumes":["application/json"],"produces":["*/*"],"parameters":[{"in":"body","name":"body","description":"body","required":true,"schema":{"$ref":"#/definitions/SignatureRequestBody"}}],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/WxJsapiSignature"}},"201":{"description":"Created"},"401":{"description":"Unauthorized"},"403":{"description":"Forbidden"},"404":{"description":"Not Found"}}}},"/api/v1/Student":{"get":{"tags":["student-controller"],"summary":"showStudents","operationId":"showStudentsUsingGET","consumes":["application/json"],"produces":["*/*"],"responses":{"200":{"description":"OK","schema":{"type":"array","items":{"$ref":"#/definitions/ChildContainer"}}},"401":{"description":"Unauthorized"},"403":{"description":"Forbidden"},"404":{"description":"Not Found"}}},"post":{"tags":["student-controller"],"summary":"showStudents","operationId":"showStudentsUsingPOST","consumes":["application/json"],"produces":["*/*"],"parameters":[{"name":"studentId","in":"query","description":"studentId","required":true,"type":"string"}],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/ChildContainer"}},"201":{"description":"Created"},"401":{"description":"Unauthorized"},"403":{"description":"Forbidden"},"404":{"description":"Not Found"}}}},"/api/v1/StudentManager/search":{"post":{"tags":["student-manager-controller"],"summary":"searchStudent","operationId":"searchStudentUsingPOST","consumes":["application/json"],"produces":["*/*"],"parameters":[{"name":"keyword","in":"query","description":"keyword","required":true,"type":"string"}],"responses":{"200":{"description":"OK","schema":{"type":"array","items":{"$ref":"#/definitions/ChildContainer"}}},"201":{"description":"Created"},"401":{"description":"Unauthorized"},"403":{"description":"Forbidden"},"404":{"description":"Not Found"}}}},"/api/v1/StudentManager/{id}":{"get":{"tags":["student-manager-controller"],"summary":"showStudent","operationId":"showStudentUsingGET","consumes":["application/json"],"produces":["application/json"],"parameters":[{"name":"studentId","in":"path","description":"studentId","required":true,"type":"string"}],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/ChildContainer"}},"401":{"description":"Unauthorized"},"403":{"description":"Forbidden"},"404":{"description":"Not Found"}}},"post":{"tags":["student-manager-controller"],"summary":"signAndUploadImage","operationId":"signAndUploadImageUsingPOST","consumes":["application/json"],"produces":["*/*"],"parameters":[{"name":"studentId","in":"path","description":"studentId","required":true,"type":"string"},{"name":"imageName","in":"query","description":"imageName","required":true,"type":"string"},{"name":"material","in":"query","description":"material","required":true,"type":"string"},{"name":"teacher","in":"query","description":"teacher","required":true,"type":"string"},{"name":"courseId","in":"query","description":"courseId","required":true,"type":"integer","format":"int64"},{"name":"file","in":"query","description":"file","required":true,"type":"array","items":{"type":"file"},"collectionFormat":"multi"}],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/ChildContainer"}},"201":{"description":"Created"},"401":{"description":"Unauthorized"},"403":{"description":"Forbidden"},"404":{"description":"Not Found"}}}},"/verify":{"post":{"tags":["verify-code-controller"],"summary":"create","operationId":"createUsingPOST_1","consumes":["application/json"],"produces":["*/*"],"parameters":[{"in":"body","name":"smsContainer","description":"smsContainer","required":true,"schema":{"$ref":"#/definitions/SmsContainer"}}],"responses":{"200":{"description":"OK","schema":{"type":"integer","format":"int64"}},"201":{"description":"Created"},"401":{"description":"Unauthorized"},"403":{"description":"Forbidden"},"404":{"description":"Not Found"}}}},"/verify/{id}":{"get":{"tags":["verify-code-controller"],"summary":"findOne","operationId":"findOneUsingGET","consumes":["application/json"],"produces":["*/*"],"parameters":[{"name":"id","in":"path","description":"id","required":true,"type":"integer","format":"int64"}],"responses":{"200":{"description":"OK","schema":{"$ref":"#/definitions/VerifyCode"}},"401":{"description":"Unauthorized"},"403":{"description":"Forbidden"},"404":{"description":"Not Found"}}}}},"definitions":{"SmsContainer":{"type":"object","properties":{"mobile":{"type":"string"},"type":{"type":"string"}}},"Customer":{"type":"object","properties":{"activated":{"type":"boolean"},"address":{"type":"string"},"id":{"type":"integer","format":"int64"},"mobilePhone":{"type":"string"},"name":{"type":"string"},"openCode":{"type":"string"},"students":{"type":"array","items":{"$ref":"#/definitions/Student"}}}},"CustomerContainer":{"type":"object","properties":{"address":{"type":"string"},"children":{"type":"array","items":{"$ref":"#/definitions/ChildContainer"}},"mobilePhone":{"type":"string"},"name":{"type":"string"},"openCode":{"type":"string"},"verifyCode":{"type":"string"},"verifyCodeId":{"type":"integer","format":"int64"}}},"ChildContainer":{"type":"object","properties":{"age":{"type":"integer","format":"int32"},"birthday":{"type":"string"},"childName":{"type":"string"},"courseCategories":{"type":"array","items":{"$ref":"#/definitions/CourseCategoryContainer"}},"gender":{"type":"string","enum":["BOY","GIRL"]},"id":{"type":"string"},"paints":{"type":"array","items":{"$ref":"#/definitions/PaintContainer"}},"reversedCourses":{"type":"array","items":{"$ref":"#/definitions/CourseContainer"}},"usedCourses":{"type":"array","items":{"$ref":"#/definitions/CourseContainer"}}}},"CourseCategoryContainer":{"type":"object","properties":{"courseName":{"type":"string"},"id":{"type":"integer","format":"int64"},"images":{"type":"array","items":{"$ref":"#/definitions/ImageContainer"}},"leftPeriod":{"type":"integer","format":"int32"},"priority":{"type":"integer","format":"int32"},"totalPeriod":{"type":"integer","format":"int32"}}},"Student":{"type":"object","properties":{"birthday":{"type":"string"},"child":{"type":"boolean"},"courseCount":{"type":"object","additionalProperties":{"type":"integer","format":"int32"}},"gender":{"type":"string","enum":["BOY","GIRL"]},"id":{"type":"string"},"studentName":{"type":"string"}}},"SignatureRequestBody":{"type":"object","properties":{"url":{"type":"string"}}},"Timestamp":{"type":"object","properties":{"date":{"type":"integer","format":"int32"},"day":{"type":"integer","format":"int32"},"hours":{"type":"integer","format":"int32"},"minutes":{"type":"integer","format":"int32"},"month":{"type":"integer","format":"int32"},"nanos":{"type":"integer","format":"int32"},"seconds":{"type":"integer","format":"int32"},"time":{"type":"integer","format":"int64"},"timezoneOffset":{"type":"integer","format":"int32"},"year":{"type":"integer","format":"int32"}}},"ImageContainer":{"type":"object","properties":{"date":{"type":"string"},"id":{"type":"integer","format":"int64"},"imageName":{"type":"string"},"imageUrl":{"type":"string"},"priority":{"type":"integer","format":"int32"},"thumbnailUrl":{"type":"string"}}},"BookedCourseCategoryContainer":{"type":"object","properties":{"courseName":{"type":"string"},"demoCourse":{"type":"boolean"},"id":{"type":"integer","format":"int64"},"images":{"type":"array","items":{"$ref":"#/definitions/ImageContainer"}},"leftPeriod":{"type":"integer","format":"int32"},"priority":{"type":"integer","format":"int32"},"valid":{"type":"boolean"}}},"VerifyCode":{"type":"object","properties":{"code":{"type":"string"},"exceedTime":{"$ref":"#/definitions/Timestamp"},"id":{"type":"integer","format":"int64"},"mobile":{"type":"string"}}},"PaintContainer":{"type":"object","properties":{"createdBy":{"type":"string"},"date":{"type":"string"},"id":{"type":"integer","format":"int64"},"imageName":{"type":"string"},"imageUrl":{"type":"string"},"material":{"type":"string"},"teacher":{"type":"string"},"thumbnailUrl":{"type":"string"}}},"CourseContainer":{"type":"object","properties":{"bookedSeat":{"type":"integer","format":"int32"},"courseCategoryId":{"type":"integer","format":"int64"},"courseName":{"type":"string"},"date":{"type":"string"},"id":{"type":"integer","format":"int64"},"maxSeat":{"type":"integer","format":"int32"},"timeFrom":{"type":"string"},"timeTo":{"type":"string"}}},"WxJsapiSignature":{"type":"object","properties":{"appId":{"type":"string"},"nonceStr":{"type":"string"},"signature":{"type":"string"},"timestamp":{"type":"integer","format":"int64"},"url":{"type":"string"}}}}}
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "简单优雅的restfun风格，http://blog.csdn.net/forezp",
+    "version": "1.0",
+    "title": "springboot利用swagger构建api文档",
+    "termsOfService": "http://blog.csdn.net/forezp"
+  },
+  "host": "www.dashuxia.xin",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "course-controller",
+      "description": "Course Controller"
+    },
+    {
+      "name": "student-manager-controller",
+      "description": "Student Manager Controller"
+    },
+    {
+      "name": "verify-controller",
+      "description": "Verify Controller"
+    },
+    {
+      "name": "wx-js-sdk-signature-controller",
+      "description": "Wx Js Sdk Signature Controller"
+    },
+    {
+      "name": "image-controller",
+      "description": "Image Controller"
+    },
+    {
+      "name": "customer-controller",
+      "description": "Customer Controller"
+    },
+    {
+      "name": "course-category-controller",
+      "description": "Course Category Controller"
+    },
+    {
+      "name": "student-controller",
+      "description": "Student Controller"
+    },
+    {
+      "name": "verify-code-controller",
+      "description": "Verify Code Controller"
+    }
+  ],
+  "paths": {
+    "/Images/{id}": {
+      "get": {
+        "tags": [
+          "image-controller"
+        ],
+        "summary": "getImage",
+        "operationId": "getImageUsingGET",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/Images/{id}/thumbnail": {
+      "get": {
+        "tags": [
+          "image-controller"
+        ],
+        "summary": "getThumbnail",
+        "operationId": "getThumbnailUsingGET",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/MP_verify_HHA3VDSY1Q3Zn9r1.txt": {
+      "get": {
+        "tags": [
+          "verify-controller"
+        ],
+        "summary": "read",
+        "operationId": "readUsingGET",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/MP_verify_T7ILea1OMIoUi2kI.txt": {
+      "get": {
+        "tags": [
+          "verify-controller"
+        ],
+        "summary": "verify",
+        "operationId": "verifyUsingGET",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/AllCourse": {
+      "post": {
+        "tags": [
+          "course-controller"
+        ],
+        "summary": "getAllCoursesByCourseCategory",
+        "operationId": "getAllCoursesByCourseCategoryUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "courseCategoryId",
+            "in": "query",
+            "description": "courseCategoryId",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/CourseContainer"
+              }
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/AvailableCourse": {
+      "post": {
+        "tags": [
+          "course-controller"
+        ],
+        "summary": "getCoursesByCourseCategory",
+        "operationId": "getCoursesByCourseCategoryUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "courseCategoryId",
+            "in": "query",
+            "description": "courseCategoryId",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/CourseContainer"
+              }
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/AvailableCourse/book": {
+      "post": {
+        "tags": [
+          "course-controller"
+        ],
+        "summary": "bookCourse",
+        "operationId": "bookCourseUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "studentId",
+            "in": "query",
+            "description": "studentId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "courseId",
+            "in": "query",
+            "description": "courseId",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ChildContainer"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/CourseCategory": {
+      "get": {
+        "tags": [
+          "course-category-controller"
+        ],
+        "summary": "getCourseCategories",
+        "operationId": "getCourseCategoriesUsingGET",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "studentId",
+            "in": "query",
+            "description": "studentId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/BookedCourseCategoryContainer"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/Customer/AddChild": {
+      "post": {
+        "tags": [
+          "customer-controller"
+        ],
+        "summary": "addChild",
+        "operationId": "addChildUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "children",
+            "description": "children",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ChildContainer"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Customer"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/Customer/Detail": {
+      "get": {
+        "tags": [
+          "customer-controller"
+        ],
+        "summary": "getCustomer",
+        "operationId": "getCustomerUsingGET",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CustomerContainer"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/Customer/SignUp": {
+      "post": {
+        "tags": [
+          "customer-controller"
+        ],
+        "summary": "create",
+        "operationId": "createUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "customerDTO",
+            "description": "customerDTO",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CustomerContainer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Customer"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/JsApiSignature": {
+      "post": {
+        "tags": [
+          "wx-js-sdk-signature-controller"
+        ],
+        "summary": "createSignature",
+        "operationId": "createSignatureUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SignatureRequestBody"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/WxJsapiSignature"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/Student": {
+      "get": {
+        "tags": [
+          "student-controller"
+        ],
+        "summary": "showStudents",
+        "operationId": "showStudentsUsingGET",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ChildContainer"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "student-controller"
+        ],
+        "summary": "showStudents",
+        "operationId": "showStudentsUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "studentId",
+            "in": "query",
+            "description": "studentId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ChildContainer"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/StudentManager/search": {
+      "post": {
+        "tags": [
+          "student-manager-controller"
+        ],
+        "summary": "searchStudent",
+        "operationId": "searchStudentUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "keyword",
+            "in": "query",
+            "description": "keyword",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ChildContainer"
+              }
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/StudentManager/{id}": {
+      "get": {
+        "tags": [
+          "student-manager-controller"
+        ],
+        "summary": "showStudent",
+        "operationId": "showStudentUsingGET",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "studentId",
+            "in": "path",
+            "description": "studentId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ChildContainer"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "student-manager-controller"
+        ],
+        "summary": "signAndUploadImage",
+        "operationId": "signAndUploadImageUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "studentId",
+            "in": "path",
+            "description": "studentId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "imageName",
+            "in": "query",
+            "description": "imageName",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "material",
+            "in": "query",
+            "description": "material",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "teacher",
+            "in": "query",
+            "description": "teacher",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "courseId",
+            "in": "query",
+            "description": "courseId",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "file",
+            "in": "query",
+            "description": "file",
+            "required": true,
+            "type": "array",
+            "items": {
+              "type": "file"
+            },
+            "collectionFormat": "multi"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ChildContainer"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/verify": {
+      "post": {
+        "tags": [
+          "verify-code-controller"
+        ],
+        "summary": "create",
+        "operationId": "createUsingPOST_1",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "smsContainer",
+            "description": "smsContainer",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SmsContainer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/verify/{id}": {
+      "get": {
+        "tags": [
+          "verify-code-controller"
+        ],
+        "summary": "findOne",
+        "operationId": "findOneUsingGET",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/VerifyCode"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "SmsContainer": {
+      "type": "object",
+      "properties": {
+        "mobile": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      }
+    },
+    "Customer": {
+      "type": "object",
+      "properties": {
+        "activated": {
+          "type": "boolean"
+        },
+        "address": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "mobilePhone": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "openCode": {
+          "type": "string"
+        },
+        "students": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Student"
+          }
+        }
+      }
+    },
+    "CustomerContainer": {
+      "type": "object",
+      "properties": {
+        "address": {
+          "type": "string"
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ChildContainer"
+          }
+        },
+        "mobilePhone": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "openCode": {
+          "type": "string"
+        },
+        "verifyCode": {
+          "type": "string"
+        },
+        "verifyCodeId": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
+    "ChildContainer": {
+      "type": "object",
+      "properties": {
+        "age": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "birthday": {
+          "type": "string"
+        },
+        "childName": {
+          "type": "string"
+        },
+        "courseCategories": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CourseCategoryContainer"
+          }
+        },
+        "gender": {
+          "type": "string",
+          "enum": [
+            "BOY",
+            "GIRL"
+          ]
+        },
+        "id": {
+          "type": "string"
+        },
+        "paints": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PaintContainer"
+          }
+        },
+        "reversedCourses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CourseContainer"
+          }
+        },
+        "usedCourses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CourseContainer"
+          }
+        }
+      }
+    },
+    "CourseCategoryContainer": {
+      "type": "object",
+      "properties": {
+        "courseName": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "images": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ImageContainer"
+          }
+        },
+        "leftPeriod": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "priority": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "totalPeriod": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "Student": {
+      "type": "object",
+      "properties": {
+        "birthday": {
+          "type": "string"
+        },
+        "child": {
+          "type": "boolean"
+        },
+        "courseCount": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "gender": {
+          "type": "string",
+          "enum": [
+            "BOY",
+            "GIRL"
+          ]
+        },
+        "id": {
+          "type": "string"
+        },
+        "studentName": {
+          "type": "string"
+        }
+      }
+    },
+    "SignatureRequestBody": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "Timestamp": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "day": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "hours": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "minutes": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "month": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "nanos": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "seconds": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "time": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "timezoneOffset": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "year": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "ImageContainer": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "imageName": {
+          "type": "string"
+        },
+        "imageUrl": {
+          "type": "string"
+        },
+        "priority": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "thumbnailUrl": {
+          "type": "string"
+        }
+      }
+    },
+    "BookedCourseCategoryContainer": {
+      "type": "object",
+      "properties": {
+        "courseName": {
+          "type": "string"
+        },
+        "demoCourse": {
+          "type": "boolean"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "images": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ImageContainer"
+          }
+        },
+        "leftPeriod": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "priority": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "valid": {
+          "type": "boolean"
+        }
+      }
+    },
+    "VerifyCode": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "exceedTime": {
+          "$ref": "#/definitions/Timestamp"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "mobile": {
+          "type": "string"
+        }
+      }
+    },
+    "PaintContainer": {
+      "type": "object",
+      "properties": {
+        "createdBy": {
+          "type": "string"
+        },
+        "date": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "imageName": {
+          "type": "string"
+        },
+        "imageUrl": {
+          "type": "string"
+        },
+        "material": {
+          "type": "string"
+        },
+        "teacher": {
+          "type": "string"
+        },
+        "thumbnailUrl": {
+          "type": "string"
+        }
+      }
+    },
+    "CourseContainer": {
+      "type": "object",
+      "properties": {
+        "bookedSeat": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "courseCategoryId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "courseName": {
+          "type": "string"
+        },
+        "date": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "maxSeat": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "timeFrom": {
+          "type": "string"
+        },
+        "timeTo": {
+          "type": "string"
+        }
+      }
+    },
+    "WxJsapiSignature": {
+      "type": "object",
+      "properties": {
+        "appId": {
+          "type": "string"
+        },
+        "nonceStr": {
+          "type": "string"
+        },
+        "signature": {
+          "type": "string"
+        },
+        "timestamp": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "url": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
