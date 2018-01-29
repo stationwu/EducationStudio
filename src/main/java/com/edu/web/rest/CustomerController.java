@@ -52,6 +52,10 @@ public class CustomerController {
 		String openCode = (String)session.getAttribute(Constant.SESSION_OPENID_KEY);
 		Customer customer = null;
 
+		if (openCode == null) { // Probably session is timeout
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
 		if (repository.isCustomerAlreadyRegistered(openCode)) {
 			customer = repository.findOneByOpenCode(openCode);
 		} else {
@@ -69,17 +73,17 @@ public class CustomerController {
 			VerifyCode verifyCode = verifyCodeRepository.findOneVerifyCodeById(id);
 
 			if (null == verifyCode) {
-				return new ResponseEntity<Customer>(HttpStatus.BAD_REQUEST);
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			}
 
 			if (!verifyCode.getCode().equals(customerDTO.getVerifyCode())) {
-				return new ResponseEntity<Customer>(HttpStatus.BAD_REQUEST);
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			}
 
 			customer = new Customer(openCode, customerDTO.getName(), customerDTO.getMobilePhone(), customerDTO.getAddress());
 			customer = repository.save(customer);
 		}
-		return new ResponseEntity<Customer>(customer, HttpStatus.OK);
+		return new ResponseEntity<>(customer, HttpStatus.OK);
 	}
 
 	@PostMapping(path = ADD_CHILD_PATH)

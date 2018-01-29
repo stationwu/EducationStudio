@@ -31,8 +31,6 @@ public class UserCenterController {
 
 	public final static String USER_CENTER_PATH = "/user/center";
 	
-	public final static String USER_SIGNUP_PATH = "/user/signup";
-	
 	public final static String USER_SIGNIN_PATH = "/user/signin";
 
     public final static String STUDENT_NEW_PATH = "/user/student/new";
@@ -90,38 +88,6 @@ public class UserCenterController {
 	private String signIn(HttpSession session, Model model) {
 		return "redirect:" + USER_CENTER_PATH;
     }
-
-	
-    @PostMapping(USER_SIGNUP_PATH)
-    public String signup(@ModelAttribute @Valid Customer customer,
-        BindingResult bindingResult,
-        HttpSession session) {
-        if (bindingResult.hasErrors()) {
-            return "user_signup";
-        }
-
-        Object openIdInSession = session.getAttribute(SESSION_OPENID_KEY);
-
-        String openId = (String) openIdInSession;
-        customer.setOpenCode(openId);
-
-        /**
-         * TODO: add dummy student to customer to go through process
-         */
-        Customer customerNew = repository.save(customer);
-        Set<Student> students = new HashSet<>();
-        Student student = new Student();
-        students.add(student);
-        student.setCustomer(customerNew);
-        customerNew.setStudents(students);
-        logger.debug(">>> Signing up: " + customer.toString());
-
-        customerNew = repository.save(customerNew);
-
-        logger.debug(">>> Signed up. Id: " + customer.getId());
-
-        return "user_info";
-    }
     
 	@GetMapping("user/session")
 	@ResponseBody
@@ -137,7 +103,7 @@ public class UserCenterController {
         return "student_register"; // serve the page
     }
     
-    @GetMapping(STUDENT_NEW_PATH)
+    @GetMapping(STUDENT_LIST_PATH)
     public String listStudent() {
         return "student_list"; // serve the page
     }
