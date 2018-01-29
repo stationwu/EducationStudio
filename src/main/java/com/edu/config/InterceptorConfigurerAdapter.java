@@ -31,7 +31,6 @@ public class InterceptorConfigurerAdapter extends WebMvcConfigurerAdapter {
 		// excludePathPatterns 用户排除拦截
 		registry.addInterceptor(sessionInterceptor())
 				.addPathPatterns("/user/**")
-				.excludePathPatterns("/user/signup")
 				.excludePathPatterns("/user/center");
 		registry.addInterceptor(webAPIInterceptor())
 				.addPathPatterns("/api/**")
