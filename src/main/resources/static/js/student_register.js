@@ -52,6 +52,7 @@ $(function(){
             success: function(data){
                 msg_alert("alert", "添加成功");
                 //跳转到什么页面？
+                window.location.href = "/user/student/list";
             },
             error: function(){
                 msg_alert("alert", "错误，请稍后重试");
