@@ -103,7 +103,7 @@ public class UserCenterController {
         return "student_register"; // serve the page
     }
     
-    @GetMapping(STUDENT_NEW_PATH)
+    @GetMapping(STUDENT_LIST_PATH)
     public String listStudent() {
         return "student_list"; // serve the page
     }
