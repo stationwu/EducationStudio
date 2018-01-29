@@ -7,6 +7,10 @@ $(function(){
         $(this).addClass("active");
         return false;
     });
+    $("#add-student-form").delegate("input[name='birth']", "click", function(){
+        $(this).removeAttr("placeholder");
+        $(this).css("padding-left","0.66667rem");
+    });
     $("#add-student-form-btn").click(function(){
         num++;
         var data = $(".student-info").eq(0).clone().attr("data-id",num);

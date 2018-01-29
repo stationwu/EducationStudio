@@ -3,21 +3,30 @@ body, html {
     -webkit-tap-highlight-color: transparent;
     margin: 0px;
 }
+body{
+    position: relative;
+}
 input, button{
     outline:none;
     border: none;
+}
+input[type="submit"], input[type="button"], button{
+    -webkit-appearance: none;
+}
+.layui-m-layermain .layui-m-layerchild.popup{
+    width: 7.6rem;
 }
 .popup .layui-m-layerbtn{
     background-color: #ffcd0d;
     height: 1.33333rem;
     color: #2d2d2d;
     font-size: 16px;
-    [data-dpr="2"] & {
-        font-size: 16px * 2;
-    }
-    [data-dpr="3"] & {
-        font-size: 16px * 3;
-    }
+}
+[data-dpr="2"] .popup .layui-m-layerbtn{
+    font-size: 32px;
+}
+[data-dpr="3"] .popup .layui-m-layerbtn{
+    font-size: 48px;
 }
 .popup .layui-m-layerbtn span[yes]{
     color: #2d2d2d;
@@ -39,12 +48,18 @@ input, button{
     width: 100%;
     color: #999;
     font-size: 15px;
-    [data-dpr="2"] & {
-        font-size: 15px * 2;
-    }
-    [data-dpr="3"] & {
-        font-size: 15px * 3;
-    }
+}
+[data-dpr="2"] #signup-form{
+    font-size: 30px;
+}
+[data-dpr="3"] #signup-form{
+    font-size: 45px;
+}
+[data-dpr="2"] #signup-form{
+    font-size: 30px;
+}
+[data-dpr="3"] #signup-form{
+    font-size: 45px;
 }
 #signup-form .form-cell{
     width: 100%;
@@ -56,7 +71,8 @@ input, button{
     padding: 0 0.53333rem;
     margin: 0 auto;
     height: 1.33333rem;
-    line-height: 1.33333rem;
+    font-size: 15px;
+    /*line-height: 1.33333rem;*/
     border-bottom: solid 1px #ededed;
     display: block;
 }
@@ -88,19 +104,18 @@ input, button{
     background-color: transparent;
     border-radius: 0.13333rem;
     height: 0.74667rem;
-    line-height: 0.74667rem;
-    width: 2.18667rem;
+    width: 2.28667rem;
     text-align: center;
     font-size: 13px;
     position: relative;
     top: -1.06667rem;
-    left: 6.77333rem;
-    [data-dpr="2"] & {
-        font-size: 13px * 2;
-    }
-    [data-dpr="3"] & {
-        font-size: 13px * 3;
-    }
+    left: 6.67333rem;
+}
+[data-dpr="2"] #verifyCodeBtn{
+    font-size: 26px;
+}
+[data-dpr="3"] #verifyCodeBtn{
+    font-size: 39px;
 }
 #verifyCodeBtn.active{
     border: solid 1px #ffcd0d;
@@ -114,42 +129,45 @@ input, button{
     height: 1.33333rem;
     line-height: 1.33333rem;
     color: #2d2d2d;
-    position: fixed;
+    position: absolute;
     left: 0rem;
     bottom: 0rem;
     font-size: 16px;
-    [data-dpr="2"] & {
-        font-size: 16px * 2;
-    }
-    [data-dpr="3"] & {
-        font-size: 16px * 3;
-    }
 }
-
+[data-dpr="2"] .bottom-btn{
+    font-size: 32px;
+}
+[data-dpr="3"] .bottom-btn{
+    font-size: 48px;
+}
 
 #add-student{
     color: #ababab;
     padding: 0.66667rem 0 2rem 0;
     text-align: center;
     font-size: 11px;
-    [data-dpr="2"] & {
-        font-size: 11px * 2;
-    }
-    [data-dpr="3"] & {
-        font-size: 11px * 3;
-    }
+    min-height: 100%;
+    position: relative;
+    margin-bottom: -2rem;
+    box-sizing: border-box;
+}
+[data-dpr="2"] #add-student{
+    font-size: 22px;
+}
+[data-dpr="3"] #add-student{
+    font-size: 33px;
 }
 #add-student p i{
     color: #ffcd0d;
     font-style: normal;
 }
 /*#add-student-form{*/
-    /*width: 8.16rem;*/
-    /*margin: 0.8rem auto 0 auto;*/
-    /*background-color: #fff;*/
-    /*border-radius: 0.13333rem;*/
-    /*padding-top: 0.66667rem;*/
-    /*box-shadow: 0 0 3px #ddd;*/
+/*width: 8.16rem;*/
+/*margin: 0.8rem auto 0 auto;*/
+/*background-color: #fff;*/
+/*border-radius: 0.13333rem;*/
+/*padding-top: 0.66667rem;*/
+/*box-shadow: 0 0 3px #ddd;*/
 /*}*/
 #add-student-form .form-cell{
     width: 8.16rem;
@@ -165,12 +183,12 @@ input, button{
     height: 1.33333rem;
     line-height: 1.33333rem;
     font-size: 15px;
-    [data-dpr="2"] & {
-        font-size: 15px * 2;
-    }
-    [data-dpr="3"] & {
-        font-size: 15px * 3;
-    }
+}
+[data-dpr="2"] #add-student-form .form-cell#add-student-form-btn{
+    font-size: 30px;
+}
+[data-dpr="3"] #add-student-form .form-cell#add-student-form-btn{
+    font-size: 45px;
 }
 #add-student-form .form-cell#add-student-form-btn i{
     display: inline-block;
@@ -195,12 +213,12 @@ input, button{
     display: inline-block;
     color: #dedede;
     font-size: 15px;
-    [data-dpr="2"] & {
-        font-size: 15px * 2;
-    }
-    [data-dpr="3"] & {
-        font-size: 15px * 3;
-    }
+}
+[data-dpr="2"] #add-student-form .thumbnail{
+    font-size: 30px;
+}
+[data-dpr="3"] #add-student-form .thumbnail{
+    font-size: 45px;
 }
 #add-student-form .thumbnail span{
     position: relative;
@@ -221,16 +239,19 @@ input, button{
 }
 #add-student-form .thumbnail i{
     display: inline-block;
-    height: 1.68rem;
-    width: 1.68rem;
+    height: 1.70666rem;
+    width: 1.70666rem;
     background: url("../images/thumbnail-border-unselect.png") no-repeat;
-    background-size: 1.68rem;
+    background-size: 1.70666rem;
     position: relative;
     left: -0.02667rem;
+    top: -0.02rem;
 }
 #add-student-form .thumbnail.active i{
     background: url("../images/thumbnail-border-select.png") no-repeat;
-    background-size: 1.68rem;
+    background-size: 1.69333rem;
+    left: -0.02rem;
+    top: -0.01333rem;
 }
 #add-student-form input{
     text-align: center;
@@ -238,12 +259,12 @@ input, button{
     height: 1.04rem;
     line-height: 1.04rem;
     font-size: 14px;
-    [data-dpr="2"] & {
-        font-size: 14px * 2;
-    }
-    [data-dpr="3"] & {
-        font-size: 14px * 3;
-    }
+}
+[data-dpr="2"] #add-student-form input{
+    font-size: 28px;
+}
+[data-dpr="3"] #add-student-form input{
+    font-size: 42px;
 }
 #add-student-form input[name='name']{
     border-bottom: solid 1px #ededed;
@@ -251,9 +272,21 @@ input, button{
     margin-top: 0.44rem;
 }
 #add-student-form input[name='birth']{
-    margin-bottom: 0.33333rem;
+    margin: 0 auto 0.33333rem auto;
+    background-color: transparent;
+    display: block;
+    width: 5.33333rem;
+    text-align: center;
 }
-
+#add-student-form input[name='birth']:before{
+    content: attr(placeholder);
+}
+/*#add-student-form input[name='birth']::-webkit-calendar-picker-indicator {
+   display: none;
+}
+#add-student-form input[name='birth']::-webkit-clear-button{
+   display:none;
+}*/
 /*student_list.html*/
 #student-list{
     padding: 0.2rem 0 2rem 0;
@@ -286,23 +319,23 @@ input, button{
     height: 0.64rem;
     line-height: 0.64rem;
     font-size: 24px;
-    [data-dpr="2"] & {
-        font-size: 24px * 2;
-    }
-    [data-dpr="3"] & {
-        font-size: 24px * 3;
-    }
+}
+[data-dpr="2"] #student-list .student-info .name{
+    font-size: 48px;
+}
+[data-dpr="3"] #student-list .student-info .name{
+    font-size: 72px;
 }
 #student-list .student-info .birth{
     font-size: 11px;
     margin-top: 0.13333rem;
     margin-bottom: 0.4rem;
-    [data-dpr="2"] & {
-        font-size: 11px * 2;
-    }
-    [data-dpr="3"] & {
-        font-size: 11px * 3;
-    }
+}
+[data-dpr="2"] #student-list .student-info .birth{
+    font-size: 22px;
+}
+[data-dpr="3"] #student-list .student-info .birth{
+    font-size: 33px;
 }
 #student-list .student-info .birth i{
     display: inline-block;
@@ -321,12 +354,12 @@ input, button{
     background-color: #ffcd0d;
     margin: 0 auto;
     font-size: 14px;
-    [data-dpr="2"] & {
-        font-size: 14px * 2;
-    }
-    [data-dpr="3"] & {
-        font-size: 14px * 3;
-    }
+}
+[data-dpr="2"] #student-list .student-info .add-class-btn{
+    font-size: 28px;
+}
+[data-dpr="3"] #student-list .student-info .add-class-btn{
+    font-size: 42px;
 }
 #student-list #add-student-btn{
     text-align: center;
@@ -342,6 +375,10 @@ input, button{
     top: 0.04333rem;
     margin-right: 0.12rem;
 }
+
+
+/**course-subscribe部分**/
+
 /*.dsx-title {
     text-align: center;
     font-size: 24px;

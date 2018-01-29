@@ -7,6 +7,10 @@ $(function(){
         $(this).addClass("active");
         return false;
     });
+    $("#add-student-form").delegate("input[name='birth']", "click", function(){
+        $(this).removeAttr("placeholder");
+        $(this).css("padding-left","0.66667rem");
+    });
     $("#add-student-form-btn").click(function(){
         num++;
         var data = $(".student-info").eq(0).clone().attr("data-id",num);
@@ -52,6 +56,7 @@ $(function(){
             success: function(data){
                 msg_alert("alert", "添加成功");
                 //跳转到什么页面？
+                window.location.href = "/user/student/list";
             },
             error: function(){
                 msg_alert("alert", "错误，请稍后重试");
