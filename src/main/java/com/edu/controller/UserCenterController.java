@@ -36,6 +36,8 @@ public class UserCenterController {
 	public final static String USER_SIGNIN_PATH = "/user/signin";
 
     public final static String STUDENT_NEW_PATH = "/user/student/new";
+    
+    public final static String STUDENT_LIST_PATH = "/user/student/list";
 
 	public final static String SESSION_OPENID_KEY = "openCode";
 	
@@ -133,5 +135,10 @@ public class UserCenterController {
     @GetMapping(STUDENT_NEW_PATH)
     public String createStudent() {
         return "student_register"; // serve the page
+    }
+    
+    @GetMapping(STUDENT_NEW_PATH)
+    public String listStudent() {
+        return "student_list"; // serve the page
     }
 }
