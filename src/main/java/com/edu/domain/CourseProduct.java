@@ -1,6 +1,7 @@
 package com.edu.domain;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "courseprod")
@@ -14,7 +15,10 @@ public class CourseProduct {
     
     @ManyToOne
 	private CourseCategory courseCategory;
-    
+
+    private LocalDateTime startFrom;
+
+    private LocalDateTime endAt;
 
 	public Student getStudent() {
 		return student;
@@ -40,4 +44,19 @@ public class CourseProduct {
 		this.courseCategory = courseCategory;
 	}
 
+	public LocalDateTime getStartFrom() {
+		return startFrom;
+	}
+
+	public void setStartFrom(LocalDateTime startFrom) {
+		this.startFrom = startFrom;
+	}
+
+	public LocalDateTime getEndAt() {
+		return endAt;
+	}
+
+	public void setEndAt(LocalDateTime endAt) {
+		this.endAt = endAt;
+	}
 }
