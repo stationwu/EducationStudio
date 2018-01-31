@@ -71,6 +71,9 @@ public class OrderController {
     private CustomerRepository customerRepository;
 
     @Autowired
+    private StudentRepository studentRepository;
+
+    @Autowired
     private ProductRepository productRepository;
 
     @Autowired
@@ -83,7 +86,7 @@ public class OrderController {
     private CourseProductRepository courseProductRepository;
 
     @Autowired
-    private CourseRepository bookingRepository;
+    private CourseRepository courseRepository;
 
     @Autowired
     private WxPayService wxPayService;
@@ -120,12 +123,24 @@ public class OrderController {
 
     @ResponseBody
     @RequestMapping(value = BUY_EXP_LESSON_PATH, method = RequestMethod.POST)
-    public OrderContainer buyExperienceLesson(@RequestBody ExperienceLessonBookingInfo, HttpSession session) {
+    public ResponseEntity<OrderContainer> buyExperienceLesson(@RequestBody ExperienceLessonBookingInfo bookingInfo, HttpSession session) {
         String openId = (String)session.getAttribute(Constant.SESSION_OPENID_KEY);
 
         Customer customer = customerRepository.findOneByOpenCode(openId);
 
-        Course bookedLesson =
+        Course bookedLesson = courseRepository.findOne(bookingInfo.getCourseId());
+        if (bookedLesson == null) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        Student student = studentRepository.findOne(bookingInfo.getStudentId());
+        if (student == null) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        Optional<Student> myChild = customer.getStudents().stream().filter(s -> s.getId().equals(student.getId())).findFirst();
+        if (!myChild.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @ResponseBody
