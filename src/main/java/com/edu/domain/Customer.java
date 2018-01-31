@@ -20,11 +20,12 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    @NotNull(message = "Open Code must not be null")
     private String openCode;
 
     private String name;
 
-    @NotNull
+    @NotNull(message = "Mobile phone number must not be null")
     private String mobilePhone;
 
     private String address;
