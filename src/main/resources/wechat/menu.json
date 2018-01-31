@@ -8,7 +8,7 @@
             {
 				"type": "view",
                 "name": "课程预约",
-				"url": "http://www.dashuxia.xin/user/signin"
+				"url": "http://www.dashuxia.xin/user/student/list"
             },
             {
 				"type": "view",
