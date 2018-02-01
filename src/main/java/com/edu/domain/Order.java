@@ -6,6 +6,7 @@ import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.Map;
 
 @Entity
@@ -42,31 +43,10 @@ public class Order {
 
 	@JsonIgnore
 	@ElementCollection
-    @CollectionTable(name="ORDER_PRODUCT", joinColumns=@JoinColumn(name="ORDER_ID", referencedColumnName="ID"))
-	@MapKeyJoinColumn(name="PRODUCT_ID", referencedColumnName="ID")
-	@Column(name="COPIES_IN_ORDER")
-	private Map<Product,Integer > productsMap;
-
-	@JsonIgnore
-	@ElementCollection
-    @CollectionTable(name="ORDER_DERIVEDPRODUCT", joinColumns=@JoinColumn(name="ORDER_ID", referencedColumnName="ID"))
-	@MapKeyJoinColumn(name="DERIVEDPRODUCT_ID", referencedColumnName="ID")
-	@Column(name="COPIES_IN_ORDER")
-	private Map<DerivedProduct, Integer> derivedProductsMap;
-
-	@JsonIgnore
-	@ElementCollection
-    @CollectionTable(name="ORDER_IMAGECOLLECTION", joinColumns=@JoinColumn(name="ORDER_ID", referencedColumnName="ID"))
-	@MapKeyJoinColumn(name="IMAGECOLLECTION_ID", referencedColumnName="ID")
-	@Column(name="COPIES_IN_ORDER")
-	private Map<ImageCollection, Integer> imageCollectionMap;
-
-	@JsonIgnore
-	@ElementCollection
     @CollectionTable(name="ORDER_COURSEPRODUCT", joinColumns=@JoinColumn(name="ORDER_ID", referencedColumnName="ID"))
 	@MapKeyJoinColumn(name="COURSEPRODUCT_ID", referencedColumnName="ID")
 	@Column(name="COPIES_IN_ORDER")
-	private Map<CourseProduct, Integer> courseProductsMap;
+	private Map<CourseProduct, Integer> courseProductsMap = new HashMap<>();
 	
 	public String getDate() {
 		return date;
@@ -82,30 +62,6 @@ public class Order {
 
 	public void setTotalAmount(BigDecimal totalAmount) {
 		this.totalAmount = totalAmount;
-	}
-
-	public Map<Product, Integer> getProductsMap() {
-		return productsMap;
-	}
-
-	public void setProductsMap(Map<Product, Integer> productsMap) {
-		this.productsMap = productsMap;
-	}
-
-	public Map<DerivedProduct, Integer> getDerivedProductsMap() {
-		return derivedProductsMap;
-	}
-
-	public void setDerivedProductsMap(Map<DerivedProduct, Integer> derivedProductsMap) {
-		this.derivedProductsMap = derivedProductsMap;
-	}
-
-	public Map<ImageCollection, Integer> getImageCollectionMap() {
-		return imageCollectionMap;
-	}
-
-	public void setImageCollectionMap(Map<ImageCollection, Integer> imageCollectionMap) {
-		this.imageCollectionMap = imageCollectionMap;
 	}
 
     public void setId(String id) {
@@ -164,8 +120,16 @@ public class Order {
 		return courseProductsMap;
 	}
 
-	public void setCourseProductsMap(Map<CourseProduct, Integer> courseProductsMap) {
-		this.courseProductsMap = courseProductsMap;
+	public void addCourseProduct(CourseProduct courseProduct, int quantity) {
+		this.courseProductsMap.put(courseProduct, quantity);
+	}
+
+	public void updateourseProductQuantity(CourseProduct courseProduct, int quantity) {
+		if (quantity > 0) {
+			this.courseProductsMap.replace(courseProduct, quantity);
+		} else {
+			this.courseProductsMap.remove(courseProduct);
+		}
 	}
 
 	public Payment getPayment() {

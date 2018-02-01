@@ -5,6 +5,9 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+/**
+ * Booking record of one lesson
+ */
 @Entity
 @Table(name = "course")
 public class Course {
