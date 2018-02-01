@@ -46,4 +46,4 @@
     ```sh
     $ ./pull-build-and-run.sh 
     ```
-6. Then the service is updated to the most recent commit in master branch and is up-and-running again
+6. Then the service is updated to the most recent commit in master branch and is up-and-running again. Now hit `Ctrl + B Ctrl + D` to put the service in background.
