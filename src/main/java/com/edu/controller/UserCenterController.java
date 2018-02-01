@@ -1,8 +1,10 @@
 package com.edu.controller;
 
 import com.edu.dao.CustomerRepository;
+import com.edu.dao.StudentRepository;
 import com.edu.domain.Customer;
 import com.edu.domain.Student;
+import com.edu.domain.dto.ChildContainer;
 import com.edu.utils.Constant;
 
 import org.slf4j.Logger;
@@ -10,24 +12,20 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 
 @Controller
 public class UserCenterController {
 	
 	@Autowired
 	private CustomerRepository repository;
+	@Autowired
+	private StudentRepository studentRepository;
 
 	public final static String USER_CENTER_PATH = "/user/center";
 	
@@ -36,6 +34,12 @@ public class UserCenterController {
     public final static String STUDENT_NEW_PATH = "/user/student/new";
     
     public final static String STUDENT_LIST_PATH = "/user/student/list";
+    
+    public final static String STUDENT_SEARCH_PATH = "/user/student/search";
+    
+    public final static String STUDENT_UPLOAD_PATH = "/user/student/upload";
+    
+    public final static String COURSE_BOOK_PATH = "/user/course/book";
 
 	public final static String SESSION_OPENID_KEY = "openCode";
 	
@@ -106,5 +110,22 @@ public class UserCenterController {
     @GetMapping(STUDENT_LIST_PATH)
     public String listStudent() {
         return "student_list"; // serve the page
+    }
+    
+    @GetMapping(COURSE_BOOK_PATH)
+    public String bookCourse() {
+        return "course_subscribe"; // serve the page
+    }
+    
+    @GetMapping(STUDENT_SEARCH_PATH)
+    public String searchStudent() {
+        return "student_search"; // serve the page
+    }
+    
+    @GetMapping(STUDENT_UPLOAD_PATH)
+    public String signAndUploadStudent(@RequestParam(value="studentId") String id, HttpSession session, Model model) {
+		Student student = studentRepository.findOne(id);
+    	model.addAttribute("studentContainer", new ChildContainer(student));
+        return "student_upload"; // serve the page
     }
 }
