@@ -7,6 +7,9 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+/**
+ * Course or lesson metadata
+ */
 @Entity
 @Table(name = "coursecategory")
 public class CourseCategory {

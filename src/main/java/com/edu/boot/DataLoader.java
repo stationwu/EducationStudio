@@ -19,6 +19,8 @@ import java.time.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.edu.web.rest.OrderController.lessonDateTimeFormat;
+
 @Component
 @org.springframework.core.annotation.Order(2)
 public class DataLoader implements CommandLineRunner {
@@ -106,10 +108,10 @@ public class DataLoader implements CommandLineRunner {
 
 		ArrayList<CourseCategory> courseCategories = new ArrayList<>();
 		if (0 == courseCategoryRepository.count()) {
-			CourseCategory courseCategory1 = new CourseCategory("绘本课", 24, new BigDecimal(2400),
+			CourseCategory courseCategory1 = new CourseCategory("绘本课", 24, new BigDecimal("0.24"),
 					images.stream().map(x -> x).collect(Collectors.toCollection(HashSet::new)), 100, false);
 			courseCategories.add(courseCategoryRepository.save(courseCategory1));
-			CourseCategory courseCategory2 = new CourseCategory("素描课体验课", 24, new BigDecimal(100),
+			CourseCategory courseCategory2 = new CourseCategory("素描课体验课", 24, new BigDecimal("0.1"),
 					new HashSet<>(), 5, true);
 			courseCategories.add(courseCategoryRepository.save(courseCategory2));
 		}
@@ -237,11 +239,13 @@ public class DataLoader implements CommandLineRunner {
 		}
 
 		List<Customer> customers = new ArrayList<>();
+		Customer customer = null;
+		Student student = null;
 		if (0 == customerRepository.count()) {
-			Customer customer = new Customer("123456", "Arthur", "13512345678", "中国上海");
+			customer = new Customer("123456", "Arthur", "13512345678", "中国上海");
 			customer = customerRepository.save(customer);
 
-			Student student = new Student("Arthur", "1987-03-02", Student.Gender.BOY);
+			student = new Student("Arthur", "1987-03-02", Student.Gender.BOY);
 			Set<Image> imagesList = new HashSet<>();
 			imagesList.add(images.get(1));
 			student.setImagesSet(imagesList);
@@ -283,21 +287,29 @@ public class DataLoader implements CommandLineRunner {
 		}
 
 		if (0 == orderRepository.count()) {
+			CourseProduct courseProduct = new CourseProduct();
+			CourseCategory courseCategory = courseCategories.get(1);
+
+			courseProduct.setCourseCategory(courseCategory);
+
+			courseProduct.setStudent(student);
+			courseProduct.setStartFrom(LocalDateTime.parse("2017-12-01 10:00", lessonDateTimeFormat));
+			courseProduct.setEndAt(LocalDateTime.parse("2017-12-01 11:00", lessonDateTimeFormat));
+			courseProduct.setQuantity(1);
+			courseProduct.setSubTotalAmount(courseCategory.getPrice().multiply(BigDecimal.valueOf(1))); // No discount so far
+			courseProduct.setAddress("地址稍后更新");
+			courseProduct = courseProductRepository.save(courseProduct);
+
 			Order order = new Order();
-			Map<Product, Integer> productMap = new HashMap<>();
-			productMap.put(products.get(0), 2);
-			order.setProductsMap(productMap);
-			Map<DerivedProduct, Integer> derivedProductMap = new HashMap<>();
-			derivedProductMap.put(derivedProducts.get(0), 3);
-			order.setDerivedProductsMap(derivedProductMap);
-			Map<ImageCollection, Integer> imageCollectionMap = new HashMap<>();
-			imageCollectionMap.put(imageCollections.get(0), 5);
-			order.setImageCollectionMap(imageCollectionMap);
-			order.setTotalAmount(new BigDecimal(1200));
-			Set<Order> orderSet = new HashSet<>();
-			order.setCustomer(customers.get(0));
+			order.addCourseProduct(courseProduct, 1);
+			order.setTotalAmount(courseProduct.getSubTotalAmount());
+			order.setDate(LocalDate.now().toString());
+			order.setCustomer(customer);
 			order.setStatus(Order.Status.CREATED);
-			orderSet.add(orderRepository.save(order));
+			order = orderRepository.save(order);
+
+			Set<Order> orderSet = new HashSet<>();
+			orderSet.add(order);
 		}
 	}
 }

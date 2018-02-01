@@ -6,6 +6,7 @@ import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.Map;
 
 @Entity
@@ -45,7 +46,7 @@ public class Order {
     @CollectionTable(name="ORDER_COURSEPRODUCT", joinColumns=@JoinColumn(name="ORDER_ID", referencedColumnName="ID"))
 	@MapKeyJoinColumn(name="COURSEPRODUCT_ID", referencedColumnName="ID")
 	@Column(name="COPIES_IN_ORDER")
-	private Map<CourseProduct, Integer> courseProductsMap;
+	private Map<CourseProduct, Integer> courseProductsMap = new HashMap<>();
 	
 	public String getDate() {
 		return date;
@@ -119,8 +120,16 @@ public class Order {
 		return courseProductsMap;
 	}
 
-	public void setCourseProductsMap(Map<CourseProduct, Integer> courseProductsMap) {
-		this.courseProductsMap = courseProductsMap;
+	public void addCourseProduct(CourseProduct courseProduct, int quantity) {
+		this.courseProductsMap.put(courseProduct, quantity);
+	}
+
+	public void updateourseProductQuantity(CourseProduct courseProduct, int quantity) {
+		if (quantity > 0) {
+			this.courseProductsMap.replace(courseProduct, quantity);
+		} else {
+			this.courseProductsMap.remove(courseProduct);
+		}
 	}
 
 	public Payment getPayment() {

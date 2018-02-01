@@ -3,11 +3,13 @@ package com.edu.web.rest;
 import com.edu.config.WechatPayProperties;
 import com.edu.dao.*;
 import com.edu.domain.*;
-import com.edu.domain.dto.ExperienceLessonBookingInfo;
+import com.edu.domain.dto.LessonBookingInfo;
 import com.edu.domain.dto.OrderContainer;
-import com.edu.domain.dto.ProductContainer;
 import com.edu.errorhandler.RequestDeniedException;
-import com.edu.utils.*;
+import com.edu.utils.Constant;
+import com.edu.utils.URLUtil;
+import com.edu.utils.WebUtils;
+import com.edu.utils.WxTimeStampUtil;
 import com.github.binarywang.wxpay.bean.notify.WxPayNotifyResponse;
 import com.github.binarywang.wxpay.bean.notify.WxPayOrderNotifyCoupon;
 import com.github.binarywang.wxpay.bean.notify.WxPayOrderNotifyResult;
@@ -20,10 +22,10 @@ import com.github.binarywang.wxpay.bean.result.WxPayOrderCloseResult;
 import com.github.binarywang.wxpay.bean.result.WxPayRefundResult;
 import com.github.binarywang.wxpay.exception.WxPayException;
 import com.github.binarywang.wxpay.service.WxPayService;
-import com.github.binarywang.wxpay.service.impl.WxPayServiceAbstractImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -33,27 +35,34 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.edu.utils.WxPayConstants.*;
+import static com.edu.utils.Constant.RESPONSE_ERROR_MESSAGE_HEADER;
+import static com.edu.utils.WxPayConstants.DEVICE_WEB;
+import static com.edu.utils.WxPayConstants.FEE_TYPE_CNY;
 import static com.github.binarywang.wxpay.bean.notify.WxPayNotifyResponse.fail;
 import static com.github.binarywang.wxpay.bean.notify.WxPayNotifyResponse.success;
 
 @Controller
 public class OrderController {
     public static final String PATH = "/api/v1/Order";
-    public static final String BUY_EXP_LESSON_PATH = "/api/v1/buylesson";
+    public static final String REQUEST_QUOTE_FOR_LESSON = "/api/v1/requestQuote";
     public static final String PAYMENT_NOTIFY_PATH = "/api/v1/pay/notify";
-    public static final String PAY_PATH = PATH + "/{id}/initiatePay";
-    public static final String CANCEL_PATH = PATH + "/{id}/cancelPay";
-    public static final String REQ_REFUND_PATH = PATH + "/{id}/requestRefund";
+    public static final String PAY_PATH = "/api/v1/Order/{id}/pay";
+    public static final String PAY_WITH_PARAMETER_PATH = "/api/v1/pay";
+    public static final String CANCEL_PATH = "/api/v1/Order/{id}/cancelPay";
+    public static final String REQ_REFUND_PATH = "/api/v1/Order/{id}/requestRefund";
     public static final String REFUND_PATH = "/manager/api/v1/order/{id}/refund";
     public static final String REFUND_NOTIFY_PATH = "/api/v1/refund/notify";
     public static final String PAY_RESULT_VIEW = "/paymentResult/{orderId}";
-
-    public static final String PAY_TEST_PATH = "/pay";
 
     @Autowired
     private OrderRepository orderRepository;
@@ -100,8 +109,7 @@ public class OrderController {
     @Autowired
     private WechatPayProperties wxPayProperties;
 
-    @Autowired
-    private WxPayConversionUtil wxPayConvUtil;
+    public static final DateTimeFormatter lessonDateTimeFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -122,90 +130,81 @@ public class OrderController {
     }
 
     @ResponseBody
-    @RequestMapping(value = BUY_EXP_LESSON_PATH, method = RequestMethod.POST)
-    public ResponseEntity<OrderContainer> buyExperienceLesson(@RequestBody ExperienceLessonBookingInfo bookingInfo, HttpSession session) {
+    @RequestMapping(value = REQUEST_QUOTE_FOR_LESSON, method = RequestMethod.POST)
+    public ResponseEntity<?> requestQuote(@RequestBody LessonBookingInfo bookingInfo, HttpSession session) {
+        HttpHeaders headers = new HttpHeaders();
         String openId = (String)session.getAttribute(Constant.SESSION_OPENID_KEY);
 
         Customer customer = customerRepository.findOneByOpenCode(openId);
 
         Course bookedLesson = courseRepository.findOne(bookingInfo.getCourseId());
         if (bookedLesson == null) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            headers.add(RESPONSE_ERROR_MESSAGE_HEADER, String.format("课程（%d）未预约", bookingInfo.getCourseId()));
+            return new ResponseEntity<>(headers, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
+        CourseCategory courseCategory = bookedLesson.getCourseCategory();
+        if (courseCategory == null) {
+            headers.add(RESPONSE_ERROR_MESSAGE_HEADER, String.format("预约课程（%d）的课程信息无效", bookingInfo.getCourseId()));
+            return new ResponseEntity<>(headers, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
         Student student = studentRepository.findOne(bookingInfo.getStudentId());
         if (student == null) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            headers.add(RESPONSE_ERROR_MESSAGE_HEADER, String.format("学生（%s）不存在", bookingInfo.getStudentId()));
+            return new ResponseEntity<>(headers, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        Optional<Student> myChild = customer.getStudents().stream().filter(s -> s.getId().equals(student.getId())).findFirst();
-        if (!myChild.isPresent()) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        if (!customer.getStudents().contains(student)) { // Not my child, cannot pay for him
+            headers.add(RESPONSE_ERROR_MESSAGE_HEADER, String.format("不能购买课程，学生（%s）不是您的孩子", bookingInfo.getStudentId()));
+            return new ResponseEntity<>(headers, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
 
-    @ResponseBody
-    @RequestMapping(value = PATH, method = RequestMethod.POST)
-    public OrderContainer placeOrder(@RequestBody , HttpSession session) {
-        String openId = (String)session.getAttribute(Constant.SESSION_OPENID_KEY);
+        int quantity = 1; // Always 1 lesson per order...
 
-        Customer customer = customerRepository.findOneByOpenCode(openId);
+        // Please regard it as orderItem (without quantity though), while productCategory could be
+        // regarded as the product master
+        CourseProduct courseProduct = new CourseProduct();
 
-        ProductCart cart = customer.getCart();
+        courseProduct.setCourseCategory(courseCategory);
+
+        courseProduct.setStudent(student);
+        courseProduct.setStartFrom(LocalDateTime.parse(bookedLesson.getDate() + " " + bookedLesson.getTimeFrom(), lessonDateTimeFormat));
+        courseProduct.setEndAt(LocalDateTime.parse(bookedLesson.getDate() + " " + bookedLesson.getTimeTo(), lessonDateTimeFormat));
+        courseProduct.setQuantity(quantity);
+        courseProduct.setSubTotalAmount(courseCategory.getPrice().multiply(BigDecimal.valueOf(quantity))); // No discount so far
+        courseProduct.setAddress("地址稍后更新");
+        courseProduct = courseProductRepository.save(courseProduct);
+
         Order order = new Order();
-        Map<Product, Integer> productMap = new HashMap<>();
-        Map<DerivedProduct, Integer> derivedProductMap = new HashMap<>();
-        Map<ImageCollection, Integer> imageCollectionMap = new HashMap<>();
-        Map<ClassProduct, Integer> classProductMap = new HashMap<>();
-        double amount = 0d;
-        for (ProductContainer productContainer : products) {
-            switch (productContainer.getType()) {
-                case 1:
-                    Product product = productRepository.findOne(productContainer.getId());
-                    productMap.put(product, productContainer.getQuantity());
-                    amount += productContainer.getProductPrice() * productContainer.getQuantity();
-                    cart.removeProduct(product);
-                    break;
-                case 2:
-                    DerivedProduct derivedProduct = derivedProductRepository.findOne(productContainer.getId());
-                    derivedProductMap.put(derivedProduct, productContainer.getQuantity());
-                    amount += productContainer.getProductPrice() * productContainer.getQuantity();
-                    cart.removeDerivedProduct(derivedProduct);
-                    break;
-                case 3:
-                    ImageCollection imageCollection = imageCollectionRepository.findOne(productContainer.getId());
-                    imageCollectionMap.put(imageCollection, productContainer.getQuantity());
-                    amount += productContainer.getProductPrice() * productContainer.getQuantity();
-                    cart.removeImageCollection(imageCollection);
-                    break;
-                case 4:
-                    ClassProduct classProduct = classProductRepository.findOne(productContainer.getId());
-                    classProductMap.put(classProduct, productContainer.getQuantity());
-                    amount += productContainer.getProductPrice() * productContainer.getQuantity();
-                    cart.removeClassProduct(classProduct);
-                    break;
-            }
-        }
-
-        cartRepository.save(cart);
-
-        order.setProductsMap(productMap);
-        order.setDerivedProductsMap(derivedProductMap);
-        order.setImageCollectionMap(imageCollectionMap);
-        order.setClassProductsMap(classProductMap);
-        order.setTotalAmount(amount);
-        LocalDate localDate = LocalDate.now();
-        order.setDate(localDate.toString());
+        order.addCourseProduct(courseProduct, quantity);
+        order.setTotalAmount(courseProduct.getSubTotalAmount());
+        order.setDate(LocalDate.now().toString());
         order.setCustomer(customer);
         order.setStatus(Order.Status.CREATED);
-        orderRepository.save(order);
+        order = orderRepository.save(order);
 
-        return new OrderContainer(order);
+        return new ResponseEntity<>(new OrderContainer(order), HttpStatus.OK);
     }
 
     @ResponseBody
-    @RequestMapping(value = PAY_TEST_PATH, method = RequestMethod.POST)
-    public PayResult testPay(@RequestParam("orderId") long orderId, HttpServletRequest request) {
-        String openId = (String) request.getSession().getAttribute(Constant.SESSION_OPENID_KEY);
+    @RequestMapping(value = PAY_WITH_PARAMETER_PATH, method = RequestMethod.POST)
+    public PayResult payWithParameter(@RequestParam("orderId") String orderId, HttpServletRequest request) {
+        String openCode = (String) request.getSession().getAttribute(Constant.SESSION_OPENID_KEY);
+        String spbillCreateIp = webUtils.getClientIp(request);
+        String paymentNotifyUrl = URLUtil.getHostUrl(request) + PAYMENT_NOTIFY_PATH;
+
+        return doPay(openCode, orderId, spbillCreateIp, paymentNotifyUrl);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = PAY_PATH, method = RequestMethod.POST)
+    public PayResult pay(@PathVariable("id") String orderId, HttpServletRequest request) {
+        String openCode = (String) request.getSession().getAttribute(Constant.SESSION_OPENID_KEY);
+        String spbillCreateIp = webUtils.getClientIp(request);
+        String paymentNotifyUrl = URLUtil.getHostUrl(request) + PAYMENT_NOTIFY_PATH;
+
+        return doPay(openCode, orderId, spbillCreateIp, paymentNotifyUrl);
+    }
+
+    private PayResult doPay(String openCode, String orderId, String spbillCreateIp, String paymentNotifyUrl) {
         Order order = orderRepository.findOne(orderId);
 
         if (order == null) {
@@ -217,63 +216,14 @@ public class OrderController {
 
         WxPayUnifiedOrderRequest payRequest = WxPayUnifiedOrderRequest.newBuilder()
                 //.appid()
-                .outTradeNo(wxPayConvUtil.toOutTradeNo(order.getId()))
-                .openid(openId)
+                .outTradeNo(order.getId())
+                .openid(openCode)
                 .body(buildBody(order))
-                .spbillCreateIp(webUtils.getClientIp(request))
+                .spbillCreateIp(spbillCreateIp)
                 .timeStart(wxTimeStampUtil.getCurrentTimeStamp())
                 .timeExpire(wxTimeStampUtil.builder().now().afterMinutes(wxPayProperties.getExpiryInMinutes()).build())
-                .notifyURL(URLUtil.getHostUrl(request) + PAYMENT_NOTIFY_PATH)
-                .totalFee(WxPayBaseRequest.yuanToFee(String.valueOf(order.getTotalAmount()))) // 198.99 -> "198.99" -> 19899
-                .build();
-
-        WxPayMpOrderResult payResult = null;
-        try {
-            payResult = wxPayService.createOrder(payRequest);
-        } catch (WxPayException e) {
-            return PayResult.fail("创建预付单失败, 原因:{" + e.getMessage() + "}");
-        }
-
-        Payment payment;
-        if (order.getPayment() != null) {
-            payment = order.getPayment();
-        } else {
-            payment = new Payment();
-        }
-
-        payment.setTimeStart(payRequest.getTimeStart());
-        payment.setSpBillCreateIp(payRequest.getSpbillCreateIp());
-        payment = paymentRepository.save(payment);
-
-        order.setPayment(payment);
-        order.setStatus(Order.Status.NOTPAY);
-        orderRepository.save(order);
-
-        return PayResult.ok(payResult);
-    }
-
-    @ResponseBody
-    @RequestMapping(value = PAY_PATH, method = RequestMethod.POST)
-    public PayResult pay(@PathVariable("id") long id, HttpServletRequest request) {
-        String openId = (String) request.getSession().getAttribute(Constant.SESSION_OPENID_KEY);
-        Order order = orderRepository.findOne(id);
-
-        if (order == null) {
-            return PayResult.fail( "订单号（" + id + "）不存在" );
-        }
-        if (order.getStatus() != Order.Status.CREATED && order.getStatus() != Order.Status.NOTPAY) {
-            return PayResult.fail( "订单（" + id + "）已关闭，无法继续支付" );
-        }
-
-        WxPayUnifiedOrderRequest payRequest = WxPayUnifiedOrderRequest.newBuilder()
-                .outTradeNo(wxPayConvUtil.toOutTradeNo(order.getId()))
-                .openid(openId)
-                .body(buildBody(order))
-                .spbillCreateIp(webUtils.getClientIp(request))
-                .timeStart(wxTimeStampUtil.getCurrentTimeStamp())
-                .timeExpire(wxTimeStampUtil.builder().now().afterMinutes(wxPayProperties.getExpiryInMinutes()).build())
-                .notifyURL(URLUtil.getHostUrl(request) + PAYMENT_NOTIFY_PATH)
-                .totalFee(WxPayBaseRequest.yuanToFee(String.valueOf(order.getTotalAmount()))) // 198.99 -> "198.99" -> 19899
+                .notifyURL(paymentNotifyUrl)
+                .totalFee(WxPayBaseRequest.yuanToFee(order.getTotalAmount().toString())) // 198.99 -> "198.99" -> 19899
                 .build();
 
         WxPayMpOrderResult payResult = null;
@@ -312,7 +262,7 @@ public class OrderController {
             return WxPayNotifyResponse.fail("无效请求 " + e.getMessage());
         }
 
-        long orderId = Long.parseLong(result.getOutTradeNo());
+        String orderId = result.getOutTradeNo();
         Order order = orderRepository.findOne(orderId);
 
         if (order == null) {
@@ -362,18 +312,23 @@ public class OrderController {
         order.setStatus(Order.Status.PAID);
         orderRepository.save(order);
 
+        //TODO: 推送微信模板消息通知客户上课时间、地点、学生姓名
+
         return success("支付完成");
     }
 
     @RequestMapping(value = CANCEL_PATH, method = RequestMethod.POST)
-    public ResponseEntity<String> cancelPay(@PathVariable("id") long id) {
-        Order order = orderRepository.findOne(id);
+    public ResponseEntity<?> cancelPay(@PathVariable("id") String orderId) {
+        HttpHeaders headers = new HttpHeaders();
+        Order order = orderRepository.findOne(orderId);
 
         if (order == null) {
-            return new ResponseEntity<>("订单号（" + id + "）不存在", HttpStatus.NOT_FOUND);
+            headers.add(RESPONSE_ERROR_MESSAGE_HEADER, "订单号（" + orderId + "）不存在");
+            return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
         }
         if (order.getStatus() != Order.Status.CREATED && order.getStatus() != Order.Status.NOTPAY) {
-            return new ResponseEntity<>("订单（" + id + "）已关闭，无法取消", HttpStatus.BAD_REQUEST);
+            headers.add(RESPONSE_ERROR_MESSAGE_HEADER, "订单（" + orderId + "）已关闭，无法取消");
+            return new ResponseEntity<>(headers, HttpStatus.BAD_REQUEST);
         }
 
         order.setStatus(Order.Status.CANCELLED);
@@ -382,47 +337,55 @@ public class OrderController {
         WxPayOrderCloseResult result;
 
         try {
-            result = wxPayService.closeOrder(String.valueOf(id));
+            result = wxPayService.closeOrder(orderId);
         } catch (WxPayException e) {
-            return new ResponseEntity<>("取消付款时发生了错误", HttpStatus.INTERNAL_SERVER_ERROR);
+            headers.add(RESPONSE_ERROR_MESSAGE_HEADER, "取消付款时发生了错误");
+            return new ResponseEntity<>(headers, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        return new ResponseEntity<>(result.toString(), HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @RequestMapping(value = REQ_REFUND_PATH, method = RequestMethod.POST)
-    public ResponseEntity<String> requestRefund(@PathVariable("id") long id) {
-        Order order = orderRepository.findOne(id);
+    public ResponseEntity<?> requestRefund(@PathVariable("id") String orderId) {
+        HttpHeaders headers = new HttpHeaders();
+        Order order = orderRepository.findOne(orderId);
 
         if (order == null) {
-            return new ResponseEntity<>("订单号（" + id + "）不存在", HttpStatus.NOT_FOUND);
+            headers.add(RESPONSE_ERROR_MESSAGE_HEADER, "订单号（" + orderId + "）不存在");
+            return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
         }
         if (order.getStatus() != Order.Status.PAID) {
-            return new ResponseEntity<>("订单（" + id + "）未支付，无法申请退款", HttpStatus.BAD_REQUEST);
+            headers.add(RESPONSE_ERROR_MESSAGE_HEADER, "订单（" + orderId + "）未支付，无法申请退款");
+            return new ResponseEntity<>(headers, HttpStatus.BAD_REQUEST);
         }
 
         order.setStatus(Order.Status.REFUND_REQUESTED);
-        orderRepository.save(order);
+        // orderRepository.save(order); // not supported yet
 
-        //TODO: Mark it as not supported at the moment
-        return new ResponseEntity<>("尚不支持退款", HttpStatus.NOT_IMPLEMENTED);
+        headers.add(RESPONSE_ERROR_MESSAGE_HEADER, "尚不支持退款");
+        return new ResponseEntity<>(headers, HttpStatus.NOT_IMPLEMENTED);
     }
 
     @Transactional
     @RequestMapping(value = REFUND_PATH, method = RequestMethod.POST)
-    public ResponseEntity<String> refund(@PathVariable("id") long id) {
-        Order order = orderRepository.findOne(id);
+    public ResponseEntity<?> refund(@PathVariable("id") String orderId) {
+        HttpHeaders headers = new HttpHeaders();
+        Order order = orderRepository.findOne(orderId);
 
         if (order == null) {
-            return new ResponseEntity<>("订单 #" + id + " 不存在", HttpStatus.NOT_FOUND);
+            headers.add(RESPONSE_ERROR_MESSAGE_HEADER, "订单号（" + orderId + "）不存在");
+            return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
         }
         if (order.getStatus() != Order.Status.REFUND_REQUESTED) {
-            return new ResponseEntity<>("订单 #" + id + " 未申请退款", HttpStatus.BAD_REQUEST);
+            headers.add(RESPONSE_ERROR_MESSAGE_HEADER, "订单（" + orderId + "）未申请退款");
+            return new ResponseEntity<>(headers, HttpStatus.BAD_REQUEST);
         }
 
         Payment payment = order.getPayment();
         if (payment == null) {
-            return new ResponseEntity<>("订单 #" + id + " 尚未付款", HttpStatus.NOT_FOUND);
+            headers.add(RESPONSE_ERROR_MESSAGE_HEADER, "订单（" + orderId + "）尚未付款");
+            return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
         }
 
         // Lock entry to prevent two people approve refund at same time
@@ -455,13 +418,14 @@ public class OrderController {
         try {
             result = wxPayService.refund(refundRequest);
         } catch (WxPayException e) {
-            return new ResponseEntity<>("退款失败, 原因:{" + e.getMessage() + "}", HttpStatus.INTERNAL_SERVER_ERROR);
+            headers.add(RESPONSE_ERROR_MESSAGE_HEADER, "退款失败, 原因:{" + e.getMessage() + "}");
+            return new ResponseEntity<>(headers, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         payment.setRefund(refund);
         paymentRepository.save(payment);
 
-        return new ResponseEntity<>(result.toString(), HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @ResponseBody
@@ -476,7 +440,7 @@ public class OrderController {
         }
 
         WxPayRefundNotifyResult.ReqInfo reqInfo = result.getReqInfo();
-        long orderId = Long.parseLong(reqInfo.getOutTradeNo());
+        String orderId = reqInfo.getOutTradeNo();
         Order order = orderRepository.findOne(orderId);
 
         if (order == null) {
@@ -502,7 +466,7 @@ public class OrderController {
     }
 
     @RequestMapping(value = PAY_RESULT_VIEW, method = RequestMethod.GET)
-    public ModelAndView onSuccessfulPay(@PathVariable("orderId") long orderId) {
+    public ModelAndView onSuccessfulPay(@PathVariable("orderId") String orderId) {
         ModelAndView mav = new ModelAndView();
         Order order = orderRepository.findOne(orderId);
 
@@ -534,6 +498,11 @@ public class OrderController {
         if (order.getCourseProductsMap() != null && !order.getCourseProductsMap().isEmpty()) {
             for (Map.Entry<CourseProduct, Integer> entry : order.getCourseProductsMap().entrySet()) {
                 list.add(entry.getKey().getCourseCategory().getCourseName() + " x " + entry.getValue());
+            }
+            String template = "课程：%s 数量：%d 节 上课时间 %s - %s";
+            for (CourseProduct courseProduct : order.getCourseProductsMap().keySet()) {
+                list.add(String.format(template, courseProduct.getCourseCategory().getCourseName(),
+                        courseProduct.getStartFrom().format(lessonDateTimeFormat), courseProduct.getEndAt().format(lessonDateTimeFormat)));
             }
         }
 
