@@ -17,23 +17,28 @@ $(function(){
         data.children("input").val("");
         data.children(".thumbnail").removeClass("active");
         data.children(".thumbnail").eq(0).addClass("active");
+        data.children("input[name='birth']").attr("placeholder","请选择上课学员的生日");
+        data.children("input[name='birth']").removeAttr("style");
         $("#add-student-form-btn").before(data);
         return false;
     });
     $("#add-student-btn").click(function(){
         children = [];
+        var flag = true;
         $("#add-student-form .student-info").each(function (i) {
             var name = $(this).children("input[name='name']").val();
             var birth = $(this).children("input[name='birth']").val();
             var sex = $(this).children(".thumbnail.active").hasClass("boy")?"BOY":"GIRL";
 
-            var flag = validate(name, "name");
-            if(!flag){
+            var vali = validate(name, "name");
+            if(!vali){
+                flag = false;
                 msg_alert("confirm_one_btn", "第"+ (i+1) +"个学员姓名格式不正确");
                 return false;
             }
-            var flag = validate(birth, "date");
-            if(!flag){
+            var vali = validate(birth, "date");
+            if(!vali){
+                flag = false;
                 msg_alert("confirm_one_btn", "第"+ (i+1) +"个学员生日格式不正确");
                 return false;
             }
@@ -43,7 +48,7 @@ $(function(){
                 gender: sex
             });
         });
-        if(!children.length){
+        if(!children.length || !flag){
             return false;
         }
         //调用添加学员接口

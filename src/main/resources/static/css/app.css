@@ -6,12 +6,45 @@ body, html {
 body{
     position: relative;
 }
+a, a:hover{
+    text-decoration: none;
+}
+ul, li{
+    list-style: none;
+    margin: 0rem;
+    padding: 0rem;
+}
 input, button{
     outline:none;
     border: none;
 }
 input[type="submit"], input[type="button"], button{
     -webkit-appearance: none;
+}
+.layui-m-layer{
+    font-size: 14px;
+}
+[data-dpr="2"] .layui-m-layer{
+    font-size: 28px;
+}
+[data-dpr="3"] .layui-m-layer{
+    font-size: 42px;
+}
+.layui-m-layer .layui-m-layer-msg .layui-m-layercont{
+    padding: 0.32rem 0.66667rem!important;
+}
+.layui-m-layer .layui-m-layercont{
+    padding: 1.3333rem 0.8rem!important;
+    font-size: 14px;
+    line-height: 14px;
+}
+[data-dpr="2"] .layui-m-layer .layui-m-layercont{
+    font-size: 28px;
+    line-height: 28px;
+}
+[data-dpr="3"] .layui-m-layer .layui-m-layercont{
+    font-size: 42px;
+    line-height: 42px;
 }
 .layui-m-layermain .layui-m-layerchild.popup{
     width: 7.6rem;
@@ -30,6 +63,13 @@ input[type="submit"], input[type="button"], button{
 }
 .popup .layui-m-layerbtn span[yes]{
     color: #2d2d2d;
+    font-size: 15px;
+}
+[data-dpr="2"] .popup .layui-m-layerbtn span[yes]{
+    font-size: 30px;
+}
+[data-dpr="3"] .popup .layui-m-layerbtn span[yes]{
+    font-size: 45px;
 }
 #signup{
     background: url("../images/singup-bg.png") 0 0 no-repeat;
@@ -55,12 +95,6 @@ input[type="submit"], input[type="button"], button{
 [data-dpr="3"] #signup-form{
     font-size: 45px;
 }
-[data-dpr="2"] #signup-form{
-    font-size: 30px;
-}
-[data-dpr="3"] #signup-form{
-    font-size: 45px;
-}
 #signup-form .form-cell{
     width: 100%;
     position: relative;
@@ -75,6 +109,12 @@ input[type="submit"], input[type="button"], button{
     /*line-height: 1.33333rem;*/
     border-bottom: solid 1px #ededed;
     display: block;
+}
+[data-dpr="2"] #signup-form input[type='text']{
+    font-size: 30px;
+}
+[data-dpr="3"] #signup-form input[type='text']{
+    font-size: 45px;
 }
 #mobileNumberIcon{
     display: inline-block;
@@ -279,6 +319,7 @@ input[type="submit"], input[type="button"], button{
 }
 #add-student-form input[name='birth']:before{
     content: attr(placeholder);
+    color: #999;
 }
 /*#add-student-form input[name='birth']::-webkit-calendar-picker-indicator {
    display: none;
@@ -377,181 +418,253 @@ input[type="submit"], input[type="button"], button{
 
 
 /**course-subscribe部分**/
-
-/*.dsx-title {
+#course-tab{
+    width: 6.56rem;
+    height: 0.68rem;
+    line-height: 0.68rem;
+    font-size: 15px;
+    margin: 0.53333rem auto 0.28rem auto;
+}
+[data-dpr="2"] #course-tab{
+    font-size: 30px;
+}
+[data-dpr="3"] #course-tab{
+    font-size: 45px;
+}
+#course-tab li{
+    display: inline-block;
+    width: 1.6rem;
     text-align: center;
+    position: relative;
+}
+#course-tab li:nth-child(1){
+    float: left;
+}
+#course-tab li:nth-child(2){
+    float: right;
+}
+#course-tab li.active i{
+    display: inline-block;
+    width: 0.64rem;
+    height: 0.06667rem;
+    background-color: #ffcd0d;
+    position: absolute;
+    bottom: -0.08rem;
+    left: 0rem;
+    border-radius: 0.03333rem;
+}
+#course-subscribe{
+    position: relative;
+    padding: 0.66667rem 0 1.6rem 0;
+}
+#course-title{
+    width: 7.86667rem;
+    padding: 0 0.66667rem;
+    height: 0.92rem;
+    line-height: 0.92rem;
+    margin: 0rem auto 0.4rem auto;
+    background-color: #ffcd0d;
+    border-radius: 0.46rem;
+    font-size: 15px;
+}
+[data-dpr="2"] #course-title{
+    font-size: 30px;
+}
+[data-dpr="3"] #course-title{
+    font-size: 45px;
+}
+#course-title .icon{
+    display: inline-block;
+    width: 0.44rem;
+    height: 0.44rem;
+    background: url("../images/sprite.png") no-repeat;
+    background-size: 6.4rem auto;
+    background-position: -4.93333rem -0.12rem;
+    position: relative;
+    top: 0.08rem;
+    margin-right: 0.08rem;
+}
+#course-title i{
+    display: inline-block;
+    width: 0.28rem;
+    height: 0.18rem;
+    background: url("../images/sprite.png") no-repeat;
+    background-size: 6.4rem auto;
+    background-position: -3.86667rem -0.36rem;
+    float: right;
+    position: relative;
+    top: 0.38rem;
+}
+#course-list{
+    background-color: #fff;
+    font-size: 12px;
+    width: 7.89333rem;
+    margin: 0 auto;
+}
+[data-dpr="2"] #course-list{
     font-size: 24px;
-    color: #3cc51f;
-    font-weight: 400;
-    margin: 0 15%;
 }
-
-.dsx-sub-title {
-    text-align: center;
-    color: #888;
-    font-size: 14px;
+[data-dpr="3"] #course-list{
+    font-size: 36px;
 }
-
-.dsx-header {
-    padding: 20px 0;
+#course-list li{
+    height: 1.08rem;
+    line-height: 1.08rem;
+    padding-left: 0.52rem;
+    border-bottom: solid 1px #dedede;
 }
-
-.dsx-content-padded {
-    padding: 15px;
+#subscribe{
+    display: none;
 }
-
-.dsx-second-title {
-    text-align: center;
+#time-list{
+    background-color: #fff;
+    padding: 0.32rem 0.66667rem;
+    width: 7.86665rem;
+    margin: 0 auto 0.66667rem auto;
+    font-size: 12px;
+}
+[data-dpr="2"] #time-list{
     font-size: 24px;
-    color: #3cc51f;
-    font-weight: 400;
-    margin: 0 15%;
 }
-
-footer {
+[data-dpr="3"] #time-list{
+    font-size: 36px;
+}
+#time-list li{
+    height: 0.74667rem;
+    line-height: 0.74667rem;
+}
+#time-list li.select{
+    color: #ffcd0d;
+}
+#time-list li .subscribe-btn{
+    height: 0.52rem;
+    line-height: 0.52rem;
+    width: 1.36rem;
+    float: right;
+    background-color: #ffcd0d;
+    font-size: 11px;
     text-align: center;
-    font-size: 14px;
-    padding: 20px;
+    border-radius: 0.26rem;
+    position: relative;
+    top: 0.1rem;
+    color: #b1911b;
 }
-
-footer a {
+#time-list li.active .subscribe-btn{
+    color: #000;
+    opacity: 1;
+}
+[data-dpr="2"] #time-list li .subscribe-btn{
+    font-size: 22px;
+}
+[data-dpr="3"] #time-list li .subscribe-btn{
+    font-size: 33px;
+}
+#time-list li.select .subscribe-btn i{
+    display: inline-block;
+    width: 0.32rem;
+    height: 0.21333rem;
+    background: url("../images/sprite.png") no-repeat;
+    background-size: 6.4rem auto;
+    background-position: -5.46667rem -0.32rem;
+}
+#subscribe-time{
+    text-align: center;
+    display: none;
+}
+#subscribe-time em{
+    display: inline-block;
+    width: 0.12rem;
+    height: 0.12rem;
+    margin-right: 0.12rem;
+    border-radius: 0.06rem;
+    background-color: #ffcd0d;
+    position: relative;
+    top: -0.08rem;
+}
+/**course_list部分**/
+.course-info{
+    width: 8rem;
+    height: 2.28rem;
+    padding: 0.4rem 0 0.4rem 1.2rem;
     color: #999;
-    text-decoration: none;
-}
-
-.dsx-row {
-    margin: 0.8em !important;
-}
-
-
-.dsx-weui-cell {
-    margin-left: 0.8em !important;
-    margin-right: 0.8em !important;
-}
-.weui-module-grids{
-	position: relative;
-	overflow: hidden;
-}
-
-.weui-module-grid {
-    position: relative;
-    float: left;
-    padding: 20px 10px;
-    width: 50%;
-    height: 50%;
-    box-sizing: border-box;
-    border-width:1px;
-}
-
-.weui-module-grid-prod {
-    position: relative;
-    float: left;
-    padding: 2px 2px;
-    width: 50%;
-    height: 50%;
-    box-sizing: border-box;
-    border-width:1px;
-}
-
-.weui-grid-dsx-icon-prod {
-    height: 120px;
-    margin: 0 auto;
-    border: #124B28;
-    border-style: solid;
-    border-radius: 4px;
-    border-width:2px;
-}
-
-.weui-grid-dsx-icon {
-	width: 120px;
-    height: 120px;
-    margin: 0 auto;
-    border: #124B28;
-    border-style: solid;
-    border-radius: 4px;
-    padding: 4px;
-}
-
-.dsx-custom-vcode-btn {
-	color:#124B28 !important;
-}
-
-.tip-bar-color {
-	background: #124B28 !important;
-	margin-bottom: 4px;
-}
-
-.dsx-ztsp-title {
-	font-weight: 400;
+    border-radius: 0.28rem;
+    background-color: #fff;
+    margin: 0 auto 0.28rem auto;
     font-size: 12px;
-    width: auto;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    word-wrap: normal;
-    word-wrap: break-word;
-    word-break: break-all;
+    position: relative;
+    background: url("../images/course-info-bg.png") no-repeat #fff;
+    background-position: 103%;
+    background-size: 3.4rem;
 }
-
-.weui-form-preview__hd .dsx-order-money {
-    font-style: normal !important;
-    font-size: 1.0em !important;
+[data-dpr="2"] .course-info{
+    font-size: 24px;
 }
-. dsx-transport-fee {
-	font-style: normal !important;
-    font-size: 0.5em !important;
+[data-dpr="3"] .course-info{
+    font-size: 36px;
 }
-.dsx-ztsp-price {
-	color: #124B28;
-    font-size: 12px;
-    line-height: 1.2;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+.course-info .num{
+    color: #222;
+    font-size: 15px;
+    background: url("../images/couse-info-icon.png") no-repeat;
+    height: 0.89333rem;
+    width: 0.89333rem;
+    background-size: 0.89333rem;
+    position: absolute;
+    left: 0rem;
+    top: 0rem;
+    text-align: center;
+    line-height: 0.66rem;
 }
-
-.dsx-ztsp-info {
-	-webkit-box-flex: 1;
-    -webkit-flex: 1;
-    flex: 1;
-    padding-left: 6px;
-    min-width: 0;
+[data-dpr="2"] .course-info .num{
+    font-size: 30px;
 }
-
-.dsx-ztsp-thumb-image {
-	width: 50%;
-    margin-left: 0px;
-    max-height: 100%;
-    vertical-align: middle;
+[data-dpr="3"] .course-info .num{
+    font-size: 45px;
 }
-
-.dsx-myworks-area {
-	position: relative;
-    overflow: hidden;
-    height: 240px;
+.course-info .student-name{
+    color: #222;
+    font-size: 18px;
+    height: 0.48rem;
+    line-height: 0.48rem;
+    margin-bottom: 0.4rem;
 }
-
-.dsx-myworks-image {
-	position: relative;
-    float: left;
-    width: 33.33%;
-    height: 100%;
-    box-sizing: border-box;
-    border-width: 1px;
+[data-dpr="2"] .student-name{
+    font-size: 36px;
 }
-
-.dsx-order-thumb {
-	max-height: 100%;
-    margin-left: 2px !important;
-    margin-top: auto !important;
-    margin-bottom: auto !important;
-    vertical-align: top;
+[data-dpr="3"] .student-name{
+    font-size: 54px;
 }
-
-.dsx-user-info {
-	font-style: normal;
-	font-size: 1em !important;
-}*/
-
+.course-info .course-name,.course-info .time,.course-info .address{
+    height: 0.53333rem;
+    line-height: 0.53333rem;
+}
+.course-info .course-name i,.course-info .time i,.course-info .address i{
+    display: inline-block;
+    background: url("../images/sprite.png") no-repeat;
+    background-size: 6.4rem auto;
+    margin-right: 0.2rem;
+    position: relative;
+    top: 0.06rem;
+}
+.course-info .course-name i{
+    width: 0.2rem;
+    height: 0.26667rem;
+    background-position: -0.13333rem -0.64rem;
+    margin-right: 0.1rem;
+    top: 0.06rem;
+}
+.course-info .time i{
+    width: 0.28rem;
+    height: 0.32rem;
+    background-position: -0.66667rem -0.64rem;
+    top: 0.08rem;
+}
+.course-info .address i{
+    width: 0.21333rem;
+    height: 0.29333rem;
+    background-position: -1.2rem -0.64rem;
+    top: 0.04rem;
+}
+#course-info {
+    display: none;
+}

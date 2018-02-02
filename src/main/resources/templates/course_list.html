@@ -1,18 +1,26 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title>学员信息</title>
+        <title>我的课程</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
 	    <link href="/css/app.css" media="screen" rel="stylesheet"/>
     </head>
     <body style="background-color: #f5f5f1;position: relative;">
-        <div id="student-list">
-            <a id="add-student-btn" class="bottom-btn" href="/user/student/new"/><i></i>添加学员</a>
+        <div id="course-list-content">
+            <ul id="course-tab">
+                <li data-type="subscribe-course" class="active">预约课程<i></i></li>
+                <li data-type="course-info">课程详情<i></i></li>
+            </ul>
+            <div id="subscribe-course" class="content">
+            </div>
+            <div id="course-info" class="content">
+                暂无内容
+            </div>
         </div>
 	    <script src="/js/jquery.min.js" type="text/javascript" ></script>
 	    <script src="/js/flexible.js" type="text/javascript" ></script>
         <script src="/js/common_fns.js" type="text/javascript" ></script>
-        <script src="/js/student_list.js" type="text/javascript" ></script>
+        <script src="/js/course_list.js" type="text/javascript" ></script>
         <script src="/js/layer_mobile/layer.js" type="text/javascript" ></script>
     </body>
 </html>
