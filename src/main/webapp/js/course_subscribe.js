@@ -7,7 +7,6 @@ $(function(){
         url: "/api/v1/CourseCategory?studentId="+student_id,
         dataType: "json",
         success: function(data){
-            console.log(data);
             courses = data;
             if(!courses.length){
                 msg_alert("confirm_one_btn", "请先添加课程~");
@@ -55,7 +54,7 @@ $(function(){
         return false;
     });
 
-    $("#course-list").delegate("li", "click", function(){
+    $("#course-subscribe").delegate("#course-list li", "click", function(){
         var id = $(this).attr("data-id");
         var type = $(this).attr("data-type");
         if(type == "demo"){
@@ -69,7 +68,6 @@ $(function(){
 
 
         if(count == "0"){
-            //////////////////拿到学生姓名和老师手机
             var data = {
                 "studentId": student_id,
             };
@@ -82,7 +80,7 @@ $(function(){
                 success: function(data){
                     console.log(data);
                     var student_name = data.childName;
-                    var mobile = data.hardcode;
+                    var mobile = "18800000000";
                     msg_alert("confirm_one_btn", student_name + "的" + name + "课程已用完，请联系老师(" + mobile + ")购买课程~");
                 },
                 error: function(){
