@@ -22,6 +22,8 @@ public class CourseContainer {
 	
 	private int maxSeat;
 	
+	private String address;
+	
 	public CourseContainer(){
 		
 	}
@@ -35,6 +37,7 @@ public class CourseContainer {
 		this.maxSeat = course.getMaxSeat();
 		this.courseCategoryId = course.getCourseCategory().getId();
 		this.courseName = course.getCourseCategory().getCourseName();
+		this.address = course.getAddress();
 	}
 
 }

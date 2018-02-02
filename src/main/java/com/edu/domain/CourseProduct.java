@@ -1,7 +1,13 @@
 package com.edu.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
+/**
+ * Order line item
+ */
 @Entity
 @Table(name = "courseprod")
 public class CourseProduct {
@@ -14,7 +20,17 @@ public class CourseProduct {
     
     @ManyToOne
 	private CourseCategory courseCategory;
-    
+
+    @Min(1)
+    private int quantity;
+
+    private BigDecimal subTotalAmount;
+
+    private LocalDateTime startFrom;
+
+    private LocalDateTime endAt;
+
+    private String address;
 
 	public Student getStudent() {
 		return student;
@@ -40,4 +56,58 @@ public class CourseProduct {
 		this.courseCategory = courseCategory;
 	}
 
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+
+	public BigDecimal getSubTotalAmount() {
+		return subTotalAmount;
+	}
+
+	public void setSubTotalAmount(BigDecimal subTotalAmount) {
+		this.subTotalAmount = subTotalAmount;
+	}
+
+	public LocalDateTime getStartFrom() {
+		return startFrom;
+	}
+
+	public void setStartFrom(LocalDateTime startFrom) {
+		this.startFrom = startFrom;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public LocalDateTime getEndAt() {
+		return endAt;
+	}
+
+	public void setEndAt(LocalDateTime endAt) {
+		this.endAt = endAt;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		CourseProduct that = (CourseProduct) o;
+
+		return id == that.id;
+	}
+
+	@Override
+	public int hashCode() {
+		return (int) (id ^ (id >>> 32));
+	}
 }

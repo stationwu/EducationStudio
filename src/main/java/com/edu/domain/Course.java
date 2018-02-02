@@ -5,6 +5,9 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+/**
+ * Booking record of one lesson
+ */
 @Entity
 @Table(name = "course")
 public class Course {
@@ -22,6 +25,8 @@ public class Course {
 	private String timeTo;
 	
 	private int maxSeat;
+	
+	private String address;
 
 	@ManyToMany(fetch=FetchType.EAGER)
 	@JoinTable(
@@ -129,6 +134,14 @@ public class Course {
 
 	public void setCourseCategory(CourseCategory courseCategory) {
 		this.courseCategory = courseCategory;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
 	
 }

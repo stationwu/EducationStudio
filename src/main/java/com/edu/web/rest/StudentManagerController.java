@@ -26,7 +26,6 @@ import javax.servlet.http.HttpSession;
 @RestController
 public class StudentManagerController {
 	public static final String PATH = "/api/v1/StudentManager";
-	public static final String STUDENT_PATH = PATH + "/{id}";
 	public final static String SEARCH_STUDENT_PATH = PATH + "/search";
 	private final StudentRepository studentRepository;
 	private final ImageService imageService;
@@ -48,14 +47,14 @@ public class StudentManagerController {
 		return childContainers;
 	}
 
-	@RequestMapping(path = STUDENT_PATH, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(path = PATH, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ChildContainer> showStudent(@PathVariable("studentId") String studentId) {
 		Student entity = studentRepository.findOne(studentId);
 		return new ResponseEntity<>(new ChildContainer(entity), HttpStatus.OK);
 	}
 
-	@PostMapping(path = STUDENT_PATH)
-	public HttpEntity<ChildContainer> signAndUploadImage(@PathVariable("studentId") String studentId,
+	@PostMapping(path = PATH)
+	public HttpEntity<ChildContainer> signAndUploadImage(@RequestParam("studentId") String studentId,
 			@RequestParam(value = "imageName") String imageName, @RequestParam(value = "material") String material,
 			@RequestParam(value = "teacher") String teacher, @RequestParam(value = "courseId") Long courseId,
 			@RequestParam("file") MultipartFile files[]) throws Exception {

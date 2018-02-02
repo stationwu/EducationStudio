@@ -1,0 +1,235 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>签到并上传</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!-- Bootstrap -->
+<link href="/css/weui.min.css" rel="stylesheet" />
+<link href="/css/jquery-weui.min.css" rel="stylesheet" />
+</head>
+<body>
+	<div class="weui-form-preview">
+		<div class="weui-form-preview__bd">
+			<div class="weui-form-preview__item">
+				<label class="weui-form-preview__label">学成姓名</label> <span
+					class="weui-form-preview__value"
+					th:text="${{studentContainer.childName}}">姓名</span>
+			</div>
+			<div class="weui-form-preview__item">
+				<label class="weui-form-preview__label">学号</label> <span
+					class="weui-form-preview__value" th:text="${{studentContainer.id}}"
+					id="studentid">学号</span>
+			</div>
+			<div class="weui-form-preview__item">
+				<label class="weui-form-preview__label">生日</label> <span
+					class="weui-form-preview__value"
+					th:text="${{studentContainer.birthday}}">生日</span>
+			</div>
+		</div>
+	</div>
+	<div class="weui-cells weui-cells_form" id="courseSelector">
+		<div class="weui-cell">
+			<div class="weui-cell__hd">
+				<label class="weui-label">课程类型</label>
+			</div>
+			<div class="weui-cell__bd">
+				<select class="weui-select" name="courseCategory" v-on:change="selectCategory($event)">
+					<option v-bind:value="index" v-for="(courseCategory, index) in courseCategories"
+						>{{courseCategory.courseName}}</option>
+				</select>
+			</div>
+		</div>
+		<div class="weui-cell">
+			<div class="weui-cell__hd">
+				<label class="weui-label">上课时间</label>
+			</div>
+			<div class="weui-cell__bd">
+				<select class="weui-select" name="course" v-on:change="selectCourse($event)">
+					<option v-bind:value="index" v-for="(course, index) in courses">{{course.date}} {{course.timeFrom}}-{{course.timeTo}}</option>
+				</select>
+			</div>
+		</div>
+		<div class="weui-cell">
+			<div class="weui-cell__hd">
+				<label class="weui-label">作品名称</label>
+			</div>
+			<div class="weui-cell__bd">
+				<input class="weui-input" type="text" id="imgName"
+					placeholder="请输入作品名" />
+			</div>
+		</div>
+		<div class="weui-cell">
+			<div class="weui-cell__hd">
+				<label class="weui-label">作品材质</label>
+			</div>
+			<div class="weui-cell__bd">
+				<input class="weui-input" type="text" id="imgMaterial"
+					placeholder="请输入作品材质" />
+			</div>
+		</div>
+		<div class="weui-cell">
+			<div class="weui-cell__hd">
+				<label class="weui-label">代课老师</label>
+			</div>
+			<div class="weui-cell__bd">
+				<input class="weui-input" type="text" id="imgTeacher"
+					placeholder="请输入代课老师" />
+			</div>
+		</div>
+	</div>
+
+	<div class="weui-cells weui-cells_form">
+		<div class="weui-cell">
+			<div class="weui-cell__bd">
+				<div class="weui-uploader">
+					<div class="weui-uploader__bd">
+						<ul class="weui-uploader__files" id="uploaderFiles">
+						</ul>
+						<div id="image-holder"></div>
+						<form class="weui-uploader__input-box">
+							<input id="fileUpload" class="weui-uploader__input" type="file"
+								accept="image/*" multiple="" />
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="weui-footer_fixed-bottom">
+		<a href="javascript:;" class="weui-btn weui-btn_primary" id="sign">签到并上传作品</a>
+	</div>
+	<script src="/js/jquery.min.js" type="text/javascript"></script>
+	<script src="/js/jquery-weui.min.js" type="text/javascript"></script>
+	<script src="/js/bootstrap.min.js" type="text/javascript"></script>
+	<script src="/js/vue.min.js" type="text/javascript"></script>
+	<script>
+		/*<![CDATA[*/
+		var courseSelector = new Vue(
+				{
+					el : '#courseSelector',
+					methods : {
+						selectCategory : function(event) {
+							courseSelector.categroyIndex = event.target.selectedIndex;
+							$.get("/api/v1/AllBeforeCourse?courseCategoryId=" + courseSelector.courseCategories[courseSelector.categroyIndex].id)
+								.done(function(data) {
+									courseSelector.courses = data;
+								});
+						},
+						selectCourse : function(event) {
+							courseSelector.courseIndex = event.target.selectedIndex;
+						}
+					},
+					data : {
+						courseCategories : [],
+						courses : [],
+						categroyIndex : 0,
+						courseIndex : 0
+					}
+				})
+
+		$(document).ready(
+				function() {
+					var url_string = window.location.href;
+					var url = new URL(url_string);
+					var studentId = url.searchParams.get("studentId");
+					$.get("/api/v1/CourseCategory?studentId=" + $("#studentid").text()).done(
+							function(data) {
+								courseSelector.courseCategories = data;
+								$.get("/api/v1/AllBeforeCourse?courseCategoryId=" + courseSelector.courseCategories[0].id)
+								.done(function(data) {
+									courseSelector.courses = data;
+								});
+							});
+				});
+
+		$("#sign").on('click', function() {
+			if($(".weui-btn_disabled").length>0){
+				return;
+			}
+
+			var files = $("#fileUpload")[0].files;
+			
+			if($("#imgName")[0].value === ''){
+				alert("请输入作品名称");
+				return;
+			}
+			if($("#imgTeacher")[0].value === ''){
+				alert("请输入代课老师");
+				return;
+			}
+			if($("#imgMaterial")[0].value === ''){
+				alert("请输入作品材质");
+				return;
+			}
+			if(files[0] === undefined){
+				alert("请选择作品");
+				return;
+			}
+			var formData = new FormData();
+			formData.append("imageName", $("#imgName")[0].value);
+			formData.append("file", files[0]);
+			formData.append("material", $("#imgMaterial")[0].value);
+			formData.append("teacher", $("#imgTeacher")[0].value);
+			formData.append("courseId", courseSelector.courses[courseSelector.courseIndex].id);
+			formData.append("studentId", $("#studentid").text());
+			
+			$.ajax({
+			  url: "/api/v1/StudentManager",
+			  data: formData,
+			  processData: false,
+			  contentType: false,
+			  type: 'POST'
+			}).done(function(){
+				$.alert("签到上传成功","消息");
+				$("#sign").removeClass("weui-btn_disabled");
+			}).fail(function(data){
+				alert(data.responseJSON.message,"消息");
+				$("#sign").removeClass("weui-btn_disabled");
+			});
+			$("#sign").addClass("weui-btn_disabled");
+		})
+		
+		$("#fileUpload").on(
+				'change',
+				function() {
+
+					//获取上传文件的数量
+					var countFiles = $(this)[0].files.length;
+
+					var imgPath = $(this)[0].value;
+					var extn = imgPath.substring(imgPath.lastIndexOf('.') + 1)
+							.toLowerCase();
+					var image_holder = $("#uploaderFiles");
+					image_holder.empty();
+
+					if (extn == "gif" || extn == "png" || extn == "jpg"
+							|| extn == "jpeg") {
+						if (typeof (FileReader) != "undefined") {
+
+							// 循环所有要上传的图片
+							for (var i = 0; i < countFiles; i++) {
+
+								var reader = new FileReader();
+								reader.onload = function(e) {
+									$("<img />", {
+										"src" : e.target.result,
+										"class" : "weui-uploader__file"
+									}).appendTo(image_holder);
+								}
+
+								image_holder.show();
+								reader.readAsDataURL($(this)[0].files[i]);
+							}
+
+						} else {
+							alert("你的浏览器不支持FileReader！");
+						}
+					} else {
+						alert("请选择图像文件。");
+					}
+				});
+		/*]]>*/
+	</script>
+</body>
+</html>
