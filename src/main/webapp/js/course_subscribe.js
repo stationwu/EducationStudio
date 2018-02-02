@@ -1,97 +1,38 @@
-var strDate;
-var strTime;
+var strDate = null;
+var strTime = null;
 $(function(){
-
-    var courses = [
-        {
-            "id":1,
-            "name":"绘本课",
-            "count":"30",
-            "type":"normal"
-        },{
-            "id":2,
-            "name":"铅笔课",
-            "count":"20",
-            "type":"normal"
-        },{
-            "id":3,
-            "name":"油画棒",
-            "count":"0",
-            "type":"normal"
-        },{
-            "id":4,
-            "name":"马克笔",
-            "count":"30",
-            "type":"experience"
-        },{
-            "id":5,
-            "name":"彩色铅笔",
-            "count":"30",
-            "type":"experience"
-        }
-    ];
-
-    if(!courses.length){
-        msg_alert("confirm_one_btn", "请先添加课程~");
-        return false;
-    }
-    //显示课程列表收缩状态
-    var html = '<div id="course-title" class="close"><div class="icon"></div>课程：<span class="name">' + courses[0].name + '</span>&nbsp;&nbsp;(剩余<span class="count">' + courses[0].count + '</span>节)'+
-        '<i></i></div><ul id="course-list" style="display: none;">';
-    if(courses[0].type != "experience"){
-        html += '<li class="active" data-id="' + courses[0].id + '"><span class="name">' + courses[0].name + '</span>&nbsp;&nbsp;(剩余<span class="count">' + courses[0].count + '</span>节)</li>';
-    }else{
-        html += '<li class="active" data-id="' + courses[0].id + '" data-type="experience">' + courses[0].name + '&nbsp;&nbsp;(预约体验课)</li>';
-    }
-
-    for(var i=1; i<courses.length; i++){
-        if(courses[i].type != "experience"){
-            html += '<li data-id="' + courses[i].id + '"><span class="name">' + courses[i].name + '</span>&nbsp;&nbsp;(剩余<span class="count">' + courses[i].count + '</span>节)</li>';
-        }else{
-            html += '<li data-id="' + courses[i].id + '" data-type="experience">' + courses[i].name + '&nbsp;&nbsp;(预约体验课)</li>';
-        }
-    }
-    html += '</ul>';
-
-    $("#course-subscribe").prepend(html);
-
-
-
-    var id = GetQueryString("id");
-
+    var student_id = GetQueryString("id");
     $.ajax({
         type: "GET",
-        url: "/api/v1/CourseCategory?studentId="+id,
+        url: "/api/v1/CourseCategory?studentId="+student_id,
         dataType: "json",
         success: function(data){
             console.log(data);
-            /////////////等待赋值
-            // var courses = ;
-            // //////////////
-            // console.log(courses);
-            // if(!courses.length){
-            //     msg_alert("confirm_one_btn", "请先添加课程~");
-            //     return false;
-            // }
-            // //显示课程列表收缩状态
-            // var html = '<div id="course-title" class="close"><i></i>课程：<span class="name">' + courses[0].name + '</span>&nbsp;&nbsp;(剩余<span class="count">' + courses[0].count + '</span>节)'+
-            //     '<div class="icon"></div></div><ul id="course-list" style="display: none;">';
-            // if(courses[0].type != "experience"){
-            //     html += '<li class="active"><span class="name">' + courses[0].name + '</span>&nbsp;&nbsp;(剩余<span class="count">' + courses[0].count + '</span>节)</li>';
-            // }else{
-            //     html += '<li class="active" data-type="experience">' + courses[0].name + '&nbsp;&nbsp;(预约体验课)</li>';
-            // }
-            //
-            // for(var i=1; i<courses.length; i++){
-            //     if(courses[i].type != "experience"){
-            //         html += '<li><span class="name">' + courses[i].name + '</span>&nbsp;&nbsp;(剩余<span class="count">' + courses[i].count + '</span>节)</li>';
-            //     }else{
-            //         html += '<li data-type="experience">' + courses[i].name + '&nbsp;&nbsp;(预约体验课)</li>';
-            //     }
-            // }
-            // html += '</ul>';
-            //
-            // $("#course-subscribe").prepend(html);
+            courses = data;
+            if(!courses.length){
+                msg_alert("confirm_one_btn", "请先添加课程~");
+                return false;
+            }
+            //显示课程列表收缩状态
+            var html = '<div id="course-title" class="close"><div class="icon"></div>课程：<span class="name">' + courses[0].courseName + '</span> (剩余<span class="count">' + courses[0].leftPeriod + '</span>节)'+
+                '<i></i></div><ul id="course-list" style="display: none;">';
+
+            if(courses[0].demoCourse != true){
+                html += '<li class="active" data-id="' + courses[0].id + '"><span class="name">' + courses[0].courseName + '</span> (剩余<span class="count">' + courses[0].leftPeriod + '</span>节)</li>';
+            }else{
+                html += '<li class="active" data-id="' + courses[0].id + '" data-type="demo">' + courses[0].courseName + ' (预约体验课)</li>';
+            }
+
+            for(var i=1; i<courses.length; i++){
+                if(courses[i].demoCourse != true){
+                    html += '<li data-id="' + courses[i].id + '"><span class="name">' + courses[i].courseName + '</span> (剩余<span class="count">' + courses[i].leftPeriod + '</span>节)</li>';
+                }else{
+                    html += '<li data-id="' + courses[i].id + '" data-type="demo">' + courses[i].courseName + ' (预约体验课)</li>';
+                }
+            }
+            html += '</ul>';
+
+            $("#course-subscribe").prepend(html);
         },
         error: function(){
             msg_alert("alert", "错误，请稍后重试");
@@ -104,9 +45,12 @@ $(function(){
             $(this).removeClass("close");
             $("#subscribe-time").html("").hide();
             $("#subscribe").hide();
+            strDate = null;
+            strTime = null;
+            $("#time-list").children("li").removeClass("active");
+            $("#calendar").children(".calendar-date").children(".item").removeClass("active");
         }else{
             $(this).addClass("close");
-
         }
         return false;
     });
@@ -114,26 +58,44 @@ $(function(){
     $("#course-list").delegate("li", "click", function(){
         var id = $(this).attr("data-id");
         var type = $(this).attr("data-type");
-        if(type == "experience"){
+        if(type == "demo"){
             console.log("跳转到预约体验课页面");
             return false;
         }
         var count = $(this).children(".count").html();
         var name = $(this).children(".name").html();
         console.log(name,count,id);
-        //////////////////拿到学生姓名和老师手机
-        var student_name = "lina";
-        var mobile = "18800000000";
-        //////////////
+
+
+
         if(count == "0"){
-            msg_alert("confirm_one_btn", student_name + "的" + name + "课程已用完，请联系老师(" + mobile + ")购买课程~");
+            //////////////////拿到学生姓名和老师手机
+            var data = {
+                "studentId": student_id,
+            };
+            $.ajax({
+                type: "POST",
+                url: "/api/v1/Student",
+                dataType: "json",
+                contentType: "application/json",
+                data: JSON.stringify(data),
+                success: function(data){
+                    console.log(data);
+                    var student_name = data.childName;
+                    var mobile = data.hardcode;
+                    msg_alert("confirm_one_btn", student_name + "的" + name + "课程已用完，请联系老师(" + mobile + ")购买课程~");
+                },
+                error: function(){
+                    msg_alert("alert", "错误，请稍后重试");
+                }
+            });
+
         }else{
             $("#course-title").addClass("close");
             $("#course-title").children(".name").html(name);
             $("#course-title").children(".count").html(count);
             $("#course-list").hide();
             $("#subscribe").show();
-
 
             $.ajax({
                 type: "GET",
@@ -159,13 +121,17 @@ $(function(){
         }
         $(this).siblings(".select").removeClass("select").children(".subscribe-btn").html("预约");
         $(this).addClass("select").children(".subscribe-btn").html("<i></i>");
-        $("#subscribe-time").html("<em></em>预约时间:" + strDate + "&nbsp;&nbsp;" + strTime).show();
+        $("#subscribe-time").html("<em></em>预约时间:" + strDate + " " + strTime).show();
         return false;
     });
 
     $("#subscribe-btn").click(function(){
+        if(strDate == null || strTime == null){
+            msg_alert("confirm_one_btn", "请先选择预约时间");
+            return false;
+        }
         var data = {
-            "studentId": id,
+            "studentId": student_id,
             //////////假数据待赋值
             "courseId": "1"
         };

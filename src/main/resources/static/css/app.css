@@ -330,6 +330,7 @@ input[type="submit"], input[type="button"], button{
 /*student_list.html*/
 #student-list{
     padding: 0.2rem 0 2rem 0;
+    position: relative;
 }
 #student-list .student-info{
     margin: 0.4rem 0 0 0.8rem;

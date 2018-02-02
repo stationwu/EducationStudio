@@ -207,6 +207,8 @@ $(function () {
         $(this).siblings(".select").removeClass("select");
         $(this).addClass("select");
         console.log(strDate);
+        strTime = null;
+        $("#time-list").children("li").removeClass("active");
         //取该日期可预约的时间段加active
       })
 
