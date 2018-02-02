@@ -1,5 +1,5 @@
-
 $(function(){
+    var student_id = GetQueryString("id");
     var course = [
         {
             "id":1,
@@ -31,7 +31,7 @@ $(function(){
 
     $.ajax({
         type: "GET",
-        url: "/api/v1/Student?studentId="+id,
+        url: "/api/v1/Student?studentId="+student_id,
         dataType: "json",
         success: function(data){
             ///////等待赋值
