@@ -58,17 +58,11 @@ $(function(){
 
 
     var id = GetQueryString("id");
-    var child = {
-        "studentId": id
-    };
-    console.log("child",child)
 
     $.ajax({
         type: "GET",
-        url: "/api/v1/CourseCategory",
+        url: "/api/v1/CourseCategory?studentId="+id,
         dataType: "json",
-        contentType: "application/json",
-        data: JSON.stringify(child),
         success: function(data){
             console.log(data);
             /////////////等待赋值
@@ -140,17 +134,11 @@ $(function(){
             $("#course-list").hide();
             $("#subscribe").show();
 
-            var data = {
-                "courseCategoryId":  id
-            };
+
             $.ajax({
                 type: "GET",
-                /////////////获取某一课程
-                url: "/api/v1/AvailableCourse",
-                //////////////
+                url: "/api/v1/AvailableCourse?courseCategoryId="+id,
                 dataType: "json",
-                contentType: "application/json",
-                data: JSON.stringify(data),
                 success: function(data){
                     console.log("某一类型课程",data);
                     //可选的日期加active
@@ -190,6 +178,8 @@ $(function(){
             success: function(data){
                 console.log("预约返回值",data);
                 //根据返回值不同显示弹窗
+                //成功：继续预约、查看预约课程带id
+                //失败
             },
             error: function(){
                 msg_alert("alert", "错误，请稍后重试");
