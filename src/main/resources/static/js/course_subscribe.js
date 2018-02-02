@@ -96,7 +96,7 @@ $(function(){
             $("#subscribe").show();
 
             $.ajax({
-                type: "GET",
+                type: "POST",
                 url: "/api/v1/AvailableCourse?courseCategoryId="+id,
                 dataType: "json",
                 success: function(data){
