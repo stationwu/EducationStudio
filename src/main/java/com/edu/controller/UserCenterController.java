@@ -40,6 +40,8 @@ public class UserCenterController {
     public final static String STUDENT_UPLOAD_PATH = "/user/student/upload";
     
     public final static String COURSE_BOOK_PATH = "/user/course/book";
+    
+    public final static String COURSE_LIST_PATH = "/user/course/list";
 
 	public final static String SESSION_OPENID_KEY = "openCode";
 	
@@ -115,6 +117,11 @@ public class UserCenterController {
     @GetMapping(COURSE_BOOK_PATH)
     public String bookCourse() {
         return "course_subscribe"; // serve the page
+    }
+    
+    @GetMapping(COURSE_LIST_PATH)
+    public String courseListForStudent() {
+        return "course_list"; // serve the page
     }
     
     @GetMapping(STUDENT_SEARCH_PATH)
