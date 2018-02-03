@@ -214,7 +214,7 @@ $(function () {
         course_id = null;
         $("#time-list").children("li").removeClass("active");
         //取该日期可预约的时间段加active
-        var select_date = returnDateStr(strDate);
+        var select_date = strDate.split("-").join("");
         console.log(available_date,select_date);
         $.each(available_date[select_date], function(key,value){
           $("#time-list").children("li[data-time='"+value["timeFrom"]+"']").attr({"data-id":key,"data-maxSeat":value["maxSeat"],"data-bookedSeat":value["bookedSeat"]}).addClass("active");

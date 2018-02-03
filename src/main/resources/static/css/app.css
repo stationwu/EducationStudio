@@ -77,23 +77,44 @@ input[type="submit"], input[type="button"], button{
 }
 .popup-2-btn .layui-m-layercont{
     padding: 0rem!important;
+    font-size: 12px;
+}
+[data-dpr="2"] .popup-2-btn .layui-m-layercont{
+    font-size: 24px;
+}
+[data-dpr="3"] .popup-2-btn .layui-m-layercont{
+    font-size: 36px;
 }
 .popup-2-btn .layui-m-layercont .content{
-    padding: 1.3333rem 0.8rem!important;
-    font-size: 16px;
+     padding: 1.3333rem 0.8rem!important;
+ }
+.popup-2-btn .layui-m-layercont .content .title{
+    margin-bottom: 0.4rem;
+    font-size: 18px;
 }
-[data-dpr="2"] .popup-2-btn .layui-m-layercont .content{
-    font-size: 32px;
+[data-dpr="2"] .popup-2-btn .layui-m-layercont .content .title{
+    font-size: 36px;
 }
-[data-dpr="3"] .popup-2-btn .layui-m-layercont .content{
-    font-size: 48px;
+[data-dpr="3"] .popup-2-btn .layui-m-layercont .content .title{
+    font-size: 54px;
+}
+.popup-2-btn .layui-m-layercont .content .title i{
+    display: inline-block;
+    height: 0.56rem;
+    width: 0.56rem;
+    background: url("../images/success-icon.png") no-repeat;
+    background-size: 0.56rem;
+    position: relative;
+    left: 0rem;
+    top: 0.14rem;
+    border: solid 1px;
+    margin-right: 0.2rem;
 }
 .popup-2-btn .layui-m-layercont .btn-panel{
     background-color: #ffcd0d;
     height: 1.33333rem;
     line-height: 1.33333rem;
     color: #2d2d2d;
-    font-size: 16px;
 }
 .popup-2-btn .layui-m-layercont .btn-panel span{
     border-radius: 0 0 0 5px;
@@ -654,7 +675,7 @@ input[type="submit"], input[type="button"], button{
 .course-info .num{
     color: #222;
     font-size: 15px;
-    background: url("../images/couse-info-icon.png") no-repeat;
+    background: url("../images/course-info-icon.png") no-repeat;
     height: 0.89333rem;
     width: 0.89333rem;
     background-size: 0.89333rem;
