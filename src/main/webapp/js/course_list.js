@@ -1,37 +1,15 @@
 $(function(){
     var student_id = GetQueryString("id");
-
-    // $.ajax({
-    //     type: "GET",
-    //     url: "/api/v1/Student?studentId="+student_id,
-    //     dataType: "json",
-    //     success: function(data){
-    //         var course = data;
-    //         var course_html = "";
-    //         for(var i=0; i<course.length; i++){
-    //             course_html += showCourse(course[i].id, (i+1), course[i].childName, course[i].course_name, course[i].time, course[i].address);
-    //         }
-    //         $("#subscribe-course").prepend(course_html);
-    //     },
-    //     error: function(){
-    //         msg_alert("alert", "错误，请稍后重试");
-    //     }
-    // });
-
-    var data = {
-        "studentId": student_id,
-    };
     $.ajax({
         type: "POST",
-        url: "/api/v1/Student",
+        url: "/api/v1/Student?studentId="+student_id,
         dataType: "json",
-        contentType: "application/json",
-        data: JSON.stringify(data),
         success: function(data){
-            var course = data;
+            var course = data.reversedCourses;
+            var childName = data.childName;
             var course_html = "";
             for(var i=0; i<course.length; i++){
-                course_html += showCourse(course[i].id, (i+1), course[i].childName, course[i].course_name, course[i].time, course[i].address);
+                course_html += showCourse(course[i].id, (i+1), childName, course[i].courseName, (course[i].date+" "+course[i].timeFrom+"~"+course[i].timeTo), course[i].address);
             }
             $("#subscribe-course").prepend(course_html);
         },

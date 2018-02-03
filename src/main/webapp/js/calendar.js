@@ -177,7 +177,10 @@ $(function () {
         this.$arrow_next.bind('click', function () {
           var _date = dateObj.getDate();
           dateObj.setDate(new Date(_date.getFullYear(), _date.getMonth() + 1, 1));
-
+          //可选的日期加active
+          $.each(available_date, function(key,value){
+            $(".calendar-date .item[data='"+key+"']").addClass("active");
+          });
           self.showCalendar();
         });
       }
@@ -208,8 +211,14 @@ $(function () {
         $(this).addClass("select");
         console.log(strDate);
         strTime = null;
+        course_id = null;
         $("#time-list").children("li").removeClass("active");
         //取该日期可预约的时间段加active
+        var select_date = returnDateStr(strDate);
+        console.log(available_date,select_date);
+        $.each(available_date[select_date], function(key,value){
+          $("#time-list").children("li[data-time='"+value+"']").attr("data-id",key).addClass("active");
+        });
       })
 
     },
@@ -245,8 +254,8 @@ $(function () {
     var month = date.getMonth() + 1;
     var day = date.getDate();
 
-    month = month < 9 ? ('0' + month) : ('' + month);
-    day = day < 9 ? ('0' + day) : ('' + day);
+    month = month <= 9 ? ('0' + month) : ('' + month);
+    day = day <= 9 ? ('0' + day) : ('' + day);
 
     return year + month + day;
   };

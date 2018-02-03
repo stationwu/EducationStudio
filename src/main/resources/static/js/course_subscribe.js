@@ -1,5 +1,8 @@
 var strDate = null;
 var strTime = null;
+var course_category_id = null;
+var course_id = null;
+var available_date = {};
 $(function(){
     var student_id = GetQueryString("id");
     $.ajax({
@@ -46,6 +49,9 @@ $(function(){
             $("#subscribe").hide();
             strDate = null;
             strTime = null;
+            course_category_id = null;
+            course_id = null;
+            available_date = {};
             $("#time-list").children("li").removeClass("active");
             $("#calendar").children(".calendar-date").children(".item").removeClass("active");
         }else{
@@ -55,7 +61,7 @@ $(function(){
     });
 
     $("#course-subscribe").delegate("#course-list li", "click", function(){
-        var id = $(this).attr("data-id");
+        var course_category_id = $(this).attr("data-id");
         var type = $(this).attr("data-type");
         if(type == "demo"){
             console.log("跳转到预约体验课页面");
@@ -63,22 +69,14 @@ $(function(){
         }
         var count = $(this).children(".count").html();
         var name = $(this).children(".name").html();
-        console.log(name,count,id);
-
-
+        console.log(name,count,course_category_id);
 
         if(count == "0"){
-            var data = {
-                "studentId": student_id,
-            };
             $.ajax({
                 type: "POST",
-                url: "/api/v1/Student",
+                url: "/api/v1/Student?studentId="+student_id,
                 dataType: "json",
-                contentType: "application/json",
-                data: JSON.stringify(data),
                 success: function(data){
-                    console.log(data);
                     var student_name = data.childName;
                     var mobile = "18800000000";
                     msg_alert("confirm_one_btn", student_name + "的" + name + "课程已用完，请联系老师(" + mobile + ")购买课程~");
@@ -97,11 +95,27 @@ $(function(){
 
             $.ajax({
                 type: "POST",
-                url: "/api/v1/AvailableCourse?courseCategoryId="+id,
+                url: "/api/v1/AvailableCourse?courseCategoryId="+course_category_id,
                 dataType: "json",
                 success: function(data){
                     console.log("某一类型课程",data);
+                    var course = data;
+                    for(var i=0; i<course.length; i++){
+                        var date = course[i].date.split("-").join("");
+                        var timeFrom = course[i].timeFrom.split(":")[0];
+                        var id = course[i].id;
+                        if(available_date[date] == undefined){
+                            available_date[date] = {};
+                        }
+                        available_date[date][id] = timeFrom;
+                    }
+                    console.log(available_date);
+
                     //可选的日期加active
+                    $.each(available_date, function(key,value){
+                        $(".calendar-date .item[data='"+key+"']").addClass("active");
+                    });
+
                 },
                 error: function(){
                     msg_alert("alert", "错误，请稍后重试");
@@ -113,10 +127,11 @@ $(function(){
 
     $("#time-list").delegate("li", "click", function(){
         var active = $(this).hasClass("active");
-        strTime = $(this).children(".time").html();
         if(!active){
             return false;
         }
+        strTime = $(this).children(".time").html();
+        course_id = $(this).attr("data-id");
         $(this).siblings(".select").removeClass("select").children(".subscribe-btn").html("预约");
         $(this).addClass("select").children(".subscribe-btn").html("<i></i>");
         $("#subscribe-time").html("<em></em>预约时间:" + strDate + " " + strTime).show();
@@ -128,21 +143,38 @@ $(function(){
             msg_alert("confirm_one_btn", "请先选择预约时间");
             return false;
         }
-        var data = {
-            "studentId": student_id,
-            //////////假数据待赋值
-            "courseId": "1"
-        };
+
         $.ajax({
             type: "POST",
-            url: "/api/v1/AllBeforeCourse/book",
+            url: "/api/v1/AvailableCourse/book?studentId="+student_id+"&courseId="+course_id,
             dataType: "json",
-            contentType: "application/json",
-            data: JSON.stringify(data),
             success: function(data){
                 console.log("预约返回值",data);
                 //根据返回值不同显示弹窗
                 //成功：继续预约、查看预约课程带id
+                // var content = "<div class='title'><i></i>预约成功~</div><div class='content'>预约成功短信已发送到您预留的手机，请注意查收</div>";
+                // layer.open({
+                //     content:content,
+                //     btn: ["预约其他课", "确认"],
+                //     className: "popup",
+                //     yes: function(index, layero){
+                //         layer.close(index);
+                //         $("#course-title").click();
+                //         return false;
+                //     },
+                //     btn2: function(index, layero){
+                //         location.href = "/user/course/list?id="+student_id;
+                //         return false;
+                //     },
+                // });
+
+                var content = "<div class='content'><div class='title'><i></i>预约成功~</div><div>预约成功短信已发送到您预留的手机，请注意查收</div></div><div class='btn-panel'><span class='btn1'>确认</span><span class='btn2'>预约其他课</span></div>";
+                layer.open({
+                    content:content,
+                    className: "popup-2-btn"
+                });
+
+                return false;
                 //失败
             },
             error: function(){
@@ -151,6 +183,12 @@ $(function(){
         });
         return false;
     });
-
+    $(".popup-2-btn").delegate(".btn1", "click", function(){
+        location.href = "/user/course/list?id="+student_id;
+    });
+    $(".popup-2-btn").delegate(".btn2", "click", function(){
+        layer.closeAll();
+        $("#course-title").click();
+    });
 });
 

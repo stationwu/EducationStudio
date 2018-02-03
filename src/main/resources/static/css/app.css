@@ -52,6 +52,7 @@ input[type="submit"], input[type="button"], button{
 .popup .layui-m-layerbtn{
     background-color: #ffcd0d;
     height: 1.33333rem;
+    line-height: 1.33333rem;
     color: #2d2d2d;
     font-size: 16px;
 }
@@ -70,6 +71,53 @@ input[type="submit"], input[type="button"], button{
 }
 [data-dpr="3"] .popup .layui-m-layerbtn span[yes]{
     font-size: 45px;
+}
+.layui-m-layermain .layui-m-layerchild.popup-2-btn{
+    width: 7.6rem;
+}
+.popup-2-btn .layui-m-layercont{
+    padding: 0rem!important;
+}
+.popup-2-btn .layui-m-layercont .content{
+    padding: 1.3333rem 0.8rem!important;
+    font-size: 16px;
+}
+[data-dpr="2"] .popup-2-btn .layui-m-layercont .content{
+    font-size: 32px;
+}
+[data-dpr="3"] .popup-2-btn .layui-m-layercont .content{
+    font-size: 48px;
+}
+.popup-2-btn .layui-m-layercont .btn-panel{
+    background-color: #ffcd0d;
+    height: 1.33333rem;
+    line-height: 1.33333rem;
+    color: #2d2d2d;
+    font-size: 16px;
+}
+.popup-2-btn .layui-m-layercont .btn-panel span{
+    border-radius: 0 0 0 5px;
+    -moz-box-flex: 1;
+    box-flex: 1;
+    -webkit-box-flex: 1;
+    font-size: 15px;
+    cursor: pointer;
+    position: relative;
+    text-align: center;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 50%;
+    display: inline-block;
+}
+[data-dpr="2"] .popup-2-btn .layui-m-layercont .btn-panel span{
+    font-size: 30px;
+}
+[data-dpr="3"] .popup-2-btn .layui-m-layercont .btn-panel span{
+    font-size: 45px;
+}
+.popup-2-btn .layui-m-layercont .btn-panel span.btn1{
+    background-color: #d0d0d0;
 }
 #signup{
     background: url("../images/singup-bg.png") 0 0 no-repeat;
