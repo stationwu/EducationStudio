@@ -216,6 +216,9 @@ $(function () {
         //取该日期可预约的时间段加active
         var select_date = strDate.split("-").join("");
         console.log(available_date,select_date);
+        $("#time-list").children("li.active").removeClass("active");
+        $("#time-list").children("li.select").removeClass("select").children(".subscribe-btn").html("预约");
+        $("#time-list").children("li").removeAttr("data-id data-maxseat data-bookedseat");
         $.each(available_date[select_date], function(key,value){
           $("#time-list").children("li[data-time='"+value["timeFrom"]+"']").attr({"data-id":key,"data-maxSeat":value["maxSeat"],"data-bookedSeat":value["bookedSeat"]}).addClass("active");
         });

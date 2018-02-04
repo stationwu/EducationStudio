@@ -107,7 +107,6 @@ input[type="submit"], input[type="button"], button{
     position: relative;
     left: 0rem;
     top: 0.14rem;
-    border: solid 1px;
     margin-right: 0.2rem;
 }
 .popup-2-btn .layui-m-layercont .btn-panel{

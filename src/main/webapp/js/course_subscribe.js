@@ -46,14 +46,16 @@ $(function(){
         if($(this).hasClass("close")){
             $(this).removeClass("close");
             $("#subscribe-time").html("").hide();
+            $("#time-list").children("li.active").removeClass("active");
+            $("#time-list").children("li.select").removeClass("select").children(".subscribe-btn").html("预约");
+            $("#time-list").children("li").removeAttr("data-id data-maxseat data-bookedseat");
+            $("#calendar").children(".calendar-date").children(".item").removeClass("active select");
             $("#subscribe").hide();
             strDate = null;
             strTime = null;
             course_category_id = null;
             course_id = null;
             available_date = {};
-            $("#time-list").children("li").removeClass("active select");
-            $("#calendar").children(".calendar-date").children(".item").removeClass("active select");
         }else{
             $(this).addClass("close");
         }
@@ -165,7 +167,16 @@ $(function(){
                                 var content = "<div id='book-popup'><div class='content'><div class='title'><i></i>预约成功~</div><div>预约成功短信已发送到您预留的手机，请注意查收</div></div><div class='btn-panel'><span class='btn1'>确认</span><span class='btn2'>预约其他课</span></div></div>";
                                 layer.open({
                                     content:content,
-                                    className: "popup-2-btn"
+                                    className: "popup-2-btn",
+                                    success: function(elem){
+                                        $(elem).delegate(".btn1", "click", function(){
+                                            location.href = "/user/course/list?id="+student_id;
+                                        });
+                                        $(elem).delegate(".btn2", "click", function(){
+                                            layer.closeAll();
+                                            $("#course-title").click();
+                                        });
+                                    }
                                 });
                                 return false;
                             },
