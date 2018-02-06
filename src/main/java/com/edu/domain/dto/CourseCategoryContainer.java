@@ -1,5 +1,6 @@
 package com.edu.domain.dto;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,6 +23,8 @@ public class CourseCategoryContainer {
 
 	private int priority;
 	
+	private BigDecimal price;
+	
 	public CourseCategoryContainer(){
 		
 	}
@@ -34,6 +37,7 @@ public class CourseCategoryContainer {
 		this.images = courseCategory.getImages().stream().map(x -> new ImageContainer(x))
 				.collect(Collectors.toCollection(ArrayList::new));
 		this.priority = courseCategory.getPriority();
+		this.price = courseCategory.getPrice();
 	}
 
 }
