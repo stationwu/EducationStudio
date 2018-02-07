@@ -49,6 +49,8 @@ public class DataLoader implements CommandLineRunner {
 	CourseCategoryRepository courseCategoryRepository;
 	@Autowired
 	CourseProductRepository courseProductRepository;
+	@Autowired
+	AddressRepository addressRepository;
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -286,6 +288,20 @@ public class DataLoader implements CommandLineRunner {
 			customers.add(customer);
 		}
 
+		Address address = null;
+		if (0 == addressRepository.count()) {
+			address = new Address();
+			address.setCity("上海市");
+			address.setStreet("复兴西路");
+			address.setDoorNumber("63");
+			address.setFloorNumber("1");
+			address.setRoomNumber("25");
+			address.setRemark("近永福路");
+			addressRepository.save(address);
+		} else {
+			address = addressRepository.findFirstByOrderByIdAsc();
+		}
+
 		if (0 == orderRepository.count()) {
 			CourseProduct courseProduct = new CourseProduct();
 			CourseCategory courseCategory = courseCategories.get(1);
@@ -297,11 +313,11 @@ public class DataLoader implements CommandLineRunner {
 			courseProduct.setEndAt(LocalDateTime.parse("2017-12-01 11:00", lessonDateTimeFormat));
 			courseProduct.setQuantity(1);
 			courseProduct.setSubTotalAmount(courseCategory.getPrice().multiply(BigDecimal.valueOf(1))); // No discount so far
-			courseProduct.setAddress("地址稍后更新");
+			courseProduct.setAddress(address);
 			courseProduct = courseProductRepository.save(courseProduct);
 
 			Order order = new Order();
-			order.addCourseProduct(courseProduct, 1);
+			order.addCourseProduct(courseProduct);
 			order.setTotalAmount(courseProduct.getSubTotalAmount());
 			order.setDate(LocalDate.now().toString());
 			order.setCustomer(customer);

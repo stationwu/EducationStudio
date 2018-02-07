@@ -30,7 +30,8 @@ public class CourseProduct {
 
     private LocalDateTime endAt;
 
-    private String address;
+    @ManyToOne
+    private Address address;
 
 	public Student getStudent() {
 		return student;
@@ -80,11 +81,11 @@ public class CourseProduct {
 		this.startFrom = startFrom;
 	}
 
-	public String getAddress() {
-		return address;
+	public String getAddressText() {
+		return address.getAddressText();
 	}
 
-	public void setAddress(String address) {
+	public void setAddress(Address address) {
 		this.address = address;
 	}
 

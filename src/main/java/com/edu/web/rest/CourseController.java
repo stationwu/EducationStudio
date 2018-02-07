@@ -20,6 +20,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -47,7 +48,7 @@ public class CourseController {
         CourseCategory courseCategory = courseCategoryRepository.findOne(courseCategoryId);
         String localDate = LocalDate.now().toString();
         List<CourseContainer> list = courseCategory.getCourses().stream()
-                .filter(x -> localDate.compareTo(x.getDate()) >= 0)
+                .filter(x -> localDate.compareTo(x.getDate()) <= 0)
                 .sorted(Comparator.comparing(Course::getDate).thenComparing(Course::getTimeFrom))
                 .map(x -> new CourseContainer(x)).collect(Collectors.toCollection(ArrayList::new));
         return new ResponseEntity<>(list, HttpStatus.OK);
@@ -76,9 +77,13 @@ public class CourseController {
 
     @PostMapping(path = BOOK_PATH)
     public ResponseEntity<ChildContainer> bookCourse(@RequestParam(value = "studentId") String studentId,
-                                                     @RequestParam(value = "courseId") Long courseId, HttpSession session) {
+                                                     @RequestParam(value = "courseId") Long courseId, HttpSession session) throws Exception {
         Course course = courseRepository.findOne(courseId);
         Student student = studentRepository.findOne(studentId);
+        Set<Course> courses = student.getReservedCoursesSet();
+        if(courses.stream().filter(x -> x.getId() == course.getId()).count() > 0){
+        	throw new Exception("请勿重复预约时间");
+        }
         student.addReservedCourse(course);
         ChildContainer childContainer = new ChildContainer(studentRepository.save(student));
         return new ResponseEntity<>(childContainer, HttpStatus.OK);

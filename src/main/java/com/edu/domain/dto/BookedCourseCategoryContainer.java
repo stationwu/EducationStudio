@@ -1,5 +1,6 @@
 package com.edu.domain.dto;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,6 +25,8 @@ public class BookedCourseCategoryContainer {
 	
 	private boolean isValid;
 	
+	private BigDecimal price;
+	
 	public BookedCourseCategoryContainer(){
 		
 	}
@@ -36,6 +39,7 @@ public class BookedCourseCategoryContainer {
 		this.images = courseCategory.getImages().stream().map(x -> new ImageContainer(x))
 				.collect(Collectors.toCollection(ArrayList::new));
 		this.priority = courseCategory.getPriority();
+		this.price = courseCategory.getPrice();
 		if(this.isDemoCourse == true && count >0){
 			this.isValid = false;
 		}else{
