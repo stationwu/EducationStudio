@@ -524,14 +524,15 @@ input[type="submit"], input[type="button"], button{
 }
 #course-subscribe{
     position: relative;
-    padding: 0.66667rem 0 1.6rem 0;
+    /*padding: 0.66667rem 0 1.6rem 0;*/
+    min-height: 100%;
 }
 #course-title{
     width: 7.86667rem;
     padding: 0 0.66667rem;
     height: 0.92rem;
     line-height: 0.92rem;
-    margin: 0rem auto 0.4rem auto;
+    margin: 066667rem auto 0.4rem auto;
     background-color: #ffcd0d;
     border-radius: 0.46rem;
     font-size: 15px;
@@ -638,6 +639,7 @@ input[type="submit"], input[type="button"], button{
 }
 #subscribe-time{
     text-align: center;
+    margin-bottom: 1.6rem;
     display: none;
 }
 #subscribe-time em{
@@ -736,4 +738,14 @@ input[type="submit"], input[type="button"], button{
 }
 #course-info {
     display: none;
+}
+#demo-course{
+
+}
+.course-image{
+    width: 7.86667rem;
+    margin: 0rem auto;
+}
+.course-image img{
+    width: 100%;
 }
