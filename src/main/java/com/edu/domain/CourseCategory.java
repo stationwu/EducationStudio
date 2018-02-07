@@ -40,7 +40,7 @@ public class CourseCategory {
 
 	private boolean isDemoCourse;
 
-	CourseCategory() {
+	public CourseCategory() {
 
 	}
 

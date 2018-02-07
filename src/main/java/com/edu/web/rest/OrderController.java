@@ -22,6 +22,11 @@ import com.github.binarywang.wxpay.bean.result.WxPayOrderCloseResult;
 import com.github.binarywang.wxpay.bean.result.WxPayRefundResult;
 import com.github.binarywang.wxpay.exception.WxPayException;
 import com.github.binarywang.wxpay.service.WxPayService;
+import me.chanjar.weixin.common.exception.WxErrorException;
+import me.chanjar.weixin.mp.api.WxMpService;
+import me.chanjar.weixin.mp.api.WxMpTemplateMsgService;
+import me.chanjar.weixin.mp.bean.template.WxMpTemplateData;
+import me.chanjar.weixin.mp.bean.template.WxMpTemplateMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +50,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.edu.utils.Constant.CONTACT_PHONE_NUMBER;
 import static com.edu.utils.Constant.RESPONSE_ERROR_MESSAGE_HEADER;
 import static com.edu.utils.WxPayConstants.DEVICE_WEB;
 import static com.edu.utils.WxPayConstants.FEE_TYPE_CNY;
@@ -64,52 +70,25 @@ public class OrderController {
     public static final String REFUND_NOTIFY_PATH = "/api/v1/refund/notify";
     public static final String PAY_RESULT_VIEW = "/paymentResult/{orderId}";
 
-    @Autowired
-    private OrderRepository orderRepository;
-
-    @Autowired
-    private PaymentRepository paymentRepository;
-
-    @Autowired
-    private CouponRepository couponRepository;
-
-    @Autowired
-    private RefundRepository refundRepository;
-
-    @Autowired
-    private CustomerRepository customerRepository;
-
-    @Autowired
-    private StudentRepository studentRepository;
-
-    @Autowired
-    private ProductRepository productRepository;
-
-    @Autowired
-    private DerivedProductRepository derivedProductRepository;
-
-    @Autowired
-    private ImageCollectionRepository imageCollectionRepository;
-
-    @Autowired
-    private CourseProductRepository courseProductRepository;
-
-    @Autowired
-    private CourseRepository courseRepository;
-
-    @Autowired
-    private WxPayService wxPayService;
-
-    @Autowired
-    private WebUtils webUtils;
-
-    @Autowired
-    private WxTimeStampUtil wxTimeStampUtil;
-
-    @Autowired
-    private WechatPayProperties wxPayProperties;
+    @Autowired private OrderRepository orderRepository;
+    @Autowired private PaymentRepository paymentRepository;
+    @Autowired private CouponRepository couponRepository;
+    @Autowired private RefundRepository refundRepository;
+    @Autowired private CustomerRepository customerRepository;
+    @Autowired private StudentRepository studentRepository;
+    @Autowired private CourseProductRepository courseProductRepository;
+    @Autowired private CourseRepository courseRepository;
+    @Autowired private AddressRepository addressRepository;
+    @Autowired private WxPayService wxPayService;
+    @Autowired private WxMpService wxMpService;
+    @Autowired private WebUtils webUtils;
+    @Autowired private WxTimeStampUtil wxTimeStampUtil;
+    @Autowired private WechatPayProperties wxPayProperties;
 
     public static final DateTimeFormatter lessonDateTimeFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+    private static final String DEMO_LESSON_TEMPLATE_ID = "DWBwEF9LLzwlaO70QWE1SbMmR5DmLZ4akzwgyXqty8Y";
+    private static final String OTHER_GOODS_TEMPLATE_ID = "nBGFhvqZlCsute7SqnatA-Iis5iJaVQZZDNHe4OMEP0";
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -170,11 +149,11 @@ public class OrderController {
         courseProduct.setEndAt(LocalDateTime.parse(bookedLesson.getDate() + " " + bookedLesson.getTimeTo(), lessonDateTimeFormat));
         courseProduct.setQuantity(quantity);
         courseProduct.setSubTotalAmount(courseCategory.getPrice().multiply(BigDecimal.valueOf(quantity))); // No discount so far
-        courseProduct.setAddress("地址稍后更新");
+        courseProduct.setAddress(addressRepository.findFirstByOrderByIdAsc());
         courseProduct = courseProductRepository.save(courseProduct);
 
         Order order = new Order();
-        order.addCourseProduct(courseProduct, quantity);
+        order.addCourseProduct(courseProduct);
         order.setTotalAmount(courseProduct.getSubTotalAmount());
         order.setDate(LocalDate.now().toString());
         order.setCustomer(customer);
@@ -312,7 +291,28 @@ public class OrderController {
         order.setStatus(Order.Status.PAID);
         orderRepository.save(order);
 
-        //TODO: 推送微信模板消息通知客户上课时间、地点、学生姓名
+        List<CourseProduct> courseProducts = order.getCourseProductsMap().keySet().stream().collect(Collectors.toList());
+        if (courseProducts.size() > 0) { // Should be always true because you won't place an empty order
+            CourseProduct courseProduct = courseProducts.get(0);
+            if (courseProduct.getCourseCategory().isDemoCourse()) {
+                WxMpTemplateMsgService templateMsgService = wxMpService.getTemplateMsgService();
+                WxMpTemplateMessage templateMessage = buildTemplateMessageForDemoLesson(
+                        order.getCustomer().getOpenCode(),
+                        order.getId(),
+                        courseProduct.getCourseCategory().getCourseName(),
+                        courseProduct.getStartFrom(),
+                        courseProduct.getEndAt(),
+                        courseProduct.getAddressText(),
+                        CONTACT_PHONE_NUMBER);
+                try {
+                    templateMsgService.sendTemplateMsg(templateMessage);
+                } catch (WxErrorException ex) {
+                    logger.info("订单（%s）已完成支付，但我们无法发送消息通知客户，原因：%s", order.getId(), ex.getMessage());
+                }
+            } else {
+                // TODO: 添加对其他商品的支持
+            }
+        }
 
         return success("支付完成");
     }
@@ -512,6 +512,32 @@ public class OrderController {
         } else {
             return body;
         }
+    }
+
+    private WxMpTemplateMessage buildTemplateMessageForDemoLesson(String sendToOpenId,
+                                                                  String orderId,
+                                                                  String courseName,
+                                                                  LocalDateTime startFrom,
+                                                                  LocalDateTime endAt,
+                                                                  String address,
+                                                                  String contactPhoneNumber) {
+
+        List<WxMpTemplateData> templateData = new ArrayList<>();
+
+        templateData.add(new WxMpTemplateData("first", "你成功购买了以下课程"));
+        templateData.add(new WxMpTemplateData("keyword1", orderId));
+        templateData.add(new WxMpTemplateData("keyword2", courseName));
+        templateData.add(new WxMpTemplateData("keyword3", String.format("%s - %s", startFrom.format(lessonDateTimeFormat), endAt.format(lessonDateTimeFormat))));
+        templateData.add(new WxMpTemplateData("keyword4", address));
+        templateData.add(new WxMpTemplateData("keyword5", contactPhoneNumber));
+        templateData.add(new WxMpTemplateData("remark", "请准时前来上课。如有疑问，请通过联系电话与我们联系。谢谢！"));
+
+        WxMpTemplateMessage templateMessage = WxMpTemplateMessage.builder()
+                .templateId(DEMO_LESSON_TEMPLATE_ID)
+                .toUser(sendToOpenId)
+                .data(templateData)
+                .build();
+        return templateMessage;
     }
 
     /**

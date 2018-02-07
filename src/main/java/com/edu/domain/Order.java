@@ -120,12 +120,13 @@ public class Order {
 		return courseProductsMap;
 	}
 
-	public void addCourseProduct(CourseProduct courseProduct, int quantity) {
-		this.courseProductsMap.put(courseProduct, quantity);
+	public void addCourseProduct(CourseProduct courseProduct) {
+		this.courseProductsMap.put(courseProduct, courseProduct.getQuantity());
 	}
 
 	public void updateourseProductQuantity(CourseProduct courseProduct, int quantity) {
 		if (quantity > 0) {
+			courseProduct.setQuantity(quantity);
 			this.courseProductsMap.replace(courseProduct, quantity);
 		} else {
 			this.courseProductsMap.remove(courseProduct);
