@@ -2,6 +2,7 @@ package com.edu.domain.dto;
 
 import com.edu.domain.*;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -25,8 +26,10 @@ public class ProductContainer {
 
     private int quantity;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm")
     private LocalDateTime startFrom;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm")
     private LocalDateTime endAt;
 
     private String longProductDescription;
