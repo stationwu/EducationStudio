@@ -15,18 +15,34 @@ function show_subscribe_panel() {
         success: function(data){
             console.log("某一类型课程",data);
             var course = data;
-            for(var i=0; i<course.length; i++){
-                var date = course[i].date.split("-").join("");
-                var timeFrom = course[i].timeFrom.split(":")[0];
-                var id = course[i].id;
-                if(available_date[date] == undefined){
-                    available_date[date] = {};
+            if(!demo_course){
+                for(var i=0; i<course.length; i++){
+                    var date = course[i].date.split("-").join("");
+                    var timeFrom = course[i].timeFrom.split(":")[0];
+                    var id = course[i].id;
+                    if(available_date[date] == undefined){
+                        available_date[date] = {};
+                    }
+                    available_date[date][id] = {
+                        "timeFrom": timeFrom,
+                        "maxSeat": course[i].maxSeat,
+                        "bookedSeat": course[i].bookedSeat
+                    };
                 }
-                available_date[date][id] = {
-                    "timeFrom": timeFrom,
-                    "maxSeat": course[i].maxSeat,
-                    "bookedSeat": course[i].bookedSeat
-                };
+            }else{
+                for(var i=0; i<course.length; i++){
+                    // var date = course[i].date.split("-").join("");
+                    // var timeFrom = course[i].timeFrom.split(":")[0];
+                    // var id = course[i].id;
+                    // if(available_date[date] == undefined){
+                    //     available_date[date] = {};
+                    // }
+                    // available_date[date][id] = {
+                    //     "timeFrom": timeFrom,
+                    //     "maxSeat": course[i].maxSeat,
+                    //     "bookedSeat": course[i].bookedSeat
+                    // };
+                }
             }
             console.log(available_date);
 
@@ -305,11 +321,12 @@ $(function(){
             var course_name;
             $.each(courses,function(key,value){
                 if(value["id"] == course_id){
-                    course_price = price;
-                    course_name = courseName;
+                    course_price = value["price"];
+                    course_name = value["courseName"];
                 }
             });
-            var course_date = strDate.replace(/(\d{4}).(\d{1,2}).(\d{1,2}).+/mg, '$1年$2月$3日');
+            var date = "2018-01-01".split("-");
+            var course_date = date[0]+"年"+date[1]+"月"+date[2]+"日";
 
             var content = "<div id='demo-book-popup'><div class='content'><div class='title'>确认预约</div><div>确认以"+course_price+"元的体验价格预约"+course_date+course_name+"体验课</div></div><div class='btn-panel'><span class='btn1'>取消</span><span class='btn2'>去支付</span></div></div>";
             layer.open({
@@ -320,7 +337,104 @@ $(function(){
                         layer.closeAll();
                     });
                     $(elem).delegate(".btn2", "click", function(){
-                        //支付
+                        //发送订单
+                        var data = {
+                            "studentId": student_id,
+                            "courseId": course_id//////////不是类别id，应该改为课程id
+                        };
+                        $.ajax({
+                            type: "POST",
+                            url: "/api/v1/requestQuote",
+                            contentType: "application/json",
+                            dataType: "json",
+                            data: JSON.stringify(data),
+                            success: function(data){
+                                var order_id = data;//等待赋值
+                                $.ajax({
+                                    type: "POST",
+                                    url: "/api/v1/pay?orderId="+order_id,
+                                    dataType: "json",
+                                    success: function(data){
+                                        //timestamp， nonceStr, package, signType, paySign, success (bool type)
+                                        if (response.success) {
+                                            var body = {
+                                                url : window.location.href
+                                            };
+
+                                            $.ajax({
+                                                url: '/api/v1/JsApiSignature',
+                                                contentType: 'application/json',
+                                                accept: 'application/json',
+                                                type: 'POST',
+                                                data: JSON.stringify(body),
+                                            }).done(function (signature) {
+                                                wx.config({
+                                                    debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                                                    appId: signature.appId, // 必填，公众号的唯一标识
+                                                    timestamp: signature.timestamp, // 必填，生成签名的时间戳
+                                                    nonceStr: signature.nonceStr, // 必填，生成签名的随机串
+                                                    signature: signature.signature, // 必填，签名，见附录1
+                                                    jsApiList: [  // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+                                                        'chooseWXPay'
+                                                    ]
+                                                });
+
+                                                //上方的config检测通过后，会执行ready方法
+                                                wx.ready(function(){
+                                                    // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+                                                    console.log("JSSDK config信息验证成功");
+
+                                                    wx.chooseWXPay({
+                                                        timestamp: response.timestamp,
+                                                        nonceStr: response.nonceStr,
+                                                        package: response.package,
+                                                        signType: response.signType,
+                                                        paySign: response.paySign,
+                                                        success: function(res) {
+                                                            console.log(res);
+                                                            window.location.href = "/paymentResult/" + order.id;
+                                                        },
+                                                        //该complete回调函数，相当于try{}catch(){}异常捕捉中的finally，无论支付成功与否，都会执行complete回调函数。即使wx.error执行了，也会执行该回调函数.
+                                                        complete : function(res) {
+                                                            //  /!*注意：res对象的errMsg属性名称，是没有下划线的，与WeixinJSBridge支付里面的err_msg是不一样的。而且，值也是不同的。*!/
+                                                            if (res.errMsg == "chooseWXPay:ok") {
+                                                                //window.location.href = data[0].sendUrl;
+                                                            } else if (res.errMsg == "chooseWXPay:cancel") {
+                                                                alert("你手动取消支付");
+                                                            } else if (res.errMsg == "chooseWXPay:fail") {
+                                                                alert("支付失败");
+                                                            } else if (res.errMsg == "config:invalid signature") {
+                                                                alert("支付签名验证错误，请检查签名正确与否 or 支付授权目录正确与否等");
+                                                            }
+                                                        }
+                                                    });
+                                                });
+
+                                                wx.error(function(res) {
+                                                    if (res.errMsg == "config:invalid url domain") {
+                                                        alert("微信支付(测试)授权目录设置有误");
+                                                    } else {
+                                                        alert("检测出问题:" + res.errMsg);
+                                                    }
+                                                });
+                                            });
+
+                                        } else {
+                                            alert(response.message);
+                                            window.location.href = "/paymentResult/" + order.id;
+                                        }
+                                        return false;
+                                    },
+                                    error: function(){
+                                        msg_alert("alert", "错误，请稍后重试");
+                                    }
+                                });
+                                return false;
+                            },
+                            error: function(){
+                                msg_alert("alert", "错误，请稍后重试");
+                            }
+                        });
                     });
                 }
             });
@@ -328,7 +442,4 @@ $(function(){
 
         return false;
     });
-
-
 });
-
