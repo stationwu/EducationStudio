@@ -90,6 +90,7 @@ $(function(){
             $("#time-list").children("li").removeAttr("data-id data-maxseat data-bookedseat");
             $("#calendar").children(".calendar-date").children(".item").removeClass("active select");
             $("#subscribe").hide();
+            $("#demo-course").hide().children(".course-image").children("img").attr("src","");
             strDate = null;
             strTime = null;
             course_category_id = null;
@@ -103,7 +104,7 @@ $(function(){
     });
 
     $("#course-subscribe").delegate("#course-list li", "click", function(){
-        var course_category_id = $(this).attr("data-id");
+        course_category_id = $(this).attr("data-id");
         var count = $(this).children(".count").html();
         var name = $(this).children(".name").html();
         if($(this).attr("data-type") == "demo"){
@@ -120,6 +121,7 @@ $(function(){
                     var student_name = data.childName;
                     var mobile = "18800000000";
                     msg_alert("confirm_one_btn", student_name + "的" + name + "课程已用完，请联系老师(" + mobile + ")购买课程~");
+                    return false;
                 },
                 error: function(){
                     msg_alert("alert", "错误，请稍后重试");
@@ -140,7 +142,8 @@ $(function(){
                 }
             });
             console.log(img_url);
-            $("#demo-course").show().children(".course-image").children("img").attr("src",img_url);
+            //$("#demo-course").show().children(".course-image").children("img").attr("src",img_url);
+            $("#demo-course").show().children(".course-image").children("img").attr("src","/images/test.png");
         }else{
             show_subscribe_panel();
         }
