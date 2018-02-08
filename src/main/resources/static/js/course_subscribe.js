@@ -43,6 +43,36 @@ function show_subscribe_panel() {
 }
 
 $(function(){
+
+    // //假数据
+    // courses = [{"id":1,"courseName":"绘本课","leftPeriod":0,"images":[{"id":1,"imageName":"star","date":"2018-02-07 14:21","imageUrl":"/Images/1","thumbnailUrl":"/Images/1/thumbnail","priority":0},{"id":3,"imageName":"作品集","date":"2018-02-07 14:21","imageUrl":"/Images/3","thumbnailUrl":"/Images/3/thumbnail","priority":0},{"id":4,"imageName":"course","date":"2018-02-07 14:21","imageUrl":"/Images/4","thumbnailUrl":"/Images/4/thumbnail","priority":0},{"id":2,"imageName":"galaxy","date":"2018-02-07 14:21","imageUrl":"/Images/2","thumbnailUrl":"/Images/2/thumbnail","priority":0}],"priority":100,"price":0.24,"valid":true,"demoCourse":false},{"id":2,"courseName":"素描课体验课","leftPeriod":0,"images":[],"priority":5,"price":0.10,"valid":true,"demoCourse":true}];
+    // if(!courses.length){
+    //     msg_alert("confirm_one_btn", "请先添加课程~");
+    //     return false;
+    // }
+    // //显示课程列表收缩状态
+    // var html = '<div id="course-title" class="close"><div class="icon"></div>课程：<span class="info"><span class="name">' + courses[0].courseName + '</span> (剩余<span class="count">' + courses[0].leftPeriod + '</span>节)</span>'+
+    //     '<i></i></div><ul id="course-list" style="display: none;">';
+    //
+    // if(courses[0].demoCourse != true){
+    //     html += '<li class="active" data-id="' + courses[0].id + '"><span class="name">' + courses[0].courseName + '</span> (剩余<span class="count">' + courses[0].leftPeriod + '</span>节)</li>';
+    // }else{
+    //     html += '<li class="active" data-id="' + courses[0].id + '" data-type="demo">' + courses[0].courseName + ' (预约体验课)</li>';
+    // }
+    //
+    // for(var i=1; i<courses.length; i++){
+    //     if(courses[i].demoCourse != true){
+    //         html += '<li data-id="' + courses[i].id + '"><span class="name">' + courses[i].courseName + '</span> (剩余<span class="count">' + courses[i].leftPeriod + '</span>节)</li>';
+    //     }else{
+    //         html += '<li data-id="' + courses[i].id + '" data-type="demo">' + courses[i].courseName + ' (预约体验课)</li>';
+    //     }
+    // }
+    // html += '</ul>';
+    //
+    // $("#course-subscribe").prepend(html);
+
+
+
     var student_id = GetQueryString("id");
     $.ajax({
         type: "GET",
@@ -50,12 +80,13 @@ $(function(){
         dataType: "json",
         success: function(data){
             courses = data;
+            // courses = [{"id":1,"courseName":"绘本课","leftPeriod":0,"images":[{"id":1,"imageName":"star","date":"2018-02-07 14:21","imageUrl":"/Images/1","thumbnailUrl":"/Images/1/thumbnail","priority":0},{"id":3,"imageName":"作品集","date":"2018-02-07 14:21","imageUrl":"/Images/3","thumbnailUrl":"/Images/3/thumbnail","priority":0},{"id":4,"imageName":"course","date":"2018-02-07 14:21","imageUrl":"/Images/4","thumbnailUrl":"/Images/4/thumbnail","priority":0},{"id":2,"imageName":"galaxy","date":"2018-02-07 14:21","imageUrl":"/Images/2","thumbnailUrl":"/Images/2/thumbnail","priority":0}],"priority":100,"price":0.24,"valid":true,"demoCourse":false},{"id":2,"courseName":"素描课体验课","leftPeriod":0,"images":[],"priority":5,"price":0.10,"valid":true,"demoCourse":true}];
             if(!courses.length){
                 msg_alert("confirm_one_btn", "请先添加课程~");
                 return false;
             }
             //显示课程列表收缩状态
-            var html = '<div id="course-title" class="close"><div class="icon"></div>课程：<span class="name">' + courses[0].courseName + '</span> (剩余<span class="count">' + courses[0].leftPeriod + '</span>节)'+
+            var html = '<div id="course-title" class="close"><div class="icon"></div>课程：<span class="info"><span class="name">' + courses[0].courseName + '</span> (剩余<span class="count">' + courses[0].leftPeriod + '</span>节)</span>'+
                 '<i></i></div><ul id="course-list" style="display: none;">';
 
             if(courses[0].demoCourse != true){
@@ -129,8 +160,10 @@ $(function(){
             });
         }
         $("#course-title").addClass("close");
-        $("#course-title").children(".name").html(name);
-        $("#course-title").children(".count").html(count);
+
+        // $("#course-title").children(".name").html(name);
+        // $("#course-title").children(".count").html(count);
+        $("#course-title").children(".info").html($(this).html());
         $("#course-list").hide();
 
         if(demo_course){
@@ -138,7 +171,7 @@ $(function(){
             $.each(courses, function(key,value){
                 console.log(value.id)
                 if(value.id == course_category_id){
-                    img_url = value.images[0].imageUrl;
+                    // img_url = value.images[0].imageUrl;
                 }
             });
             console.log(img_url);
@@ -243,6 +276,7 @@ $(function(){
                     //     },
                     // });
 
+
                     var content = "<div id='book-popup'><div class='content'><div class='title'><i></i>预约成功~</div><div>预约成功短信已发送到您预留的手机，请注意查收</div></div><div class='btn-panel'><span class='btn1'>确认</span><span class='btn2'>预约其他课</span></div></div>";
                     layer.open({
                         content:content,
@@ -267,7 +301,17 @@ $(function(){
             });
         }else{
             //
-            var content = "<div id='demo-book-popup'><div class='content'><div class='title'>确认预约</div><div>确认以320元的体验价格预约2017年12月31日绘本体验课</div></div><div class='btn-panel'><span class='btn1'>取消</span><span class='btn2'>去支付</span></div></div>";
+            var course_price;
+            var course_name;
+            $.each(courses,function(key,value){
+                if(value["id"] == course_id){
+                    course_price = price;
+                    course_name = courseName;
+                }
+            });
+            var course_date = strDate.replace(/(\d{4}).(\d{1,2}).(\d{1,2}).+/mg, '$1年$2月$3日');
+
+            var content = "<div id='demo-book-popup'><div class='content'><div class='title'>确认预约</div><div>确认以"+course_price+"元的体验价格预约"+course_date+course_name+"体验课</div></div><div class='btn-panel'><span class='btn1'>取消</span><span class='btn2'>去支付</span></div></div>";
             layer.open({
                 content:content,
                 className: "popup-2-btn",
