@@ -752,3 +752,144 @@ input[type="submit"], input[type="button"], button{
 .course-image img{
     width: 100%;
 }
+#user-center{
+
+}
+#user-center .logo{
+    width: 100%;
+    height: 6.54667rem;
+    background: url("../images/user-center-bg.png") no-repeat;
+    background-size: 100%;
+    text-align: center;
+}
+#user-center .logo img{
+    width: 1.8rem;
+    margin: 1.48rem auto 0.24rem auto;
+}
+#user-center .logo .mobile{
+    display: block;
+    margin: 0rem auto;
+    font-size: 10px;
+    color: #fff;
+}
+[data-dpr="2"] #user-center .logo .mobile{
+    font-size: 20px;
+}
+[data-dpr="3"] #user-center .logo .mobile{
+    font-size: 30px;
+}
+#user-center #my{
+    border-radius: 0.26667rem;
+    position: relative;
+    margin-top: -0.26667rem;
+    background-color: #fff;
+    padding: 0.92rem 0.68rem 3rem 0.68rem;
+}
+#user-center #my li{
+    height: 1.2rem;
+    line-height: 1.2rem;
+    margin-bottom: 0.28rem;
+    border-bottom: solid 1px #ededed;
+}
+#user-center #my li i.icon{
+    display: inline-block;
+    background: url(../images/sprite.png) no-repeat;
+    background-size: 6.4rem auto;
+    position: relative;
+}
+#user-center #my li#courses i.icon{
+    width: 0.36rem;
+    height: 0.38rem;
+    background-position: -1.7333rem -0.64rem;
+    top: 0.06667rem;
+    margin-right: 0.2rem;
+}
+#user-center #my li#paintings i.icon{
+    width: 0.42667rem;
+    height: 0.46rem;
+    background-position: -2.26667rem -0.64rem;
+    top: 0.13333rem;
+    margin-right: 0.13333rem;
+}
+#user-center #my li i.detail{
+    display: inline-block;
+    background: url(../images/sprite.png) no-repeat;
+    background-size: 6.4rem auto;
+    width: 0.2rem;
+    height: 0.36rem;
+    background-position: -2.8rem -0.64rem;
+    margin-top: 0.42rem;
+    float: right;
+}
+/*painting-list*/
+#painting-list{
+    padding-top: 0.2rem;
+    font-size: 12px;
+}
+[data-dpr="2"] #painting-list{
+    font-size: 24px;
+}
+[data-dpr="3"] #painting-list{
+    font-size: 36px;
+}
+#painting-list .date{
+    margin: 0.08rem 0 0.16rem 0.4rem;
+    font-size: 11px;
+}
+[data-dpr="2"] #painting-list .date{
+    font-size: 22px;
+}
+[data-dpr="3"] #painting-list .date{
+    font-size: 33px;
+}
+#painting-list .painting-info{
+    margin-left: 1.28rem;
+    width: 5.56rem;
+    height: 2.8rem;
+    padding: 0.48rem 0.4rem 0 2.2rem;
+    color: #999;
+    border-radius: 0.28rem;
+    background-color: #fff;
+    position: relative;
+    background: url(../images/course-info-bg.png) no-repeat #fff;
+    background-position: 103%;
+    background-size: 3.4rem;
+    margin-bottom: 0.32rem;
+}
+#painting-list .painting-info div{
+    margin-bottom: 0.16rem;
+}
+#painting-list .painting-info .painting{
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 0.16rem;
+    border: solid 1px #ffcd0d;
+    overflow: hidden;
+    position: absolute;
+    left: -0.88rem;
+    top: 0.38rem;
+}
+#painting-list .painting-info .painting img{
+    width: 100%;
+}
+#painting-list .painting-info .name{
+    color: #222;
+    font-size: 14px;
+}
+[data-dpr="2"] #painting-list .painting-info .name{
+    font-size: 28px;
+}
+[data-dpr="3"] #painting-list .painting-info .name{
+    font-size: 42px;
+}
+#painting-list .painting-info .detail{
+    display: inline-block;
+    background: url(../images/sprite.png) no-repeat;
+    background-size: 6.4rem auto;
+    width: 0.2rem;
+    height: 0.36rem;
+    background-position: -2.8rem -0.64rem;
+    top: 1.48rem;
+    position: absolute;
+    right: 0.4rem;
+}
