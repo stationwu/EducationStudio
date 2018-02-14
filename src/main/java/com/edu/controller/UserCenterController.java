@@ -42,6 +42,10 @@ public class UserCenterController {
     public final static String COURSE_BOOK_PATH = "/user/course/book";
     
     public final static String COURSE_LIST_PATH = "/user/course/list";
+    
+    public final static String PAINT_LIST_PATH = "/user/paint/list";
+    
+    public final static String PAINT_INFO_PATH = "/user/paint/info";
 
 	public final static String SESSION_OPENID_KEY = "openCode";
 	
@@ -127,6 +131,16 @@ public class UserCenterController {
     @GetMapping(STUDENT_SEARCH_PATH)
     public String searchStudent() {
         return "student_search"; // serve the page
+    }
+    
+    @GetMapping(PAINT_LIST_PATH)
+    public String searchPaintList() {
+        return "painting_list"; // serve the page
+    }
+    
+    @GetMapping(PAINT_INFO_PATH)
+    public String showPaint() {
+        return "painting_info"; // serve the page
     }
     
     @GetMapping(STUDENT_UPLOAD_PATH)

@@ -62,11 +62,11 @@ $(function(){
         }
 
         var verifyCode = $("#captcha").val();
-        var flag = validate(verifyCode, "verifyCode");
-        if(!flag){
-            msg_alert("confirm_one_btn", "请您填写正确格式的验证码");
-            return false;
-        }
+        //var flag = validate(verifyCode, "verifyCode");
+        //if(!flag){
+        //    msg_alert("confirm_one_btn", "请您填写正确格式的验证码");
+        //    return false;
+        //}
 
         // var captcha = $("#captcha").val();
         var verifyCodeId = $("#wxVerifyCode").val();
