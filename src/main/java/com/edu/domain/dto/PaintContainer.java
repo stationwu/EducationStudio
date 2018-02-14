@@ -11,6 +11,8 @@ public class PaintContainer {
 	private long id;
 
     private String imageName;
+    
+    private long courseCategoryId;
 
     private String date;
 
@@ -47,6 +49,7 @@ public class PaintContainer {
         this.imageUrl = "/Images/" + image.getId();
         this.thumbnailUrl = "/Images/" + image.getId() + "/thumbnail";
         this.teacher = image.getTeacher();
+        this.courseCategoryId = image.getCourse().getCourseCategory().getId();
     }
 
     public PaintContainer(Image x, Student student) {
