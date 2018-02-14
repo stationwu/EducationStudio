@@ -174,6 +174,7 @@ $(function(){
                     msg_alert("alert", "错误，请稍后重试");
                 }
             });
+            return false;
         }
         $("#course-title").addClass("close");
 
