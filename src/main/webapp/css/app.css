@@ -212,12 +212,12 @@ input[type="submit"], input[type="button"], button{
     background-color: transparent;
     border-radius: 0.13333rem;
     height: 0.74667rem;
-    width: 2.28667rem;
     text-align: center;
     font-size: 13px;
     position: relative;
     top: -1.06667rem;
     left: 6.67333rem;
+    padding: 0 0.24rem;
 }
 [data-dpr="2"] #verifyCodeBtn{
     font-size: 26px;
@@ -892,4 +892,42 @@ input[type="submit"], input[type="button"], button{
     top: 1.48rem;
     position: absolute;
     right: 0.4rem;
+}
+/*painting-info*/
+#painting-info{
+    font-size: 12px;
+    color: #999;
+    background-color: #fff;
+    margin: 0.4rem 0.4rem 0.8rem 0.4rem;
+    padding: 0.8rem 0 0.4rem 0;
+    border-radius: 0.13333rem;
+    box-shadow: 0 0.08rem 0.2rem #ccc;
+}
+[data-dpr="2"] #painting-info{
+    font-size: 24px;
+}
+[data-dpr="3"] #painting-info{
+    font-size: 36px;
+}
+#painting-info .name{
+    text-align: center;
+    font-size: 18px;
+    color: #222;
+    margin: 0 0 0.52rem 0;
+}
+[data-dpr="2"] #painting-info .name{
+    font-size: 36px;
+}
+[data-dpr="3"] #painting-info .name{
+    font-size: 54px;
+}
+#painting-info .content img{
+    width: 100%;
+    display: block;
+}
+#painting-info .info{
+    padding: 0.52rem 0 0 0.52rem;
+}
+#painting-info .info div{
+    margin-bottom: 0.12rem;
 }

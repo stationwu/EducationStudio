@@ -16,18 +16,6 @@ $(function(){
             timer(o);
         },1000);
     };
-    function validate(value, type){
-        var reg = "";
-        switch(type){
-            case "mobile":
-                reg = /^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/;
-                break;
-            default:
-                return false;
-        }
-
-        return reg.test(value);
-    }
 
 
     $("#verifyCodeBtn").click(function(){

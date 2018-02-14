@@ -16,7 +16,7 @@
                 reg = /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/;
                 break;
             case "verifyCode":
-                reg = /^[0-9]{6}$/;
+                reg = /^\d{6}$/;
                 break;
             default:
                 return false;
