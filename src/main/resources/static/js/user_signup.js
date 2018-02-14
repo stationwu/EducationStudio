@@ -23,7 +23,7 @@ $(function(){
                 reg = /^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/;
                 break;
             default:
-                return true;
+                return false;
         }
 
         return reg.test(value);
@@ -74,11 +74,11 @@ $(function(){
         }
 
         var verifyCode = $("#captcha").val();
-        var flag = validate(verifyCode, "verifyCode");
-        if(!flag){
-            msg_alert("confirm_one_btn", "请您填写正确格式的验证码");
-            return false;
-        }
+        //var flag = validate(verifyCode, "verifyCode");
+        //if(!flag){
+        //    msg_alert("confirm_one_btn", "请您填写正确格式的验证码");
+        //    return false;
+        //}
 
         // var captcha = $("#captcha").val();
         var verifyCodeId = $("#wxVerifyCode").val();
