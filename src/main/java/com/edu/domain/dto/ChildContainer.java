@@ -52,6 +52,6 @@ public class ChildContainer {
 		this.usedCourses = student.getCoursesSet().stream().sorted((x, y) -> Long.compare(y.getId(), x.getId()))
 				.map(x -> new CourseContainer(x)).collect(Collectors.toCollection(ArrayList::new));
 		this.paints = student.getImagesSet().stream().sorted(Comparator.comparing(Image::getId).reversed())
-				.map(x -> new PaintContainer(x)).collect(Collectors.toCollection(ArrayList::new));
+				.map(x -> new PaintContainer(x, student)).collect(Collectors.toCollection(ArrayList::new));
 	}
 }

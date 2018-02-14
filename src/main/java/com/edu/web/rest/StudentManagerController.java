@@ -70,6 +70,7 @@ public class StudentManagerController {
 		for (MultipartFile file : files) {
 			if (!file.isEmpty()) {
 				Image img = imageService.saveIn3Size(imageName, material, student, course, file);
+				img.setTeacher(teacher);
 				student.addImage(img);
 			}
 		}
