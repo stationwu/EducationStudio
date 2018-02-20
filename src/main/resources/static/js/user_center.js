@@ -31,4 +31,12 @@ $(function(){
             msg_alert("alert", "错误，请稍后重试");
         }
     });
+    $("#courses").click(function () {
+        location.href = "/user/course/list";
+        return false;
+    });
+    $("#paintings").click(function () {
+        location.href = "/user/paint/list";
+        return false;
+    });
 });

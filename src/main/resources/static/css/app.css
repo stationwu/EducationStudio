@@ -55,6 +55,7 @@ input[type="submit"], input[type="button"], button{
     line-height: 1.33333rem;
     color: #2d2d2d;
     font-size: 16px;
+    border-radius: 0 0 0.13333rem 0.13333rem;
 }
 [data-dpr="2"] .popup .layui-m-layerbtn{
     font-size: 32px;
@@ -74,6 +75,8 @@ input[type="submit"], input[type="button"], button{
 }
 .layui-m-layermain .layui-m-layerchild.popup-2-btn{
     width: 7.6rem;
+    max-width: 7.6rem;
+    border-radius: 0.13333rem;
 }
 .popup-2-btn .layui-m-layercont{
     padding: 0rem!important;
@@ -452,7 +455,7 @@ input[type="submit"], input[type="button"], button{
 #student-list .student-info .birth i{
     display: inline-block;
     width: 0.33334rem;
-    height: 0.3rem;
+    height: 0.31333rem;
     background: url("../images/sprite.png") no-repeat;
     background-size: 6.4rem auto;
     background-position: -1.73333rem -0.23rem;
@@ -530,7 +533,7 @@ input[type="submit"], input[type="button"], button{
     border: solid 1px transparent;
     min-height: 100%;
 }
-#course-title{
+#course-subscribe #course-title{
     width: 7.86667rem;
     padding: 0 0.66667rem;
     height: 0.92rem;
@@ -540,13 +543,13 @@ input[type="submit"], input[type="button"], button{
     border-radius: 0.46rem;
     font-size: 15px;
 }
-[data-dpr="2"] #course-title{
+[data-dpr="2"] #course-subscribe #course-title{
     font-size: 30px;
 }
-[data-dpr="3"] #course-title{
+[data-dpr="3"] #course-subscribe #course-title{
     font-size: 45px;
 }
-#course-title .icon{
+#course-subscribe #course-title .icon{
     display: inline-block;
     width: 0.44rem;
     height: 0.44rem;
@@ -557,7 +560,7 @@ input[type="submit"], input[type="button"], button{
     top: 0.08rem;
     margin-right: 0.08rem;
 }
-#course-title i{
+#course-subscribe #course-title i{
     display: inline-block;
     width: 0.28rem;
     height: 0.18rem;
@@ -568,19 +571,19 @@ input[type="submit"], input[type="button"], button{
     position: relative;
     top: 0.38rem;
 }
-#course-list{
+#course-subscribe #course-list{
     background-color: #fff;
     font-size: 12px;
     width: 7.89333rem;
     margin: 0 auto;
 }
-[data-dpr="2"] #course-list{
+[data-dpr="2"] #course-subscribe #course-list{
     font-size: 24px;
 }
-[data-dpr="3"] #course-list{
+[data-dpr="3"] #course-subscribe #course-list{
     font-size: 36px;
 }
-#course-list li{
+#course-subscribe #course-list li{
     height: 1.08rem;
     line-height: 1.08rem;
     padding-left: 0.52rem;
@@ -821,6 +824,164 @@ input[type="submit"], input[type="button"], button{
     margin-top: 0.42rem;
     float: right;
 }
+#course-info .title{
+    width: 7.86667rem;
+    padding: 0 0.66667rem;
+    height: 0.92rem;
+    line-height: 0.92rem;
+    margin: 0rem auto 0rem auto;
+    background-color: #dedede;
+    border-radius: 0.46rem;
+    font-size: 15px;
+}
+[data-dpr="2"] #course-info .title{
+    font-size: 30px;
+}
+[data-dpr="3"] #course-info .title{
+    font-size: 45px;
+}
+#course-info #course-title{
+    margin-top: 0.4rem;
+    display: none;
+}
+#course-info .title .icon{
+    display: inline-block;
+    width: 0.44rem;
+    height: 0.44rem;
+    background: url("../images/sprite.png") no-repeat;
+    background-size: 6.4rem auto;
+    background-position: -4.93333rem -0.12rem;
+    position: relative;
+    top: 0.08rem;
+    margin-right: 0.08rem;
+}
+#course-info .title i{
+    display: inline-block;
+    width: 0.28rem;
+    height: 0.18rem;
+    background: url("../images/sprite.png") no-repeat;
+    background-size: 6.4rem auto;
+    background-position: -3.86667rem -0.36rem;
+    float: right;
+    position: relative;
+    top: 0.38rem;
+}
+#course-info .list{
+    background-color: #fff;
+    font-size: 12px;
+    width: 7.89333rem;
+    margin: 0.32rem auto 0 auto;
+    display: none;
+}
+[data-dpr="2"] #course-info .list{
+    font-size: 24px;
+}
+[data-dpr="3"] #course-info .list{
+    font-size: 36px;
+}
+#course-info .list li{
+    height: 1.08rem;
+    line-height: 1.08rem;
+    padding-left: 0.52rem;
+    border-bottom: solid 1px #dedede;
+}
+#course-info #course-search-btn{
+    width: 2.32rem;
+    height: 0.8rem;
+    line-height: 0.8rem;
+    margin: 1.36rem auto 0.24rem auto;
+    background-color: #ffcd0d;
+    border-radius: 0.4rem;
+    font-size: 13px;
+    text-align: center;
+}
+[data-dpr="2"] #course-info #course-search-btn{
+    font-size: 26px;
+}
+[data-dpr="3"] #course-info #course-search-btn{
+    font-size: 39px;
+}
+#course-info #course-search-btn span{
+    opacity: 0.5;
+}
+#course-info #course-search-btn.active span{
+    opacity: 1;
+}
+#course-info #detail{
+    display: none;
+    color: #999;
+}
+#course-info #detail>span{
+    display: block;
+    text-align: center;
+}
+#course-info #detail .icon{
+    width: 0.18rem;
+    height: 0.18rem;
+    background: url("../images/sprite.png") no-repeat;
+    background-size: 6.4rem auto;
+    background-position: -4.4rem -0.36rem;
+    margin: 0rem auto 0.12rem auto;
+}
+#course-info #detail .course-info{
+    width: 8rem;
+    height: 2.28rem;
+    padding: 0.4rem 0 0.4rem 1.2rem;
+    border-radius: 0.28rem;
+    background-color: #fff;
+    margin: 0 auto 0rem auto;
+    font-size: 12px;
+    position: relative;
+    background: url(../images/course-info-bg.png) no-repeat #fff;
+    background-position: 103%;
+    background-size: 3.4rem;
+}
+[data-dpr="2"] #course-info #detail .course-info{
+    font-size: 24px;
+}
+[data-dpr="3"] #course-info #detail .course-info{
+    font-size: 36px;
+}
+#course-info #detail .course-info .student-name{
+    color: #222;
+    font-size: 18px;
+    height: 0.48rem;
+    line-height: 0.48rem;
+    margin-bottom: 0.24rem;
+}
+[data-dpr="2"] #course-info #detail .course-info .student-name{
+    font-size: 36px;
+}
+[data-dpr="3"] #course-info #detail .course-info .student-name{
+    font-size: 54px;
+}
+#course-info #detail .course-info div{
+    height: 0.53333rem;
+    line-height: 0.53333rem;
+}
+#course-info #detail .course-info .detail{
+    position: absolute;
+    right: 0.4rem;
+    top: 1.36rem;
+    font-size: 11px;
+}
+[data-dpr="2"] #course-info #detail .course-info .detail{
+    font-size: 22px;
+}
+[data-dpr="3"] #course-info #detail .course-info .detail{
+    font-size: 33px;
+}
+#course-info #detail .course-info .detail i{
+    display: inline-block;
+    background: url(../images/sprite.png) no-repeat;
+    background-size: 6.4rem auto;
+    width: 0.2rem;
+    height: 0.36rem;
+    background-position: -2.8rem -0.64rem;
+    top: 0.074rem;
+    position: relative;
+    margin-left: 0.12rem;
+}
 /*painting-list*/
 #painting-list{
     padding-top: 0.2rem;
@@ -832,7 +993,7 @@ input[type="submit"], input[type="button"], button{
 [data-dpr="3"] #painting-list{
     font-size: 36px;
 }
-#painting-list .date{
+#painting-list>.date{
     margin: 0.08rem 0 0.16rem 0.4rem;
     font-size: 11px;
 }
@@ -857,7 +1018,7 @@ input[type="submit"], input[type="button"], button{
     margin-bottom: 0.32rem;
 }
 #painting-list .painting-info div{
-    margin-bottom: 0.16rem;
+    margin-bottom: 0.28rem;
 }
 #painting-list .painting-info .painting{
     width: 2.4rem;
@@ -867,10 +1028,11 @@ input[type="submit"], input[type="button"], button{
     overflow: hidden;
     position: absolute;
     left: -0.88rem;
-    top: 0.38rem;
+    top: 0.44rem;
+    box-shadow: 0.04rem 0.04rem 0.18rem #efefef;
 }
 #painting-list .painting-info .painting img{
-    width: 100%;
+
 }
 #painting-list .painting-info .name{
     color: #222;

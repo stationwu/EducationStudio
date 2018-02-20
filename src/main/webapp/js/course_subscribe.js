@@ -245,7 +245,7 @@ $(function(){
                                         className: "popup-2-btn",
                                         success: function(elem){
                                             $(elem).delegate(".btn1", "click", function(){
-                                                location.href = "/user/course/list?id="+student_id;
+                                                location.href = "/user/course/list";
                                             });
                                             $(elem).delegate(".btn2", "click", function(){
                                                 layer.closeAll();
@@ -300,7 +300,7 @@ $(function(){
                         className: "popup-2-btn",
                         success: function(elem){
                             $(elem).delegate(".btn1", "click", function(){
-                                location.href = "/user/course/list?id="+student_id;
+                                location.href = "/user/course/list";
                             });
                             $(elem).delegate(".btn2", "click", function(){
                                 layer.closeAll();

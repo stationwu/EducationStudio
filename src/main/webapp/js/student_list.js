@@ -6,12 +6,11 @@ $(function(){
         dataType: "json",
         success: function(data){
             var children = data.children;
-            console.log(children);
             var student_html = "";
             for(var i=0; i<children.length; i++){
                 student_html += showStudent(children[i].id, children[i].childName, children[i].birthday, children[i].gender);
             }
-            $("#student-list").prepend(student_html);
+            $("#student-list").children(".content").prepend(student_html);
         },
         error: function(){
             msg_alert("alert", "错误，请稍后重试");
