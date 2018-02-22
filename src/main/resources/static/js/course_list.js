@@ -1,6 +1,6 @@
+var student_data;
 $(function(){
     // var student_id = GetQueryString("id");
-    var data;
     var student_id;
     var course_id;
 
@@ -12,35 +12,35 @@ $(function(){
             var course_html = "";
             var student_html = "";
             var num = 1;
-
-            if(data.length){
-                // student_html += '<div id="student-title" class="title" data-id="' + data[0].id + '">学员:' + data[0].childName + '<i></i></div>'+
+            student_data = data;
+            if(student_data.length){
+                // student_html += '<div id="student-title" class="title" data-id="' + student_data[0].id + '">学员:' + student_data[0].childName + '<i></i></div>'+
                 //                 '<ul id="student-list" class="list">';
-                $("#student-title").attr("data-id", data[0].id).html("学员:" + data[0].childName + "<i></i>");
+                $("#student-title").attr("data-id", student_data[0].id).html("学员:" + student_data[0].childName + "<i></i>");
             }
 
-            for(var i=0; i<data.length; i++){
-                var courses = data[i].reversedCourses;
-                var childName = data[i].childName;
+            for(var i=0; i<student_data.length; i++){
+                var courses = student_data[i].reversedCourses;
+                var childName = student_data[i].childName;
                 for(var j=0; j<courses.length; j++){
                     course_html += showCourse(courses[j].id, (num++), childName, courses[j].courseName, (courses[j].date+" "+courses[j].timeFrom+"~"+courses[j].timeTo), courses[j].address);
                 }
 
-                student_html += '<li data-id="' + data[i].id + '">' + data[i].childName + '</li>';
+                student_html += '<li data-id="' + student_data[i].id + '">' + student_data[i].childName + '</li>';
             }
             $("#student-list").html(student_html);
             student_html = "";
             // student_html += '</ul>';
 
-            if(data[0].courseCategories.length){
+            if(student_data[0].courseCategories.length){
                 $("#course-search-btn").addClass("active");
-                // student_html += '<div id="course-title" class="title" data-id="' + data[0].courseCategories[0].id + '">课程:' + data[0].courseCategories[0].courseName + '<i></i></div>'+
+                // student_html += '<div id="course-title" class="title" data-id="' + student_data[0].courseCategories[0].id + '">课程:' + student_data[0].courseCategories[0].courseName + '<i></i></div>'+
                 //                 '<ul id="course-list" class="list">';
-                $("#course-title").attr("data-id", data[0].courseCategories[0].id).html("课程:" + data[0].courseCategories[0].courseName + "<i></i>");
+                $("#course-title").attr("data-id", student_data[0].courseCategories[0].id).html("课程:" + student_data[0].courseCategories[0].courseName + "<i></i>");
             }
-            for(var i=0; i<data[0].courseCategories.length; i++){
-                console.log(data[0].courseCategories[i]);
-                student_html += '<li data-id="' + data[0].courseCategories[i].id + '">' + data[0].courseCategories[i].courseName + '</li>';
+            for(var i=0; i<student_data[0].courseCategories.length; i++){
+                console.log(student_data[0].courseCategories[i]);
+                student_html += '<li data-id="' + student_data[0].courseCategories[i].id + '">' + student_data[0].courseCategories[i].courseName + '</li>';
             }
             // student_html += '</ul>';
 
@@ -85,7 +85,7 @@ $(function(){
         // console.log(student_id);
         $("#student-title").attr("data-id",student_id).html("学员:" + $(this).html() + "<i></i>");
         $("#course-title").removeAttr("data-id");
-        $.each(data, function(key,value){
+        $.each(student_data, function(key,value){
             console.log(value.id)
             if(value.id == student_id){
                 var courses = value.courseCategories;
@@ -124,7 +124,7 @@ $(function(){
         student_id = $("#student-title").attr("data-id");
         course_id = $("#course-title").attr("data-id");
         var courses, course, name;
-        $.each(data, function(key,value){
+        $.each(student_data, function(key,value){
             if(value.id == student_id){
                 courses = value.courseCategories;
                 name = value.childName;
