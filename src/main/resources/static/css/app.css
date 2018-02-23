@@ -171,7 +171,7 @@ input[type="submit"], input[type="button"], button{
     position: relative;
     height: 1.348rem;
 }
-#signup-form input[type='text']{
+#signup-form input[type='number']{
     width: 6.8rem;
     padding: 0 0.53333rem;
     margin: 0 auto;
@@ -181,10 +181,10 @@ input[type="submit"], input[type="button"], button{
     border-bottom: solid 1px #ededed;
     display: block;
 }
-[data-dpr="2"] #signup-form input[type='text']{
+[data-dpr="2"] #signup-form input[type='number']{
     font-size: 30px;
 }
-[data-dpr="3"] #signup-form input[type='text']{
+[data-dpr="3"] #signup-form input[type='number']{
     font-size: 45px;
 }
 #mobileNumberIcon{
