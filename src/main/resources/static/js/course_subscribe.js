@@ -31,17 +31,17 @@ function show_subscribe_panel() {
                 }
             }else{
                 for(var i=0; i<course.length; i++){
-                    // var date = course[i].date.split("-").join("");
-                    // var timeFrom = course[i].timeFrom.split(":")[0];
-                    // var id = course[i].id;
-                    // if(available_date[date] == undefined){
-                    //     available_date[date] = {};
-                    // }
-                    // available_date[date][id] = {
-                    //     "timeFrom": timeFrom,
-                    //     "maxSeat": course[i].maxSeat,
-                    //     "bookedSeat": course[i].bookedSeat
-                    // };
+                    var date = course[i].date.split("-").join("");
+                    var timeFrom = course[i].timeFrom.split(":")[0];
+                    var id = course[i].id;
+                    if(available_date[date] == undefined){
+                        available_date[date] = {};
+                    }
+                    available_date[date][id] = {
+                        "timeFrom": timeFrom,
+                        "maxSeat": course[i].maxSeat,
+                        "bookedSeat": course[i].bookedSeat
+                    };
                 }
             }
             console.log(available_date);
@@ -329,7 +329,7 @@ $(function(){
             var date = "2018-01-01".split("-");
             var course_date = date[0]+"年"+date[1]+"月"+date[2]+"日";
 
-            var content = "<div id='demo-book-popup'><div class='content'><div class='title'>确认预约</div><div>确认以"+course_price+"元的体验价格预约"+course_date+course_name+"体验课</div></div><div class='btn-panel'><span class='btn1'>取消</span><span class='btn2'>去支付</span></div></div>";
+            var content = "<div id='demo-book-popup'><div class='content'><div class='title'>确认预约</div><div>确认以"+course_price+"元的体验价格预约"+course_date+course_name+"</div></div><div class='btn-panel'><span class='btn1'>取消</span><span class='btn2'>去支付</span></div></div>";
             layer.open({
                 content:content,
                 className: "popup-2-btn",
