@@ -66,7 +66,7 @@ public class UserCenterController {
 
             Customer customer = repository.findOneByOpenCode(openId);
             model.addAttribute("customer", customer);
-            view = "user_info";
+            view = "user_center";
         } else {
             logger.debug(">>> You're not registered");
             logger.debug(">>> Redirecting to the signup page");
