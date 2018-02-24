@@ -170,18 +170,25 @@ $(function () {
         this.$arrow_prev.bind('click', function () {
           var _date = dateObj.getDate();
           dateObj.setDate(new Date(_date.getFullYear(), _date.getMonth() - 1, 1));
-
           self.showCalendar();
+          //可选的日期加active
+          console.log(available_date)
+          $.each(available_date, function(key,value){
+            console.log(key,value)
+            $(".calendar-date .item[data='"+key+"']").addClass("active");
+          });
         });
 
         this.$arrow_next.bind('click', function () {
           var _date = dateObj.getDate();
           dateObj.setDate(new Date(_date.getFullYear(), _date.getMonth() + 1, 1));
+          self.showCalendar();
           //可选的日期加active
+          console.log(available_date)
           $.each(available_date, function(key,value){
+            console.log(key,value)
             $(".calendar-date .item[data='"+key+"']").addClass("active");
           });
-          self.showCalendar();
         });
       }
 

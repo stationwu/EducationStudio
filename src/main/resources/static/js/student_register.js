@@ -9,7 +9,7 @@ $(function(){
     });
     $("#add-student-form").delegate("input[name='birth']", "click", function(){
         $(this).removeAttr("placeholder");
-        $(this).css("padding-left","0.66667rem");
+        $(this).css("padding-left","0.6rem");
     });
     $("#add-student-form-btn").click(function(){
         num++;

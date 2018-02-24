@@ -321,12 +321,13 @@ $(function(){
             var course_price;
             var course_name;
             $.each(courses,function(key,value){
-                if(value["id"] == course_id){
+                if(value["id"] == course_category_id){
                     course_price = value["price"];
                     course_name = value["courseName"];
                 }
             });
-            var date = "2018-01-01".split("-");
+            console.log(course_price, course_name, strDate);
+            var date = strDate.split("-");
             var course_date = date[0]+"年"+date[1]+"月"+date[2]+"日";
 
             var content = "<div id='demo-book-popup'><div class='content'><div class='title'>确认预约</div><div>确认以"+course_price+"元的体验价格预约"+course_date+course_name+"</div></div><div class='btn-panel'><span class='btn1'>取消</span><span class='btn2'>去支付</span></div></div>";
@@ -350,7 +351,8 @@ $(function(){
                             dataType: "json",
                             data: JSON.stringify(data),
                             success: function(data){
-                                var order_id = data;//等待赋值
+                                console.log("返回值",data,data["id"])
+                                var order_id = data["id"];//等待赋值
                                 $.ajax({
                                     type: "POST",
                                     url: "/api/v1/pay?orderId="+order_id,
