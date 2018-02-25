@@ -597,7 +597,7 @@ input[type="submit"], input[type="button"], button{
     background-color: #fff;
     padding: 0.32rem 0.66667rem;
     width: 7.86665rem;
-    margin: 0.4rem auto 0.37333rem auto;
+    margin: 0 auto 1.66667rem auto;
     font-size: 12px;
 }
 [data-dpr="2"] #time-list{
