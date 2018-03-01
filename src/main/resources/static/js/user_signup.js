@@ -1,5 +1,11 @@
 
 $(function(){
+    var width = document.documentElement.clientWidth;
+    var height = document.documentElement.clientHeight;
+    var btn_height = document.getElementById("signup-form-btn").offsetHeight;
+    var content_height = height - btn_height;
+    $(".content").height(content_height);
+
     var wait = 60;
     function timer(o) {
         if (wait == 0) {

@@ -89,8 +89,8 @@ input[type="submit"], input[type="button"], button{
     font-size: 36px;
 }
 .popup-2-btn .layui-m-layercont .content{
-     padding: 1.3333rem 0.8rem!important;
- }
+    padding: 1.3333rem 0.8rem!important;
+}
 .popup-2-btn .layui-m-layercont .content .title{
     margin-bottom: 0.4rem;
     font-size: 18px;
@@ -144,11 +144,14 @@ input[type="submit"], input[type="button"], button{
     background-color: #d0d0d0;
     border-radius: 0rem 0rem 0rem 0.13333rem;
 }
-#signup{
+#signup .bg{
     background: url("../images/singup-bg.png") 0 0 no-repeat;
     background-size: 100%;
     /*padding-top: 3.51rem;*/
-    padding-top: 3.6rem;
+    height: 3.6rem;
+}
+#signup .content{
+    /*padding-top: 3.6rem;*/
 }
 #thumbnail{
     width: 3.06667rem;
@@ -174,7 +177,7 @@ input[type="submit"], input[type="button"], button{
     position: relative;
     height: 1.348rem;
 }
-#signup-form input[type='number']{
+#signup-form input[type='tel']{
     width: 7.33333rem;
     padding: 0 0 0 0.53333rem;
     margin: 0;
@@ -183,10 +186,10 @@ input[type="submit"], input[type="button"], button{
     border-bottom: solid 1px #ededed;
     display: block;
 }
-[data-dpr="2"] #signup-form input[type='number']{
+[data-dpr="2"] #signup-form input[type='tel']{
     font-size: 30px;
 }
-[data-dpr="3"] #signup-form input[type='number']{
+[data-dpr="3"] #signup-form input[type='tel']{
     font-size: 45px;
 }
 #mobileNumberIcon{
@@ -249,6 +252,22 @@ input[type="submit"], input[type="button"], button{
     font-size: 32px;
 }
 [data-dpr="3"] .bottom-btn{
+    font-size: 48px;
+}
+#signup-form-btn{
+    text-align: center;
+    text-decoration: none;
+    width: 100%;
+    background-color: #ffcd0d;
+    height: 1.33333rem;
+    line-height: 1.33333rem;
+    color: #2d2d2d;
+    font-size: 16px;
+}
+[data-dpr="2"] #signup-form-btn{
+    font-size: 32px;
+}
+[data-dpr="3"] #signup-form-btn{
     font-size: 48px;
 }
 
@@ -367,8 +386,8 @@ input[type="submit"], input[type="button"], button{
 #add-student-form input{
     text-align: center;
     color: #999;
-    height: 1.04rem;
-    line-height: 1.04rem;
+    height: 0.88rem;
+    /*line-height: 1.04rem;*/
     font-size: 14px;
 }
 [data-dpr="2"] #add-student-form input{
@@ -383,7 +402,7 @@ input[type="submit"], input[type="button"], button{
     margin-top: 0.44rem;
 }
 #add-student-form input[name='birth']{
-    margin: 0 auto 0.33333rem auto;
+    margin: 0.2rem auto 0.33333rem auto;
     background-color: transparent;
     display: block;
     width: 5.33333rem;
