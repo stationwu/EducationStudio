@@ -357,8 +357,9 @@ $(function(){
                                     type: "POST",
                                     url: "/api/v1/pay?orderId="+order_id,
                                     dataType: "json",
-                                    success: function(data){
+                                    success: function(response){
                                         //timestamp， nonceStr, package, signType, paySign, success (bool type)
+                                        console.log(response);
                                         if (response.success) {
                                             var body = {
                                                 url : window.location.href
