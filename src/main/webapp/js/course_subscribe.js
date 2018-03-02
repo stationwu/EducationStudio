@@ -239,20 +239,24 @@ $(function(){
                                 url: "/api/v1/AvailableCourse/book?studentId="+student_id+"&courseId="+course_id,
                                 dataType: "json",
                                 success: function(data){
-                                    var content = "<div id='book-popup'><div class='content'><div class='title'><i></i>预约成功~</div><div>预约成功短信已发送到您预留的手机，请注意查收</div></div><div class='btn-panel'><span class='btn1'>确认</span><span class='btn2'>预约其他课</span></div></div>";
-                                    layer.open({
-                                        content:content,
-                                        className: "popup-2-btn",
-                                        success: function(elem){
-                                            $(elem).delegate(".btn1", "click", function(){
-                                                location.href = "/user/course/list";
-                                            });
-                                            $(elem).delegate(".btn2", "click", function(){
-                                                layer.closeAll();
-                                                $("#course-title").click();
-                                            });
-                                        }
-                                    });
+                                    // var content = "<div id='book-popup'><div class='content'><div class='title'><i></i>预约成功~</div><div>预约成功短信已发送到您预留的手机，请注意查收</div></div><div class='btn-panel'><span class='btn1'>确认</span><span class='btn2'>预约其他课</span></div></div>";
+                                    // layer.open({
+                                    //     content:content,
+                                    //     className: "popup-2-btn",
+                                    //     success: function(elem){
+                                    //         $(elem).delegate(".btn1", "click", function(){
+                                    //             location.href = "/user/course/list";
+                                    //         });
+                                    //         $(elem).delegate(".btn2", "click", function(){
+                                    //             layer.closeAll();
+                                    //             $("#course-title").click();
+                                    //         });
+                                    //     }
+                                    // });
+                                    msg_alert("alert", "预约成功");
+                                    setTimeout(function(){
+                                        location.href = "/user/course/list";
+                                    },2000);
                                     return false;
                                 },
                                 error: function(){

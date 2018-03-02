@@ -6,6 +6,18 @@ $(function(){
     var content_height = height - btn_height;
     $(".content").height(content_height);
 
+    $(window).resize(function(){
+        width = document.documentElement.clientWidth;
+        height = document.documentElement.clientHeight;
+        console.log(width, height);
+        if(width > height){
+            $(".content").removeAttr("style");
+        }else{
+            content_height = height - btn_height;
+            $(".content").height(content_height);
+        }
+    });
+
     var wait = 60;
     function timer(o) {
         if (wait == 0) {
