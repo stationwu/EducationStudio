@@ -1,4 +1,3 @@
-
 $(function(){
     var width = document.documentElement.clientWidth;
     var height = document.documentElement.clientHeight;
@@ -104,8 +103,17 @@ $(function(){
             success: function(data){
                 window.location.href = "/user/student/new";
             },
-            error: function(){
-                msg_alert("alert", "错误，请稍后重试");
+            error: function(XMLHttpRequest, textStatus, errorThrown){
+                if(XMLHttpRequest.responseText){
+                    var response = JSON.parse(XMLHttpRequest.responseText);
+                    if(response.status == 500){
+                        location.reload();
+                    }else{
+                        msg_alert("alert", "错误，请稍后重试");
+                    }
+                }else{
+                    msg_alert("alert", "错误，请稍后重试");
+                }
             }
         });
 

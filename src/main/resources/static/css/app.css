@@ -48,6 +48,8 @@ input[type="submit"], input[type="button"], button{
 }
 .layui-m-layermain .layui-m-layerchild.popup{
     width: 7.6rem;
+    max-width: 7.6rem;
+    border-radius: 0.13333rem;
 }
 .popup .layui-m-layerbtn{
     background-color: #ffcd0d;
@@ -254,7 +256,7 @@ input[type="submit"], input[type="button"], button{
 [data-dpr="3"] .bottom-btn{
     font-size: 48px;
 }
-#signup-form-btn{
+.bottom-btn-1{
     text-align: center;
     text-decoration: none;
     width: 100%;
@@ -264,10 +266,10 @@ input[type="submit"], input[type="button"], button{
     color: #2d2d2d;
     font-size: 16px;
 }
-[data-dpr="2"] #signup-form-btn{
+[data-dpr="2"] .bottom-btn-1{
     font-size: 32px;
 }
-[data-dpr="3"] #signup-form-btn{
+[data-dpr="3"] .bottom-btn-1{
     font-size: 48px;
 }
 
@@ -415,6 +417,11 @@ input[type="submit"], input[type="button"], button{
 ::-webkit-datetime-edit {
     visibility: hidden;
 }
+#add-student #add-student-btn{
+    position: fixed;
+    left: 0px;
+    bottom: 0px;
+}
 /*student_list.html*/
 #student-list{
     padding: 0rem;
@@ -549,16 +556,16 @@ input[type="submit"], input[type="button"], button{
     border-radius: 0.03333rem;
 }
 #course-subscribe{
-    position: relative;
-    border: solid 1px transparent;
-    min-height: 100%;
+    /*position: relative;*/
+    /*min-height: 100%;*/
+    padding-top: 0.66667rem;
 }
 #course-subscribe #course-title{
     width: 7.86667rem;
     padding: 0 0.66667rem;
     height: 0.92rem;
     line-height: 0.92rem;
-    margin: 0.66667rem auto 0.4rem auto;
+    margin: 0rem auto 0.4rem auto;
     background-color: #ffcd0d;
     border-radius: 0.46rem;
     font-size: 15px;
@@ -611,12 +618,13 @@ input[type="submit"], input[type="button"], button{
 }
 #subscribe{
     display: none;
+    padding-bottom: 1.66667rem;
 }
 #time-list{
     background-color: #fff;
     padding: 0.32rem 0.66667rem;
     width: 7.86665rem;
-    margin: 0 auto 1.66667rem auto;
+    margin: 0 auto 0.6rem auto;
     font-size: 12px;
 }
 [data-dpr="2"] #time-list{
@@ -665,7 +673,7 @@ input[type="submit"], input[type="button"], button{
 }
 #subscribe-time{
     text-align: center;
-    margin-bottom: 1.6rem;
+    margin-bottom: 0.4rem;
     display: none;
 }
 #subscribe-time em{
@@ -677,6 +685,16 @@ input[type="submit"], input[type="button"], button{
     background-color: #ffcd0d;
     position: relative;
     top: -0.08rem;
+}
+#subscribe-btn{
+    position: fixed;
+    left: 0px;
+    bottom: 0px;
+}
+#demo-subscribe-btn{
+    position: fixed;
+    left: 0px;
+    bottom: 0px;
 }
 /**course_list部分**/
 .course-info{
@@ -767,6 +785,7 @@ input[type="submit"], input[type="button"], button{
 }
 #demo-course{
     display: none;
+    padding-bottom: 1.6667rem;
 }
 .course-image{
     width: 7.86667rem;

@@ -59,7 +59,7 @@ function show_subscribe_panel() {
 }
 
 $(function(){
-
+    $("body").css("height","auto");
     // //假数据
     // courses = [{"id":1,"courseName":"绘本课","leftPeriod":0,"images":[{"id":1,"imageName":"star","date":"2018-02-07 14:21","imageUrl":"/Images/1","thumbnailUrl":"/Images/1/thumbnail","priority":0},{"id":3,"imageName":"作品集","date":"2018-02-07 14:21","imageUrl":"/Images/3","thumbnailUrl":"/Images/3/thumbnail","priority":0},{"id":4,"imageName":"course","date":"2018-02-07 14:21","imageUrl":"/Images/4","thumbnailUrl":"/Images/4/thumbnail","priority":0},{"id":2,"imageName":"galaxy","date":"2018-02-07 14:21","imageUrl":"/Images/2","thumbnailUrl":"/Images/2/thumbnail","priority":0}],"priority":100,"price":0.24,"valid":true,"demoCourse":false},{"id":2,"courseName":"素描课体验课","leftPeriod":0,"images":[],"priority":5,"price":0.10,"valid":true,"demoCourse":true}];
     // if(!courses.length){
@@ -188,12 +188,19 @@ $(function(){
             $.each(courses, function(key,value){
                 console.log(value.id)
                 if(value.id == course_category_id){
-                    // img_url = value.images[0].imageUrl;
+                    if(value.images[0] && value.images[0].imageUrl){
+                        img_url = value.images[0].imageUrl;
+                    }
                 }
             });
-            console.log(img_url);
-            //$("#demo-course").show().children(".course-image").children("img").attr("src",img_url);
-            $("#demo-course").show().children(".course-image").children("img").attr("src","/images/test.png");
+            console.log("img_url", img_url);
+            if(img_url != ""){
+                console.log("有照片");
+                $("#demo-course").show().children(".course-image").children("img").attr("src",img_url);
+            }else{
+                console.log("没有照片");
+                $("#demo-course").show().children(".course-image").children("img").attr("src","/images/test.png");
+            }
         }else{
             show_subscribe_panel();
         }
@@ -239,28 +246,23 @@ $(function(){
                                 url: "/api/v1/AvailableCourse/book?studentId="+student_id+"&courseId="+course_id,
                                 dataType: "json",
                                 success: function(data){
-                                    // var content = "<div id='book-popup'><div class='content'><div class='title'><i></i>预约成功~</div><div>预约成功短信已发送到您预留的手机，请注意查收</div></div><div class='btn-panel'><span class='btn1'>确认</span><span class='btn2'>预约其他课</span></div></div>";
-                                    // layer.open({
-                                    //     content:content,
-                                    //     className: "popup-2-btn",
-                                    //     success: function(elem){
-                                    //         $(elem).delegate(".btn1", "click", function(){
-                                    //             location.href = "/user/course/list";
-                                    //         });
-                                    //         $(elem).delegate(".btn2", "click", function(){
-                                    //             layer.closeAll();
-                                    //             $("#course-title").click();
-                                    //         });
-                                    //     }
-                                    // });
                                     msg_alert("alert", "预约成功");
                                     setTimeout(function(){
                                         location.href = "/user/course/list";
                                     },2000);
                                     return false;
                                 },
-                                error: function(){
-                                    msg_alert("alert", "错误，请稍后重试");
+                                error: function(XMLHttpRequest, textStatus, errorThrown){
+                                    if(XMLHttpRequest.responseText){
+                                        var response = JSON.parse(XMLHttpRequest.responseText);
+                                        if(response.message){
+                                            msg_alert("alert", response.message);
+                                        }else{
+                                            msg_alert("alert", "错误，请稍后重试");
+                                        }
+                                    }else{
+                                        msg_alert("alert", "错误，请稍后重试");
+                                    }
                                 }
                             });
                             return false;
@@ -279,45 +281,25 @@ $(function(){
                 dataType: "json",
                 success: function(data){
                     console.log("预约返回值",data);
-                    //根据返回值不同显示弹窗
-                    //成功：继续预约、查看预约课程带id
-                    // var content = "<div class='title'><i></i>预约成功~</div><div class='content'>预约成功短信已发送到您预留的手机，请注意查收</div>";
-                    // layer.open({
-                    //     content:content,
-                    //     btn: ["预约其他课", "确认"],
-                    //     className: "popup",
-                    //     yes: function(index, layero){
-                    //         layer.close(index);
-                    //         $("#course-title").click();
-                    //         return false;
-                    //     },
-                    //     btn2: function(index, layero){
-                    //         location.href = "/user/course/list?id="+student_id;
-                    //         return false;
-                    //     },
-                    // });
-
-
-                    var content = "<div id='book-popup'><div class='content'><div class='title'><i></i>预约成功~</div><div>预约成功短信已发送到您预留的手机，请注意查收</div></div><div class='btn-panel'><span class='btn1'>确认</span><span class='btn2'>预约其他课</span></div></div>";
-                    layer.open({
-                        content:content,
-                        className: "popup-2-btn",
-                        success: function(elem){
-                            $(elem).delegate(".btn1", "click", function(){
-                                location.href = "/user/course/list";
-                            });
-                            $(elem).delegate(".btn2", "click", function(){
-                                layer.closeAll();
-                                $("#course-title").click();
-                            });
-                        }
-                    });
+                    msg_alert("alert", "预约成功");
+                    setTimeout(function(){
+                        location.href = "/user/course/list";
+                    },2000);
 
                     return false;
                     //失败
                 },
-                error: function(){
-                    msg_alert("alert", "错误，请稍后重试");
+                error: function(XMLHttpRequest, textStatus, errorThrown){
+                    if(XMLHttpRequest.responseText){
+                        var response = JSON.parse(XMLHttpRequest.responseText);
+                        if(response.message){
+                            msg_alert("alert", response.message);
+                        }else{
+                            msg_alert("alert", "错误，请稍后重试");
+                        }
+                    }else{
+                        msg_alert("alert", "错误，请稍后重试");
+                    }
                 }
             });
         }else{
