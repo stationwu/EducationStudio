@@ -237,6 +237,8 @@ public class OrderController {
     @ResponseBody
     @RequestMapping(value = PAYMENT_NOTIFY_PATH, method = RequestMethod.POST)
     public String onPaymentNotify(@RequestBody String xmlData) {
+        logger.debug(">>> 收到了支付通知 <<<");
+
         WxPayOrderNotifyResult result = null;
 
         try {
@@ -259,6 +261,9 @@ public class OrderController {
             if (order == null) {
                 return fail("订单号（" + orderId + "）不存在");
             }
+
+            logger.debug("订单（%s）收到了支付通知", order.getId());
+
             if (order.getStatus() == Order.Status.PAID) {
                 return success("重复通知，支付完成");
             }
