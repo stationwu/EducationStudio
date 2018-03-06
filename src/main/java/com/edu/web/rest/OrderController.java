@@ -48,6 +48,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
 import static com.edu.utils.Constant.CONTACT_PHONE_NUMBER;
@@ -91,6 +93,8 @@ public class OrderController {
     private static final String OTHER_GOODS_TEMPLATE_ID = "nBGFhvqZlCsute7SqnatA-Iis5iJaVQZZDNHe4OMEP0";
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    private Lock paymentNofificationLock = new ReentrantLock();
 
     @ResponseBody
     @RequestMapping(PATH)
@@ -241,56 +245,71 @@ public class OrderController {
             return WxPayNotifyResponse.fail("无效请求 " + e.getMessage());
         }
 
-        String orderId = result.getOutTradeNo();
-        Order order = orderRepository.findOne(orderId);
+        // 注意：同样的通知可能会多次发送给商户系统。商户系统必须能够正确处理重复的通知。
+        // 推荐的做法是，当收到通知进行处理时，首先检查对应业务数据的状态，判断该通知是否已经处理过，如果没有处理过再进行处理，如果处理过直接返回结果成功。
+        // 在对业务数据进行状态检查和处理之前，要采用数据锁进行并发控制，以避免函数重入造成的数据混乱。
+        paymentNofificationLock.lock();
 
-        if (order == null) {
-            return fail("订单号（" + orderId + "）不存在");
+        Order order = null; // Make it visible to template message
+
+        try {
+            String orderId = result.getOutTradeNo();
+            order = orderRepository.findOne(orderId);
+
+            if (order == null) {
+                return fail("订单号（" + orderId + "）不存在");
+            }
+            if (order.getStatus() == Order.Status.PAID) {
+                return success("重复通知，支付完成");
+            }
+            if (order.getStatus() != Order.Status.NOTPAY) {
+                return fail("订单（" + orderId + "）状态错误（" + order.getStatusText() + "），无法继续支付");
+            }
+
+            Payment payment = order.getPayment();
+
+            // Important -->
+            payment.setOrder(order);
+            payment.setTransactionId(result.getTransactionId());
+            payment.setOpenId(result.getOpenid());
+            // <--
+            // Not so important -->
+            payment.setDeviceInfo(result.getDeviceInfo());
+            payment.setFeeType(result.getFeeType());
+            payment.setTradeType(result.getTradeType());
+            payment.setAttach(result.getAttach());
+            payment.setBankType(result.getBankType());
+            payment.setTimeEnd(result.getTimeEnd());
+            payment.setIsSubsribe(result.getIsSubscribe());
+            payment.setCashFee(result.getCashFee());
+            payment.setCashFeeType(result.getCashFeeType());
+            payment.setTotalFee(result.getTotalFee());
+            payment.setSettlementTotalFee(result.getSettlementTotalFee());
+            payment.setCouponFee(result.getCouponFee());
+            payment.setCouponCount(result.getCouponCount());
+
+            int index = 0;
+            for (WxPayOrderNotifyCoupon couponUsed : result.getCouponList()) {
+                Coupon coupon = new Coupon();
+                coupon.setCouponIndex(++index);
+                coupon.setCouponFee(couponUsed.getCouponFee());
+                coupon.setCouponId(couponUsed.getCouponId());
+                coupon.setCouponType(couponUsed.getCouponType());
+                coupon.setPayment(payment);
+                coupon = couponRepository.save(coupon);
+                payment.addCoupon(coupon);
+            }
+            // <--
+
+            paymentRepository.save(payment);
+
+            order.setStatus(Order.Status.PAID);
+            orderRepository.save(order);
+        } finally {
+            paymentNofificationLock.unlock();
         }
-        if (order.getStatus() != Order.Status.NOTPAY) {
-            return fail("订单（" + orderId + "）状态错误（" + order.getStatusText() + "），无法继续支付");
-        }
 
-        Payment payment = order.getPayment();
-
-        // Important -->
-        payment.setOrder(order);
-        payment.setTransactionId(result.getTransactionId());
-        payment.setOpenId(result.getOpenid());
-        // <--
-        // Not so important -->
-        payment.setDeviceInfo(result.getDeviceInfo());
-        payment.setFeeType(result.getFeeType());
-        payment.setTradeType(result.getTradeType());
-        payment.setAttach(result.getAttach());
-        payment.setBankType(result.getBankType());
-        payment.setTimeEnd(result.getTimeEnd());
-        payment.setIsSubsribe(result.getIsSubscribe());
-        payment.setCashFee(result.getCashFee());
-        payment.setCashFeeType(result.getCashFeeType());
-        payment.setTotalFee(result.getTotalFee());
-        payment.setSettlementTotalFee(result.getSettlementTotalFee());
-        payment.setCouponFee(result.getCouponFee());
-        payment.setCouponCount(result.getCouponCount());
-
-        int index = 0;
-        for (WxPayOrderNotifyCoupon couponUsed : result.getCouponList()) {
-            Coupon coupon = new Coupon();
-            coupon.setCouponIndex(++index);
-            coupon.setCouponFee(couponUsed.getCouponFee());
-            coupon.setCouponId(couponUsed.getCouponId());
-            coupon.setCouponType(couponUsed.getCouponType());
-            coupon.setPayment(payment);
-            coupon = couponRepository.save(coupon);
-            payment.addCoupon(coupon);
-        }
-        // <--
-
-        paymentRepository.save(payment);
-
-        order.setStatus(Order.Status.PAID);
-        orderRepository.save(order);
-
+        // 支付成功，发送模板消息
         List<CourseProduct> courseProducts = order.getCourseProductsMap().keySet().stream().collect(Collectors.toList());
         if (courseProducts.size() > 0) { // Should be always true because you won't place an empty order
             CourseProduct courseProduct = courseProducts.get(0);
