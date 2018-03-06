@@ -501,8 +501,11 @@ public class OrderController {
             }
             String template = "课程：%s 数量：%d 节 上课时间 %s - %s";
             for (CourseProduct courseProduct : order.getCourseProductsMap().keySet()) {
-                list.add(String.format(template, courseProduct.getCourseCategory().getCourseName(),
-                        courseProduct.getStartFrom().format(lessonDateTimeFormat), courseProduct.getEndAt().format(lessonDateTimeFormat)));
+                list.add(String.format(template,
+                        courseProduct.getCourseCategory().getCourseName(),
+                        courseProduct.getQuantity(),
+                        courseProduct.getStartFrom().format(lessonDateTimeFormat),
+                        courseProduct.getEndAt().format(lessonDateTimeFormat)));
             }
         }
 
