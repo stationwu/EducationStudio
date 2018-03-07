@@ -51,7 +51,6 @@ $(function(){
             return false;
         }
         //调用添加学员接口
-        // console.log(children);
         $.ajax({
             type: "POST",
             url: "/api/v1/Customer/AddChild",
@@ -59,7 +58,6 @@ $(function(){
             data: JSON.stringify(children),
             success: function(data){
                 msg_alert("alert", "添加成功");
-                //跳转到什么页面？
                 window.location.href = "/user/student/list";
             },
             error: function(){

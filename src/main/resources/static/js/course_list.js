@@ -1,6 +1,5 @@
 var student_data;
 $(function(){
-    // var student_id = GetQueryString("id");
     var student_id;
     var course_id;
 
@@ -14,8 +13,6 @@ $(function(){
             var num = 1;
             student_data = data;
             if(student_data.length){
-                // student_html += '<div id="student-title" class="title" data-id="' + student_data[0].id + '">学员:' + student_data[0].childName + '<i></i></div>'+
-                //                 '<ul id="student-list" class="list">';
                 $("#student-title").attr("data-id", student_data[0].id).html("学员:" + student_data[0].childName + "<i></i>");
             }
 
@@ -30,19 +27,14 @@ $(function(){
             }
             $("#student-list").html(student_html);
             student_html = "";
-            // student_html += '</ul>';
 
             if(student_data[0].courseCategories.length){
                 $("#course-search-btn").addClass("active");
-                // student_html += '<div id="course-title" class="title" data-id="' + student_data[0].courseCategories[0].id + '">课程:' + student_data[0].courseCategories[0].courseName + '<i></i></div>'+
-                //                 '<ul id="course-list" class="list">';
                 $("#course-title").attr("data-id", student_data[0].courseCategories[0].id).html("课程:" + student_data[0].courseCategories[0].courseName + "<i></i>");
             }
             for(var i=0; i<student_data[0].courseCategories.length; i++){
-                console.log(student_data[0].courseCategories[i]);
                 student_html += '<li data-id="' + student_data[0].courseCategories[i].id + '">' + student_data[0].courseCategories[i].courseName + '</li>';
             }
-            // student_html += '</ul>';
 
             $("#subscribe-course").prepend(course_html);
             $("#course-list").html(student_html);
@@ -82,11 +74,9 @@ $(function(){
     });
     $("#student-list").delegate("li", "click", function(){
         student_id = $(this).attr("data-id");
-        // console.log(student_id);
         $("#student-title").attr("data-id",student_id).html("学员:" + $(this).html() + "<i></i>");
         $("#course-title").removeAttr("data-id");
         $.each(student_data, function(key,value){
-            console.log(value.id)
             if(value.id == student_id){
                 var courses = value.courseCategories;
                 var student_html = '';
@@ -106,13 +96,10 @@ $(function(){
             }
         });
         $("#student-list").hide();
-
-        // $("#course-list").show();
     });
 
     $("#course-list").delegate("li", "click", function(){
         var course_id = $(this).attr("data-id");
-        // console.log(student_id);
         $("#course-title").attr("data-id",course_id).html("课程:" + $(this).html() + "<i></i>");
         $("#course-list").hide();
     });
@@ -128,15 +115,12 @@ $(function(){
             if(value.id == student_id){
                 courses = value.courseCategories;
                 name = value.childName;
-                // console.log(courses)
                 $.each(courses, function(key,value){
-                    console.log(111,value);
                     if(value.id == course_id){
                         course = value;
                         return false;
                     }
                 });
-                console.log(11,course);
                 var html = '<div class="icon"></div>';
                 if(course.leftPeriod){
                     html += '<div class="course-info" data-id="' + course.id + '">'+
@@ -156,7 +140,6 @@ $(function(){
         });
     });
     $("#detail").delegate(".course-info", "click", function(){
-        // var category_id = $(this).attr("data-id");
         location.href = "/user/paint/list?student_id="+student_id+"&course_id="+course_id;
     });
 });

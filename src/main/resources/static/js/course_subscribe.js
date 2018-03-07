@@ -13,7 +13,6 @@ function show_subscribe_panel() {
         url: "/api/v1/AvailableCourse?courseCategoryId="+course_category_id,
         dataType: "json",
         success: function(data){
-            console.log("某一类型课程",data);
             var course = data;
             if(!demo_course){
                 for(var i=0; i<course.length; i++){
@@ -44,7 +43,6 @@ function show_subscribe_panel() {
                     };
                 }
             }
-            console.log(available_date);
 
             //可选的日期加active
             $.each(available_date, function(key,value){
@@ -60,35 +58,6 @@ function show_subscribe_panel() {
 
 $(function(){
     $("body").css("height","auto");
-    //假数据
-    // courses = [{"id":1,"courseName":"绘本课","leftPeriod":0,"images":[{"id":1,"imageName":"star","date":"2018-02-07 14:21","imageUrl":"/Images/1","thumbnailUrl":"/Images/1/thumbnail","priority":0},{"id":3,"imageName":"作品集","date":"2018-02-07 14:21","imageUrl":"/Images/3","thumbnailUrl":"/Images/3/thumbnail","priority":0},{"id":4,"imageName":"course","date":"2018-02-07 14:21","imageUrl":"/Images/4","thumbnailUrl":"/Images/4/thumbnail","priority":0},{"id":2,"imageName":"galaxy","date":"2018-02-07 14:21","imageUrl":"/Images/2","thumbnailUrl":"/Images/2/thumbnail","priority":0}],"priority":100,"price":0.24,"valid":true,"demoCourse":false},{"id":2,"courseName":"素描课体验课","leftPeriod":0,"images":[],"priority":5,"price":0.10,"valid":true,"demoCourse":true}];
-    // if(!courses.length){
-    //     msg_alert("confirm_one_btn", "请先添加课程~");
-    //     return false;
-    // }
-    // //显示课程列表收缩状态
-    // var html = '<div id="course-title" class="close"><div class="icon"></div>课程：<span class="info"><span class="name">' + courses[0].courseName + '</span> (剩余<span class="count">' + courses[0].leftPeriod + '</span>节)</span>'+
-    //     '<i></i></div><ul id="course-list" style="display: none;">';
-    //
-    // if(courses[0].demoCourse != true){
-    //     html += '<li class="active" data-id="' + courses[0].id + '"><span class="name">' + courses[0].courseName + '</span> (剩余<span class="count">' + courses[0].leftPeriod + '</span>节)</li>';
-    // }else{
-    //     html += '<li class="active" data-id="' + courses[0].id + '" data-type="demo">' + courses[0].courseName + ' (预约体验课)</li>';
-    // }
-    //
-    // for(var i=1; i<courses.length; i++){
-    //     if(courses[i].demoCourse != true){
-    //         html += '<li data-id="' + courses[i].id + '"><span class="name">' + courses[i].courseName + '</span> (剩余<span class="count">' + courses[i].leftPeriod + '</span>节)</li>';
-    //     }else{
-    //         html += '<li data-id="' + courses[i].id + '" data-type="demo">' + courses[i].courseName + ' (预约体验课)</li>';
-    //     }
-    // }
-    // html += '</ul>';
-    //
-    // $("#course-subscribe").prepend(html);
-
-
-
     var student_id = GetQueryString("id");
     $.ajax({
         type: "GET",
@@ -96,7 +65,6 @@ $(function(){
         dataType: "json",
         success: function(data){
             courses = data;
-            // courses = [{"id":1,"courseName":"绘本课","leftPeriod":0,"images":[{"id":1,"imageName":"star","date":"2018-02-07 14:21","imageUrl":"/Images/1","thumbnailUrl":"/Images/1/thumbnail","priority":0},{"id":3,"imageName":"作品集","date":"2018-02-07 14:21","imageUrl":"/Images/3","thumbnailUrl":"/Images/3/thumbnail","priority":0},{"id":4,"imageName":"course","date":"2018-02-07 14:21","imageUrl":"/Images/4","thumbnailUrl":"/Images/4/thumbnail","priority":0},{"id":2,"imageName":"galaxy","date":"2018-02-07 14:21","imageUrl":"/Images/2","thumbnailUrl":"/Images/2/thumbnail","priority":0}],"priority":100,"price":0.24,"valid":true,"demoCourse":false},{"id":2,"courseName":"素描课体验课","leftPeriod":0,"images":[],"priority":5,"price":0.10,"valid":true,"demoCourse":true}];
             if(!courses.length){
                 msg_alert("confirm_one_btn", "请先添加课程~");
                 return false;
@@ -157,7 +125,6 @@ $(function(){
         if($(this).attr("data-type") == "demo"){
             demo_course = true;
         }
-        console.log(name,count,course_category_id,demo_course);
 
         if(demo_course == false && count == "0"){
             $.ajax({
@@ -178,22 +145,18 @@ $(function(){
         }
         $("#course-title").addClass("close");
 
-        // $("#course-title").children(".name").html(name);
-        // $("#course-title").children(".count").html(count);
         $("#course-title").children(".info").html($(this).html());
         $("#course-list").hide();
 
         if(demo_course){
             var img_url = "";
             $.each(courses, function(key,value){
-                console.log(value.id)
                 if(value.id == course_category_id){
                     if(value.images[0] && value.images[0].imageUrl){
                         img_url = value.images[0].imageUrl;
                     }
                 }
             });
-            console.log("img_url", img_url);
             if(img_url != ""){
                 $("#demo-course").show().children(".course-image").children("img").attr("src",img_url);
             }else{
@@ -244,10 +207,6 @@ $(function(){
                                 url: "/api/v1/AvailableCourse/book?studentId="+student_id+"&courseId="+course_id,
                                 dataType: "json",
                                 success: function(data){
-                                    // msg_alert("alert", "预约成功");
-                                    // setTimeout(function(){
-                                    //     location.href = "/user/course/list";
-                                    // },2000);
                                     var content = "<div id='book-popup'><div class='content'><div class='title'><i></i>预约成功~</div><div>预约成功短信已发送到您预留的手机，请注意查收</div></div><div class='btn-panel'><span class='btn1'>确认</span><span class='btn2'>预约其他课</span></div></div>";
                                     layer.open({
                                         content:content,
@@ -295,11 +254,6 @@ $(function(){
                 url: "/api/v1/AvailableCourse/book?studentId="+student_id+"&courseId="+course_id,
                 dataType: "json",
                 success: function(data){
-                    // console.log("预约返回值",data);
-                    // msg_alert("alert", "预约成功");
-                    // setTimeout(function(){
-                    //     location.href = "/user/course/list";
-                    // },2000);
                     var content = "<div id='book-popup'><div class='content'><div class='title'><i></i>预约成功~</div><div>预约成功短信已发送到您预留的手机，请注意查收</div></div><div class='btn-panel'><span class='btn1'>确认</span><span class='btn2'>预约其他课</span></div></div>";
                     layer.open({
                         content:content,
@@ -319,7 +273,6 @@ $(function(){
                     });
 
                     return false;
-                    //失败
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown){
                     if(XMLHttpRequest.responseText){
@@ -343,7 +296,6 @@ $(function(){
                     course_name = value["courseName"];
                 }
             });
-            // console.log(course_price, course_name, strDate);
             var date = strDate.split("-");
             var course_date = date[0]+"年"+date[1]+"月"+date[2]+"日";
 
@@ -359,7 +311,7 @@ $(function(){
                         //发送订单
                         var data = {
                             "studentId": student_id,
-                            "courseId": course_id//////////不是类别id，应该改为课程id
+                            "courseId": course_id
                         };
                         $.ajax({
                             type: "POST",
@@ -368,15 +320,12 @@ $(function(){
                             dataType: "json",
                             data: JSON.stringify(data),
                             success: function(data){
-                                console.log("返回值",data,data["id"])
-                                var order_id = data["id"];//等待赋值
+                                var order_id = data["id"];
                                 $.ajax({
                                     type: "POST",
                                     url: "/api/v1/pay?orderId="+order_id,
                                     dataType: "json",
                                     success: function(response){
-                                        //timestamp， nonceStr, package, signType, paySign, success (bool type)
-                                        // console.log(response);
                                         if (response.success) {
                                             var body = {
                                                 url : window.location.href
@@ -390,7 +339,7 @@ $(function(){
                                                 data: JSON.stringify(body),
                                             }).done(function (signature) {
                                                 wx.config({
-                                                    debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                                                    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
                                                     appId: signature.appId, // 必填，公众号的唯一标识
                                                     timestamp: signature.timestamp, // 必填，生成签名的时间戳
                                                     nonceStr: signature.nonceStr, // 必填，生成签名的随机串
@@ -412,9 +361,7 @@ $(function(){
                                                         signType: response.signType,
                                                         paySign: response.paySign,
                                                         success: function(res) {
-                                                            // console.log(res);
                                                             // window.location.href = "/paymentResult/" + order.id;
-                                                            // msg_alert("alert", "支付成功");
                                                             layer.closeAll();
                                                             var content = "<div id='demo-popup'><div class='content'><div class='title'><i></i>预约成功~</div><div>预约成功短信已发送到您预留的手机，请注意查收</div></div><div class='btn-panel'><span class='btn1'>确认</span><span class='btn2'>预约其他课</span></div></div>";
                                                             layer.open({
@@ -437,7 +384,6 @@ $(function(){
                                                         //该complete回调函数，相当于try{}catch(){}异常捕捉中的finally，无论支付成功与否，都会执行complete回调函数。即使wx.error执行了，也会执行该回调函数.
                                                         complete : function(res) {
                                                             //  /!*注意：res对象的errMsg属性名称，是没有下划线的，与WeixinJSBridge支付里面的err_msg是不一样的。而且，值也是不同的。*!/
-                                                            // alert(res.errMsg);
                                                             if (res.errMsg == "chooseWXPay:ok") {
                                                                 //window.location.href = data[0].sendUrl;
                                                             } else if (res.errMsg == "chooseWXPay:cancel") {
