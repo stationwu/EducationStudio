@@ -254,7 +254,9 @@ $(function(){
                                         className: "popup-2-btn",
                                         success: function(elem){
                                             $(elem).delegate(".btn1", "click", function(){
-                                                location.reload();
+                                                layer.closeAll();
+                                                $("#course-title").click();
+                                                $("#course-title").click();
                                                 location.href = "/user/course/list";
                                             });
                                             $(elem).delegate(".btn2", "click", function(){
@@ -304,7 +306,9 @@ $(function(){
                         className: "popup-2-btn",
                         success: function(elem){
                             $(elem).delegate(".btn1", "click", function(){
-                                location.reload();
+                                layer.closeAll();
+                                $("#course-title").click();
+                                $("#course-title").click();
                                 location.href = "/user/course/list";
                             });
                             $(elem).delegate(".btn2", "click", function(){
@@ -422,7 +426,9 @@ $(function(){
                                                                     className: "popup-2-btn",
                                                                     success: function(elem){
                                                                         $(elem).delegate(".btn1", "click", function(){
-                                                                            location.reload();
+                                                                            layer.closeAll();
+                                                                            $("#course-title").click();
+                                                                            $("#course-title").click();
                                                                             location.href = "/user/course/list";
                                                                         });
                                                                         $(elem).delegate(".btn2", "click", function(){
