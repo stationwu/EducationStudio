@@ -279,27 +279,27 @@ public class OrderController {
             payment.setOpenId(result.getOpenid());
             // <--
             // Not so important -->
-            payment.setDeviceInfo(result.getDeviceInfo());
-            payment.setFeeType(result.getFeeType());
-            payment.setTradeType(result.getTradeType());
-            payment.setAttach(result.getAttach());
-            payment.setBankType(result.getBankType());
-            payment.setTimeEnd(result.getTimeEnd());
-            payment.setIsSubsribe(result.getIsSubscribe());
-            payment.setCashFee(result.getCashFee());
-            payment.setCashFeeType(result.getCashFeeType());
-            payment.setTotalFee(result.getTotalFee());
-            //payment.setSettlementTotalFee(result.getSettlementTotalFee());
-            payment.setCouponFee(result.getCouponFee());
-            payment.setCouponCount(result.getCouponCount());
+            if (null != result.getDeviceInfo()) { payment.setDeviceInfo(result.getDeviceInfo()); }
+            if (null != result.getFeeType()) { payment.setFeeType(result.getFeeType()); }
+            if (null != result.getTradeType()) { payment.setTradeType(result.getTradeType()); }
+            if (null != result.getAttach()) { payment.setAttach(result.getAttach()); }
+            if (null != result.getBankType()) { payment.setBankType(result.getBankType()); }
+            if (null != result.getTimeEnd()) { payment.setTimeEnd(result.getTimeEnd()); }
+            if (null != result.getIsSubscribe()) { payment.setIsSubsribe(result.getIsSubscribe()); }
+            if (null != result.getCashFee()) { payment.setCashFee(result.getCashFee()); }
+            if (null != result.getCashFeeType()) { payment.setCashFeeType(result.getCashFeeType()); }
+            if (null != result.getTotalFee()) { payment.setTotalFee(result.getTotalFee()); }
+            if (null != result.getSettlementTotalFee()) { payment.setSettlementTotalFee(result.getSettlementTotalFee()); }
+            if (null != result.getCouponFee()) { payment.setCouponFee(result.getCouponFee()); }
+            if (null != result.getCouponCount()) { payment.setCouponCount(result.getCouponCount()); }
 
             int index = 0;
             for (WxPayOrderNotifyCoupon couponUsed : result.getCouponList()) {
                 Coupon coupon = new Coupon();
                 coupon.setCouponIndex(++index);
-                coupon.setCouponFee(couponUsed.getCouponFee());
-                coupon.setCouponId(couponUsed.getCouponId());
-                coupon.setCouponType(couponUsed.getCouponType());
+                if (null != couponUsed.getCouponFee()) { coupon.setCouponFee(couponUsed.getCouponFee()); }
+                if (null != couponUsed.getCouponId()) { coupon.setCouponId(couponUsed.getCouponId()); }
+                if (null != couponUsed.getCouponType()) { coupon.setCouponType(couponUsed.getCouponType()); }
                 coupon.setPayment(payment);
                 coupon = couponRepository.save(coupon);
                 payment.addCoupon(coupon);
