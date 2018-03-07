@@ -412,34 +412,34 @@ $(function(){
                                                         signType: response.signType,
                                                         paySign: response.paySign,
                                                         success: function(res) {
-                                                            console.log(res);
-                                                            window.location.href = "/paymentResult/" + order.id;
+                                                            // console.log(res);
+                                                            // window.location.href = "/paymentResult/" + order.id;
+                                                            // msg_alert("alert", "支付成功");
+                                                            layer.closeAll();
+                                                            var content = "<div id='demo-popup'><div class='content'><div class='title'><i></i>预约成功~</div><div>预约成功短信已发送到您预留的手机，请注意查收</div></div><div class='btn-panel'><span class='btn1'>确认</span><span class='btn2'>预约其他课</span></div></div>";
+                                                            layer.open({
+                                                                content:content,
+                                                                className: "popup-2-btn",
+                                                                success: function(elem){
+                                                                    $(elem).delegate(".btn1", "click", function(){
+                                                                        layer.closeAll();
+                                                                        $("#course-title").click();
+                                                                        $("#course-title").click();
+                                                                        location.href = "/user/course/list";
+                                                                    });
+                                                                    $(elem).delegate(".btn2", "click", function(){
+                                                                        layer.closeAll();
+                                                                        $("#course-title").click();
+                                                                    });
+                                                                }
+                                                            });
                                                         },
                                                         //该complete回调函数，相当于try{}catch(){}异常捕捉中的finally，无论支付成功与否，都会执行complete回调函数。即使wx.error执行了，也会执行该回调函数.
                                                         complete : function(res) {
                                                             //  /!*注意：res对象的errMsg属性名称，是没有下划线的，与WeixinJSBridge支付里面的err_msg是不一样的。而且，值也是不同的。*!/
-                                                            alert(res.errMsg);
+                                                            // alert(res.errMsg);
                                                             if (res.errMsg == "chooseWXPay:ok") {
                                                                 //window.location.href = data[0].sendUrl;
-                                                                msg_alert("alert", "支付成功");
-                                                                layer.closeAll();
-                                                                var content = "<div id='demo-popup'><div class='content'><div class='title'><i></i>预约成功~</div><div>预约成功短信已发送到您预留的手机，请注意查收</div></div><div class='btn-panel'><span class='btn1'>确认</span><span class='btn2'>预约其他课</span></div></div>";
-                                                                layer.open({
-                                                                    content:content,
-                                                                    className: "popup-2-btn",
-                                                                    success: function(elem){
-                                                                        $(elem).delegate(".btn1", "click", function(){
-                                                                            layer.closeAll();
-                                                                            $("#course-title").click();
-                                                                            $("#course-title").click();
-                                                                            location.href = "/user/course/list";
-                                                                        });
-                                                                        $(elem).delegate(".btn2", "click", function(){
-                                                                            layer.closeAll();
-                                                                            $("#course-title").click();
-                                                                        });
-                                                                    }
-                                                                });
                                                             } else if (res.errMsg == "chooseWXPay:cancel") {
                                                                 msg_alert("alert", "你手动取消支付");
                                                             } else if (res.errMsg == "chooseWXPay:fail") {
