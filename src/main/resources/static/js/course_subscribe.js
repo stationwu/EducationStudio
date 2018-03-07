@@ -166,7 +166,7 @@ $(function(){
                 dataType: "json",
                 success: function(data){
                     var student_name = data.childName;
-                    var mobile = "18800000000";
+                    var mobile = "13818668959";
                     msg_alert("confirm_one_btn", student_name + "的" + name + "课程已用完，请联系老师(" + mobile + ")购买课程~");
                     return false;
                 },
@@ -254,6 +254,7 @@ $(function(){
                                         className: "popup-2-btn",
                                         success: function(elem){
                                             $(elem).delegate(".btn1", "click", function(){
+                                                location.reload();
                                                 location.href = "/user/course/list";
                                             });
                                             $(elem).delegate(".btn2", "click", function(){
@@ -303,6 +304,7 @@ $(function(){
                         className: "popup-2-btn",
                         success: function(elem){
                             $(elem).delegate(".btn1", "click", function(){
+                                location.reload();
                                 location.href = "/user/course/list";
                             });
                             $(elem).delegate(".btn2", "click", function(){
@@ -420,6 +422,7 @@ $(function(){
                                                                     className: "popup-2-btn",
                                                                     success: function(elem){
                                                                         $(elem).delegate(".btn1", "click", function(){
+                                                                            location.reload();
                                                                             location.href = "/user/course/list";
                                                                         });
                                                                         $(elem).delegate(".btn2", "click", function(){
