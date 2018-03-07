@@ -347,7 +347,7 @@ $(function(){
             var date = strDate.split("-");
             var course_date = date[0]+"年"+date[1]+"月"+date[2]+"日";
 
-            var content = "<div id='demo-book-popup'><div class='content'><div class='title'>确认预约</div><div>确认以"+course_price+"元的体验价格预约"+course_date+course_name+"</div></div><div class='btn-panel'><span class='btn1'>取消</span><span class='btn2'>去支付</span></div></div>";
+            var content = "<div id='before-demo-popup'><div class='content'><div class='title'>确认预约</div><div>确认以"+course_price+"元的体验价格预约"+course_date+course_name+"</div></div><div class='btn-panel'><span class='btn1'>取消</span><span class='btn2'>去支付</span></div></div>";
             layer.open({
                 content:content,
                 className: "popup-2-btn",
@@ -420,7 +420,9 @@ $(function(){
                                                             //  /!*注意：res对象的errMsg属性名称，是没有下划线的，与WeixinJSBridge支付里面的err_msg是不一样的。而且，值也是不同的。*!/
                                                             if (res.errMsg == "chooseWXPay:ok") {
                                                                 //window.location.href = data[0].sendUrl;
-                                                                var content = "<div id='demo-book-popup'><div class='content'><div class='title'><i></i>预约成功~</div><div>预约成功短信已发送到您预留的手机，请注意查收</div></div><div class='btn-panel'><span class='btn1'>确认</span><span class='btn2'>预约其他课</span></div></div>";
+                                                                msg_alert("alert", "支付成功");
+                                                                layer.closeAll();
+                                                                var content = "<div id='demo-popup'><div class='content'><div class='title'><i></i>预约成功~</div><div>预约成功短信已发送到您预留的手机，请注意查收</div></div><div class='btn-panel'><span class='btn1'>确认</span><span class='btn2'>预约其他课</span></div></div>";
                                                                 layer.open({
                                                                     content:content,
                                                                     className: "popup-2-btn",
