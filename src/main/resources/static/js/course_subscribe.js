@@ -60,7 +60,7 @@ function show_subscribe_panel() {
 
 $(function(){
     $("body").css("height","auto");
-    // //假数据
+    //假数据
     // courses = [{"id":1,"courseName":"绘本课","leftPeriod":0,"images":[{"id":1,"imageName":"star","date":"2018-02-07 14:21","imageUrl":"/Images/1","thumbnailUrl":"/Images/1/thumbnail","priority":0},{"id":3,"imageName":"作品集","date":"2018-02-07 14:21","imageUrl":"/Images/3","thumbnailUrl":"/Images/3/thumbnail","priority":0},{"id":4,"imageName":"course","date":"2018-02-07 14:21","imageUrl":"/Images/4","thumbnailUrl":"/Images/4/thumbnail","priority":0},{"id":2,"imageName":"galaxy","date":"2018-02-07 14:21","imageUrl":"/Images/2","thumbnailUrl":"/Images/2/thumbnail","priority":0}],"priority":100,"price":0.24,"valid":true,"demoCourse":false},{"id":2,"courseName":"素描课体验课","leftPeriod":0,"images":[],"priority":5,"price":0.10,"valid":true,"demoCourse":true}];
     // if(!courses.length){
     //     msg_alert("confirm_one_btn", "请先添加课程~");
@@ -195,10 +195,8 @@ $(function(){
             });
             console.log("img_url", img_url);
             if(img_url != ""){
-                console.log("有照片");
                 $("#demo-course").show().children(".course-image").children("img").attr("src",img_url);
             }else{
-                console.log("没有照片");
                 $("#demo-course").show().children(".course-image").children("img").attr("src","/images/test.png");
             }
         }else{
@@ -246,10 +244,24 @@ $(function(){
                                 url: "/api/v1/AvailableCourse/book?studentId="+student_id+"&courseId="+course_id,
                                 dataType: "json",
                                 success: function(data){
-                                    msg_alert("alert", "预约成功");
-                                    setTimeout(function(){
-                                        location.href = "/user/course/list";
-                                    },2000);
+                                    // msg_alert("alert", "预约成功");
+                                    // setTimeout(function(){
+                                    //     location.href = "/user/course/list";
+                                    // },2000);
+                                    var content = "<div id='book-popup'><div class='content'><div class='title'><i></i>预约成功~</div><div>预约成功短信已发送到您预留的手机，请注意查收</div></div><div class='btn-panel'><span class='btn1'>确认</span><span class='btn2'>预约其他课</span></div></div>";
+                                    layer.open({
+                                        content:content,
+                                        className: "popup-2-btn",
+                                        success: function(elem){
+                                            $(elem).delegate(".btn1", "click", function(){
+                                                location.href = "/user/course/list";
+                                            });
+                                            $(elem).delegate(".btn2", "click", function(){
+                                                layer.closeAll();
+                                                $("#course-title").click();
+                                            });
+                                        }
+                                    });
                                     return false;
                                 },
                                 error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -280,11 +292,25 @@ $(function(){
                 url: "/api/v1/AvailableCourse/book?studentId="+student_id+"&courseId="+course_id,
                 dataType: "json",
                 success: function(data){
-                    console.log("预约返回值",data);
-                    msg_alert("alert", "预约成功");
-                    setTimeout(function(){
-                        location.href = "/user/course/list";
-                    },2000);
+                    // console.log("预约返回值",data);
+                    // msg_alert("alert", "预约成功");
+                    // setTimeout(function(){
+                    //     location.href = "/user/course/list";
+                    // },2000);
+                    var content = "<div id='book-popup'><div class='content'><div class='title'><i></i>预约成功~</div><div>预约成功短信已发送到您预留的手机，请注意查收</div></div><div class='btn-panel'><span class='btn1'>确认</span><span class='btn2'>预约其他课</span></div></div>";
+                    layer.open({
+                        content:content,
+                        className: "popup-2-btn",
+                        success: function(elem){
+                            $(elem).delegate(".btn1", "click", function(){
+                                location.href = "/user/course/list";
+                            });
+                            $(elem).delegate(".btn2", "click", function(){
+                                layer.closeAll();
+                                $("#course-title").click();
+                            });
+                        }
+                    });
 
                     return false;
                     //失败
@@ -303,7 +329,6 @@ $(function(){
                 }
             });
         }else{
-            //
             var course_price;
             var course_name;
             $.each(courses,function(key,value){
@@ -312,7 +337,7 @@ $(function(){
                     course_name = value["courseName"];
                 }
             });
-            console.log(course_price, course_name, strDate);
+            // console.log(course_price, course_name, strDate);
             var date = strDate.split("-");
             var course_date = date[0]+"年"+date[1]+"月"+date[2]+"日";
 
@@ -345,7 +370,7 @@ $(function(){
                                     dataType: "json",
                                     success: function(response){
                                         //timestamp， nonceStr, package, signType, paySign, success (bool type)
-                                        console.log(response);
+                                        // console.log(response);
                                         if (response.success) {
                                             var body = {
                                                 url : window.location.href
@@ -389,12 +414,26 @@ $(function(){
                                                             //  /!*注意：res对象的errMsg属性名称，是没有下划线的，与WeixinJSBridge支付里面的err_msg是不一样的。而且，值也是不同的。*!/
                                                             if (res.errMsg == "chooseWXPay:ok") {
                                                                 //window.location.href = data[0].sendUrl;
+                                                                var content = "<div id='demo-book-popup'><div class='content'><div class='title'><i></i>预约成功~</div><div>预约成功短信已发送到您预留的手机，请注意查收</div></div><div class='btn-panel'><span class='btn1'>确认</span><span class='btn2'>预约其他课</span></div></div>";
+                                                                layer.open({
+                                                                    content:content,
+                                                                    className: "popup-2-btn",
+                                                                    success: function(elem){
+                                                                        $(elem).delegate(".btn1", "click", function(){
+                                                                            location.href = "/user/course/list";
+                                                                        });
+                                                                        $(elem).delegate(".btn2", "click", function(){
+                                                                            layer.closeAll();
+                                                                            $("#course-title").click();
+                                                                        });
+                                                                    }
+                                                                });
                                                             } else if (res.errMsg == "chooseWXPay:cancel") {
-                                                                alert("你手动取消支付");
+                                                                msg_alert("alert", "你手动取消支付");
                                                             } else if (res.errMsg == "chooseWXPay:fail") {
-                                                                alert("支付失败");
+                                                                msg_alert("alert", "支付失败");
                                                             } else if (res.errMsg == "config:invalid signature") {
-                                                                alert("支付签名验证错误，请检查签名正确与否 or 支付授权目录正确与否等");
+                                                                msg_alert("alert", "支付签名验证错误，请检查签名正确与否 or 支付授权目录正确与否等");
                                                             }
                                                         }
                                                     });
@@ -402,15 +441,15 @@ $(function(){
 
                                                 wx.error(function(res) {
                                                     if (res.errMsg == "config:invalid url domain") {
-                                                        alert("微信支付(测试)授权目录设置有误");
+                                                        msg_alert("alert", "微信支付(测试)授权目录设置有误");
                                                     } else {
-                                                        alert("检测出问题:" + res.errMsg);
+                                                        msg_alert("alert", "检测出问题:" + res.errMsg);
                                                     }
                                                 });
                                             });
 
                                         } else {
-                                            alert(response.message);
+                                            msg_alert("alert", response.message);
                                             window.location.href = "/paymentResult/" + order.id;
                                         }
                                         return false;
