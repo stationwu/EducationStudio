@@ -289,7 +289,7 @@ public class OrderController {
             payment.setCashFee(result.getCashFee());
             payment.setCashFeeType(result.getCashFeeType());
             payment.setTotalFee(result.getTotalFee());
-            payment.setSettlementTotalFee(result.getSettlementTotalFee());
+            //payment.setSettlementTotalFee(result.getSettlementTotalFee());
             payment.setCouponFee(result.getCouponFee());
             payment.setCouponCount(result.getCouponCount());
 
