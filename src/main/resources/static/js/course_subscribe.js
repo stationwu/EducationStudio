@@ -418,6 +418,7 @@ $(function(){
                                                         //该complete回调函数，相当于try{}catch(){}异常捕捉中的finally，无论支付成功与否，都会执行complete回调函数。即使wx.error执行了，也会执行该回调函数.
                                                         complete : function(res) {
                                                             //  /!*注意：res对象的errMsg属性名称，是没有下划线的，与WeixinJSBridge支付里面的err_msg是不一样的。而且，值也是不同的。*!/
+                                                            alert(res.errMsg);
                                                             if (res.errMsg == "chooseWXPay:ok") {
                                                                 //window.location.href = data[0].sendUrl;
                                                                 msg_alert("alert", "支付成功");
