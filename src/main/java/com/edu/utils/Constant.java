@@ -8,5 +8,5 @@ public class Constant {
 
 	public final static String RESPONSE_ERROR_MESSAGE_HEADER = "error-message";
 
-	public final static String CONTACT_PHONE_NUMBER = "13564638630";
+	public final static String CONTACT_PHONE_NUMBER = "13818668959";
 }
