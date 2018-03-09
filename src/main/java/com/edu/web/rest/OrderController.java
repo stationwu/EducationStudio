@@ -44,10 +44,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
@@ -154,6 +151,7 @@ public class OrderController {
         courseProduct.setQuantity(quantity);
         courseProduct.setSubTotalAmount(courseCategory.getPrice().multiply(BigDecimal.valueOf(quantity))); // No discount so far
         courseProduct.setAddress(addressRepository.findFirstByOrderByIdAsc());
+        courseProduct.setReservedCourse(bookedLesson);
         courseProduct = courseProductRepository.save(courseProduct);
 
         Order order = new Order();
@@ -310,6 +308,17 @@ public class OrderController {
 
             order.setStatus(Order.Status.PAID);
             orderRepository.save(order);
+
+            // 添加到“我的课程”列表中
+            Set<CourseProduct> courseProducts = order.getCourseProductsMap().keySet();
+            for(CourseProduct courseProduct : courseProducts) {
+                Student student = courseProduct.getStudent();
+                Course course = courseProduct.getReservedCourse();
+                if (student!= null && course != null) {
+                    student.addReservedCourse(course);
+                    studentRepository.save(student);
+                }
+            }
         } finally {
             paymentNofificationLock.unlock();
         }
