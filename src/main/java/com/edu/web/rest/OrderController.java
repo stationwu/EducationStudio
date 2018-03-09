@@ -136,6 +136,10 @@ public class OrderController {
             headers.add(RESPONSE_ERROR_MESSAGE_HEADER, String.format("不能购买课程，学生（%s）不是您的孩子", bookingInfo.getStudentId()));
             return new ResponseEntity<>(headers, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+        if (student.getReservedCoursesSet().stream().filter(x -> x.getId() == bookingInfo.getCourseId()).count() > 0l) { // already booked
+            headers.add(RESPONSE_ERROR_MESSAGE_HEADER, String.format("课程已预约，不能购买课程"));
+            return new ResponseEntity<>(headers, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
         int quantity = 1; // Always 1 lesson per order...
 
