@@ -308,6 +308,18 @@ input[type="submit"], input[type="button"], button{
     border-radius: 0.26666rem;
     padding-top: 0.66667rem;
     box-shadow: 0 0 3px #ddd;
+    position: relative;
+}
+#add-student-form .student-info .delete{
+    display: inline-block;
+    width: 0.26777rem;
+    height: 0.29rem;
+    background: url(../images/sprite.png) no-repeat;
+    background-size: 6.4rem auto;
+    background-position: -3.33333rem -0.64rem;
+    position: absolute;
+    top: 0.3rem;
+    right: 0.3rem;
 }
 #add-student-form .form-cell#add-student-form-btn{
     margin: 0.26667rem auto 0 auto;
