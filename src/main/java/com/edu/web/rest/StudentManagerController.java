@@ -77,7 +77,7 @@ public class StudentManagerController {
 
 		for (Entry<CourseCategory, Integer> entry : student.getCourseCount().entrySet()) {
 			if (entry.getKey().getId() == course.getCourseCategory().getId()) {
-				entry.setValue(entry.getValue() - 1);
+				student.putCourseCount(entry.getKey(), entry.getValue() - 1);
 			}
 		}
 
