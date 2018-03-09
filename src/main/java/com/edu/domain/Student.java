@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import javax.persistence.*;
 
@@ -203,6 +204,10 @@ public class Student {
 
 	public Map<CourseCategory, Integer> getCourseCount() {
 		return courseCount;
+	}
+	
+	public void putCourseCount(CourseCategory courseCategory, Integer number) {
+		this.courseCount.put(courseCategory, number);
 	}
 
 	public void addCourseCount(CourseCategory courseCategory) {
