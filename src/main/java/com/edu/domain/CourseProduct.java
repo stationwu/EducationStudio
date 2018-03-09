@@ -1,5 +1,7 @@
 package com.edu.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import java.math.BigDecimal;
@@ -29,6 +31,11 @@ public class CourseProduct {
     private LocalDateTime startFrom;
 
     private LocalDateTime endAt;
+
+	@JsonIgnore
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "reserved_course_id")
+	private Course reservedCourse;
 
     @ManyToOne
     private Address address;
@@ -95,6 +102,14 @@ public class CourseProduct {
 
 	public void setEndAt(LocalDateTime endAt) {
 		this.endAt = endAt;
+	}
+
+	public Course getReservedCourse() {
+		return reservedCourse;
+	}
+
+	public void setReservedCourse(Course reservedCourse) {
+		this.reservedCourse = reservedCourse;
 	}
 
 	@Override

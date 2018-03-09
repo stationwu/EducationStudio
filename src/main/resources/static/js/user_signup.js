@@ -8,7 +8,6 @@ $(function(){
     $(window).resize(function(){
         width = document.documentElement.clientWidth;
         height = document.documentElement.clientHeight;
-        console.log(width, height);
         if(width > height){
             $(".content").removeAttr("style");
         }else{
@@ -79,13 +78,6 @@ $(function(){
         }
 
         var verifyCode = $("#captcha").val();
-        //var flag = validate(verifyCode, "verifyCode");
-        //if(!flag){
-        //    msg_alert("confirm_one_btn", "请您填写正确格式的验证码");
-        //    return false;
-        //}
-
-        // var captcha = $("#captcha").val();
         var verifyCodeId = $("#wxVerifyCode").val();
 
         var customer = {

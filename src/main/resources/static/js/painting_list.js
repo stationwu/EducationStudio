@@ -8,14 +8,11 @@ $(function(){
         url: "/api/v1/Student",
         dataType: "json",
         success: function(data){
-            console.log(data);
             var paintings = {};
             if(student_id != null && course_id!=null){
                 for(var i=0; i<data.length; i++){
-                    console.log("student_id",data[i].id);
                     if(student_id == data[i].id){
                         for(var j=0; j<data[i].courseCategories.length; j++){
-                            console.log("paints",data[i].courseCategories[j].id);
                             if(course_id == data[i].courseCategories[j].id){
                                 course_name = data[i].courseCategories[j].courseName;
                                 break;
@@ -23,7 +20,6 @@ $(function(){
                         }
                         document.title = course_name+"作品";
                         for(var j=0; j<data[i].paints.length; j++){
-                            console.log("paints",data[i].paints[j].id);
                             if(course_id == data[i].paints[j].courseCategoryId){
                                 var date = data[i].paints[j]["date"];
                                 date = date.split(" ")[0].split("-").join(".");
@@ -66,10 +62,8 @@ $(function(){
                     }
                 }
             }
-            // console.log(paintings);
             var html = "";
             for(var i in paintings) {
-                // console.log(paintings[i])
                 html += '<div class="date">' + i + '</div>';
                 for(var j=0; j<paintings[i].length; j++){
                     html += '<div class="painting-info" data-id="' + paintings[i][j]["id"] + '">' +
@@ -83,7 +77,6 @@ $(function(){
                 }
             }
 
-            // console.log(html);
             $("#painting-list").append(html);
 
             $('.painting img').each(function() {

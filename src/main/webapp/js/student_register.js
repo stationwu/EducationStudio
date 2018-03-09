@@ -1,6 +1,6 @@
 $(function(){
     var children = [];
-    var num = 1;
+    // var num = 1;
     $("#add-student-form").delegate(".thumbnail", "click", function(){
         $(this).siblings(".thumbnail").removeClass("active");
         $(this).addClass("active");
@@ -10,9 +10,17 @@ $(function(){
         $(this).removeAttr("placeholder");
         $(this).css("padding-left","0.36rem");
     });
+    $("#add-student-form").delegate(".delete", "click", function(){
+        if($(".student-info").length > 1){
+            $(this).parents(".student-info").remove();
+        }else{
+            msg_alert("alert", "不能再删除了哦~");
+        }
+        return false;
+    });
     $("#add-student-form-btn").click(function(){
-        num++;
-        var data = $(".student-info").eq(0).clone().attr("data-id",num);
+        // num++;
+        var data = $(".student-info").eq(0).clone();
         data.children("input").val("");
         data.children(".thumbnail").removeClass("active");
         data.children(".thumbnail").eq(0).addClass("active");
@@ -51,7 +59,6 @@ $(function(){
             return false;
         }
         //调用添加学员接口
-        // console.log(children);
         $.ajax({
             type: "POST",
             url: "/api/v1/Customer/AddChild",
@@ -59,7 +66,6 @@ $(function(){
             data: JSON.stringify(children),
             success: function(data){
                 msg_alert("alert", "添加成功");
-                //跳转到什么页面？
                 window.location.href = "/user/student/list";
             },
             error: function(){

@@ -22,14 +22,14 @@ public class Address {
     private String remark;
 
     public String getAddressText() {
-        return ( city == null? city : "" ) +
-                ( district == null? district : "" ) +
+        return ( city != null? city : "" ) +
+                ( district != null? district : "" ) +
                 ( street ) +
-                ( laneNumber == null? laneNumber + "弄" : "") +
+                ( laneNumber != null? laneNumber + "弄" : "") +
                 ( doorNumber + "号" ) +
-                ( floorNumber == null? floorNumber + "楼" : "") +
-                ( roomNumber == null? roomNumber + "室" : "") +
-                ( remark == null? remark : "");
+                ( floorNumber != null? floorNumber + "楼" : "") +
+                ( roomNumber != null? roomNumber + "室" : "") +
+                ( remark != null? remark : "");
     }
 
     public long getId() {

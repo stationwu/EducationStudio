@@ -44,10 +44,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
@@ -154,6 +151,7 @@ public class OrderController {
         courseProduct.setQuantity(quantity);
         courseProduct.setSubTotalAmount(courseCategory.getPrice().multiply(BigDecimal.valueOf(quantity))); // No discount so far
         courseProduct.setAddress(addressRepository.findFirstByOrderByIdAsc());
+        courseProduct.setReservedCourse(bookedLesson);
         courseProduct = courseProductRepository.save(courseProduct);
 
         Order order = new Order();
@@ -279,27 +277,27 @@ public class OrderController {
             payment.setOpenId(result.getOpenid());
             // <--
             // Not so important -->
-            payment.setDeviceInfo(result.getDeviceInfo());
-            payment.setFeeType(result.getFeeType());
-            payment.setTradeType(result.getTradeType());
-            payment.setAttach(result.getAttach());
-            payment.setBankType(result.getBankType());
-            payment.setTimeEnd(result.getTimeEnd());
-            payment.setIsSubsribe(result.getIsSubscribe());
-            payment.setCashFee(result.getCashFee());
-            payment.setCashFeeType(result.getCashFeeType());
-            payment.setTotalFee(result.getTotalFee());
-            //payment.setSettlementTotalFee(result.getSettlementTotalFee());
-            payment.setCouponFee(result.getCouponFee());
-            payment.setCouponCount(result.getCouponCount());
+            if (null != result.getDeviceInfo()) { payment.setDeviceInfo(result.getDeviceInfo()); }
+            if (null != result.getFeeType()) { payment.setFeeType(result.getFeeType()); }
+            if (null != result.getTradeType()) { payment.setTradeType(result.getTradeType()); }
+            if (null != result.getAttach()) { payment.setAttach(result.getAttach()); }
+            if (null != result.getBankType()) { payment.setBankType(result.getBankType()); }
+            if (null != result.getTimeEnd()) { payment.setTimeEnd(result.getTimeEnd()); }
+            if (null != result.getIsSubscribe()) { payment.setIsSubsribe(result.getIsSubscribe()); }
+            if (null != result.getCashFee()) { payment.setCashFee(result.getCashFee()); }
+            if (null != result.getCashFeeType()) { payment.setCashFeeType(result.getCashFeeType()); }
+            if (null != result.getTotalFee()) { payment.setTotalFee(result.getTotalFee()); }
+            if (null != result.getSettlementTotalFee()) { payment.setSettlementTotalFee(result.getSettlementTotalFee()); }
+            if (null != result.getCouponFee()) { payment.setCouponFee(result.getCouponFee()); }
+            if (null != result.getCouponCount()) { payment.setCouponCount(result.getCouponCount()); }
 
             int index = 0;
             for (WxPayOrderNotifyCoupon couponUsed : result.getCouponList()) {
                 Coupon coupon = new Coupon();
                 coupon.setCouponIndex(++index);
-                coupon.setCouponFee(couponUsed.getCouponFee());
-                coupon.setCouponId(couponUsed.getCouponId());
-                coupon.setCouponType(couponUsed.getCouponType());
+                if (null != couponUsed.getCouponFee()) { coupon.setCouponFee(couponUsed.getCouponFee()); }
+                if (null != couponUsed.getCouponId()) { coupon.setCouponId(couponUsed.getCouponId()); }
+                if (null != couponUsed.getCouponType()) { coupon.setCouponType(couponUsed.getCouponType()); }
                 coupon.setPayment(payment);
                 coupon = couponRepository.save(coupon);
                 payment.addCoupon(coupon);
@@ -310,6 +308,17 @@ public class OrderController {
 
             order.setStatus(Order.Status.PAID);
             orderRepository.save(order);
+
+            // 添加到“我的课程”列表中
+            Set<CourseProduct> courseProducts = order.getCourseProductsMap().keySet();
+            for(CourseProduct courseProduct : courseProducts) {
+                Student student = courseProduct.getStudent();
+                Course course = courseProduct.getReservedCourse();
+                if (student!= null && course != null) {
+                    student.addReservedCourse(course);
+                    studentRepository.save(student);
+                }
+            }
         } finally {
             paymentNofificationLock.unlock();
         }
