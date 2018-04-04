@@ -94,7 +94,11 @@ $(function () {
         $(this).text(allDay.getDate()).attr('data', allDay_str);
 
         if (returnDateStr(new Date()) === allDay_str) {
-          $(this).attr('class', 'item item-curDay');
+          if(returnDateStr(firstDay).substr(0, 6) !== allDay_str.substr(0, 6)){
+            $(this).attr('class', 'item item-curDay');
+          }else{
+            $(this).attr('class', 'item item-curDay item-curMonth');
+          }
         } else if (returnDateStr(firstDay).substr(0, 6) === allDay_str.substr(0, 6)) {
           $(this).attr('class', 'item item-curMonth');
         } else {

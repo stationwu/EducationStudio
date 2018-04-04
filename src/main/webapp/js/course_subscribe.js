@@ -70,7 +70,7 @@ $(function(){
                 return false;
             }
             //显示课程列表收缩状态
-            var html = '<div id="course-title" class="close"><div class="icon"></div>课程：<span class="info"><span class="name">' + courses[0].courseName + '</span> (剩余<span class="count">' + courses[0].leftPeriod + '</span>节)</span>'+
+            var html = '<div id="course-title" class="close"><div class="icon"></div><span class="title">课程：</span><span class="info"><span class="name">' + courses[0].courseName + '</span> (剩余<span class="count">' + courses[0].leftPeriod + '</span>节)</span>'+
                 '<i></i></div><ul id="course-list" style="display: none;">';
 
             if(courses[0].demoCourse != true){

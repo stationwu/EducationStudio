@@ -133,8 +133,8 @@
   color: #000;
   visibility: visible;
 }
-.calendar-date .item-curDay,
-.calendar-date .item-curDay:hover {
+.calendar-date .item-curDay.item-curMonth,
+.calendar-date .item-curDay.item-curMonth:hover {
   background-color: #f0f0f0;
   visibility: visible;
 }

@@ -596,7 +596,7 @@ input[type="submit"], input[type="button"], button{
     background-size: 6.4rem auto;
     background-position: -4.92rem -0.12rem;
     position: relative;
-    top: 0.08rem;
+    top: -0.18rem;
     margin-right: 0.08rem;
 }
 #course-subscribe #course-title i{
@@ -610,6 +610,18 @@ input[type="submit"], input[type="button"], button{
     position: relative;
     top: 0.38rem;
 }
+#course-subscribe #course-title .title{
+    display: inline-block;
+    top: -0.28rem;
+    position: relative;
+}
+#course-subscribe #course-title .info{
+    overflow: hidden;
+    display: inline-block;
+    width: 5.8rem;
+    height: 0.92rem;
+}
+
 #course-subscribe #course-list{
     background-color: #fff;
     font-size: 12px;
