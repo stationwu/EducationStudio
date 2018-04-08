@@ -581,6 +581,7 @@ input[type="submit"], input[type="button"], button{
     background-color: #ffcd0d;
     border-radius: 0.46rem;
     font-size: 15px;
+    position: relative;
 }
 [data-dpr="2"] #course-subscribe #course-title{
     font-size: 30px;
@@ -592,12 +593,12 @@ input[type="submit"], input[type="button"], button{
     display: inline-block;
     width: 0.44rem;
     height: 0.44rem;
-    background: url("../images/sprite.png") no-repeat;
+    background: url(../images/sprite.png) no-repeat;
     background-size: 6.4rem auto;
     background-position: -4.92rem -0.12rem;
-    position: relative;
-    top: -0.18rem;
+    margin-top: 0.24rem;
     margin-right: 0.08rem;
+    float: left;
 }
 #course-subscribe #course-title i{
     display: inline-block;
@@ -612,8 +613,8 @@ input[type="submit"], input[type="button"], button{
 }
 #course-subscribe #course-title .title{
     display: inline-block;
-    top: -0.28rem;
     position: relative;
+    float: left;
 }
 #course-subscribe #course-title .info{
     overflow: hidden;
