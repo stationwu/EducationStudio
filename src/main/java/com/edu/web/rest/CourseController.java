@@ -48,8 +48,8 @@ public class CourseController {
         CourseCategory courseCategory = courseCategoryRepository.findOne(courseCategoryId);
         String localDate = LocalDate.now().toString();
         List<CourseContainer> list = courseCategory.getCourses().stream()
-                //.filter(x -> localDate.compareTo(x.getDate()) <= 0)
-                //.sorted(Comparator.comparing(Course::getDate).thenComparing(Course::getTimeFrom))
+                .filter(x -> localDate.compareTo(x.getDate()) <= 0)
+                .sorted(Comparator.comparing(Course::getDate).thenComparing(Course::getTimeFrom))
                 .map(x -> new CourseContainer(x)).collect(Collectors.toCollection(ArrayList::new));
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
